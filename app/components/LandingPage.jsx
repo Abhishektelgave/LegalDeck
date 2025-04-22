@@ -1,5 +1,7 @@
+'use client'
 import React from 'react'
 
+// Landing Page Component
 const LandingPage = () => {
   return (
     <div className="landing-page bg-[#000000] flex items-center justify-center min-h-screen w-full fixed top-0 left-0 z-50">

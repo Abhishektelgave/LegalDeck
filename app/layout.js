@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono, Inter, Playfair_Display, Lobster, Tektur, Big_Shoulders_Inline_Display } from "next/font/google";
 import ClientLayout from "./components/ClientLayout";
 import "./globals.css";
+import Script from "next/script";
 
 // Google Fonts
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -11,19 +12,27 @@ const inter = Inter({ variable: "--font-inter", subsets: ["latin"], weight: ["40
 const playfair = Playfair_Display({ variable: "--font-playfair", subsets: ["latin"], });
 const lobster = Lobster({ variable: "--font-lobster", subsets: ["latin"], weight: "400" });
 
+// Title and disc of prj
 export const metadata = {
   title: "LegalDeck",
   description: "An online Legal Consultation Platform that enables individuals to connect with professional lawyers, book appointments, upload case documents, and make online payments.",
 };
 
+// Root Page
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <Script
+          src="https://cdn.lordicon.com/lordicon.js"
+          strategy="beforeInteractive"
+        />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${playfair.variable} ${tektur.variable} ${lobster.variable} ${bigShouldersInline.variable} antialiased`} >
         <ClientLayout >
           {children}
         </ClientLayout>
       </body>
-    </html>
+    </html >
   );
 }

@@ -1,36 +1,19 @@
-"use client"
-import Image from "next/image";
+"use client";
 import Link from "next/link";
-import logoimg from "@/public/images/logo.png";
 import { motion } from "framer-motion";
+import Header from "@/app/components/Header";
 
 // Home Page
 export default function Home() {
 
   return (
-
     <>
       {/* Header */}
       <header className="w-full h-[12vh] flex items-center justify-between p-4">
-        <div className="logo flex items-center gap-2 cursor-pointer">
-          <div className="logoimg">
-            <Image src={logoimg} className="invert" alt="Logo-Image" width={40}></Image>
-          </div>
-          <div className="logoname text-5xl" style={{ fontFamily: "var(--font-tektur)" }}>
-            <span>L</span>
-            <span>E</span>
-            <span>G</span>
-            <span>A</span>
-            <span>L</span>
-            <span>D</span>
-            <span>E</span>
-            <span>C</span>
-            <span>K</span>
-          </div>
-        </div>
+        <Header />
         <div className="panel flex items-center text-xl gap-8 pr-2 justify-center">
-          <Link href={"/Admin"} className=" pl-2 pt-1 pb-1 pr-2  rounded-xl">Admin</Link>
-          <Link href={"/Auth/Login"} className=" pl-2 pt-1 pb-1 pr-2 rounded-xl">Login</Link>
+          <Link href={"/Auth/Admin"} className="hover:text-[#FF6F61] pl-2 pt-1 pb-1 pr-2  rounded-xl">Admin</Link>
+          <Link href={"/Auth/Login"} className="hover:text-[#FF6F61] pl-2 pt-1 pb-1 pr-2 rounded-xl">Login</Link>
         </div>
       </header>
 

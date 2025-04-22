@@ -1,10 +1,9 @@
 "use client"
-import React, { useState, useEffect } from 'react'
-import { useSession, signIn, signOut, getCsrfToken } from 'next-auth/react';
+import React, { useState, useEffect } from 'react';
+import { useSession, signIn, getCsrfToken } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
-
-// User Login
+// User Login Page
 const UserLogin = ({ params }) => {
 
   // Error Verification States
@@ -32,7 +31,11 @@ const UserLogin = ({ params }) => {
   useEffect(() => {
     setIsClient(true);
     if (session) {
-      router.push('/UserDashboard');
+      if(session.user.role === 'user'){
+        router.push('/UserDashboard');
+      }else{
+        router.push('/LawyerDashboard');
+      }
     }
   }, [session]);
 
@@ -49,53 +52,56 @@ const UserLogin = ({ params }) => {
     );
   };
 
-  // ------------------------------------------------------------------------------------------------------------------
-  // useEffect(() => {
-  //   const fetchCsrfToken = async () => {
-  //     const token = await getCsrfToken();
-  //     setCsrfToken(token);
-  //   };
-  //   fetchCsrfToken();
-  // }, []);
+  // csrf token generation
+  useEffect(() => {
+    const fetchCsrfToken = async () => {
+      const token = await getCsrfToken();
+      setCsrfToken(token);
+    };
+    fetchCsrfToken();
+  }, []);
 
-  // const handleLogin = async (e) => {
-  //   e.preventDefault();
-  //   const res = await signIn('credentials', {
-  //     redirect: false,
-  //     email: EmailInput,
-  //     password: PassInput,
-  //     csrfToken,
-  //   });
+  // handleLogin with credentials
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const res = await signIn('credentials', {
+      redirect: false,
+      role: 'user',
+      email: EmailInput,
+      password: PassInput,
+      csrfToken,
+    });
 
-  //   if (res?.ok) {
-  //     router.push('/Dashbord');
-  //   } else {
-  //     setErrorMessage('Failed to login. Check your credentials.');
-  //   }
-  // };
+    if (res?.ok) {
+      router.push('/UserDashboard');
+    } else {
+      setErrorMessage('Failed to login. Check your credentials.');
+    }
+  };
 
-  // const handleSignUP = async (e) => {
-  //   e.preventDefault();
-  //   if (PassInput === ConformInput) {
-  //     const res = await signIn('credentials', {
-  //       redirect: false,
-  //       name: UserInput,
-  //       email: EmailInput,
-  //       password: PassInput,
-  //       csrfToken,
-  //       isSignup: isSignup,
-  //     });
+  // handleSignup with credentials
+  const handleSignUP = async (e) => {
+    e.preventDefault();
+    if (PassInput === ConformInput) {
+      const res = await signIn('credentials', {
+        redirect: false,
+        role: 'user',
+        name: UserInput,
+        email: EmailInput,
+        password: PassInput,
+        csrfToken,
+        isSignup: 'true',
+      });
 
-  //     if (res?.ok) {
-  //       router.push('/Dashbord');
-  //     } else {
-  //       setErrorMessage('Failed to sign up. Check your credentials.');
-  //     }
-  //   } else {
-  //     setErrorMessage('Passwords do not match');
-  //   }
-  // };
-  // -------------------------------------------------------------------------------------------------------------------
+      if (res?.ok) {
+        router.push('/UserDashboard');
+      } else {
+        setErrorMessage('Failed to sign up. Check your credentials.');
+      }
+    } else {
+      setErrorMessage('Passwords do not match');
+    }
+  };
 
   // google login handler
   const handleUserLogin = async () => {
@@ -113,7 +119,7 @@ const UserLogin = ({ params }) => {
   return (
 
     <div className="w-full min-h-[70vh] flex items-center justify-center bg-[#000000] text-[#F1F1F1] mt-[-20px]">
-      <div className="flex flex-col items-center min-h-[80vh] p-5 gap-5 w-full sm:max-w-[500px] justify-center bg-[#000000] text-[#F1F1F1]">
+      <div className="flex flex-col items-center min-h-[70vh] p-5 gap-5 w-full sm:max-w-[500px] justify-center bg-[#000000] text-[#F1F1F1]">
         <h1 className="font-bold text-center text-2xl sm:text-4xl">
           {isLogin ? 'Welcome Back' : 'Hii, there'}
         </h1>
@@ -167,16 +173,14 @@ const UserLogin = ({ params }) => {
 
           {/* Submit buttons */}
           {isLogin ? (
-            <button
-
-              className="text-white w-full sm:w-40 bg-transparent border-2 border-white rounded-full p-2 z-20"
+            <button onClick={handleLogin}
+              className="text-white cursor-pointer w-full sm:w-40 bg-transparent border-2 border-white rounded-full p-2 z-20"
             >
               Login
             </button>
           ) : (
-            <button
-
-              className="text-white w-full sm:w-40 bg-transparent border-2 border-white rounded-full p-2 z-20"
+            <button onClick={handleSignUP}
+              className="text-white cursor-pointer w-full sm:w-40 bg-transparent border-2 border-white rounded-full p-2 z-20"
             >
               Sign Up
             </button>
@@ -192,7 +196,7 @@ const UserLogin = ({ params }) => {
         {/* Google Button */}
         <button
           onClick={handleUserLogin}
-          className="flex mx-auto relative z-[9999] items-center justify-center w-full sm:max-w-xs bg-transparent border-2 border-gray-300 rounded-full shadow-md py-2 text-sm font-medium text-[#F1F1F1] "
+          className="flex mx-auto cursor-pointer relative z-[9999] items-center justify-center w-full sm:max-w-xs bg-transparent border-2 border-gray-300 rounded-full shadow-md py-2 text-sm font-medium text-[#F1F1F1] "
         >
           <svg
             className="h-6 w-6 mr-2 z-20"

@@ -1,10 +1,10 @@
 "use client"
-import React, { useState, useEffect } from 'react'
-import { useSession, signIn, signOut, getCsrfToken } from 'next-auth/react';
+import React, { useState, useEffect } from 'react';
+import { useSession, signIn, getCsrfToken } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import CategorySelector from '@/app/Auth/[method]/components/CategorySelector';
 
-
-// Lawyer Login
+// Lawyer Login Page
 const LawyerLogin = ({ params }) => {
 
   // Error Verification
@@ -16,11 +16,18 @@ const LawyerLogin = ({ params }) => {
   // Input Fields
   const [EmailInput, setEmailInput] = useState("");
   const [UserInput, setUserInput] = useState("");
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [UserFile, setUserFile] = useState("");
   const [PassInput, setPassInput] = useState("");
   const [ConformInput, setConformInput] = useState("");
 
   const signup = "Don't have an account? Sign up";
   const login = "Already have an account? Login";
+
+  // Category change
+  const handleCategoryChange = (categories) => {
+    setSelectedCategories(categories);
+  };
 
   // get params
   const method = React.use(params).method;
@@ -32,7 +39,11 @@ const LawyerLogin = ({ params }) => {
   useEffect(() => {
     setIsClient(true);
     if (session) {
-      router.push('/LawyerDashboard');
+      if (session.user.role === 'user') {
+        router.push('/UserDashboard');
+      } else {
+        router.push('/LawyerDashboard');
+      }
     }
   }, [session]);
 
@@ -50,54 +61,94 @@ const LawyerLogin = ({ params }) => {
     );
   };
 
-  // -------------------------------------------------------------------------------------------------------------------
+  // csrf token generation
+  useEffect(() => {
+    const fetchCsrfToken = async () => {
+      const token = await getCsrfToken();
+      setCsrfToken(token);
+    };
+    fetchCsrfToken();
+  }, []);
 
-  // useEffect(() => {
-  //   const fetchCsrfToken = async () => {
-  //     const token = await getCsrfToken();
-  //     setCsrfToken(token);
-  //   };
-  //   fetchCsrfToken();
-  // }, []);
+  // handleLogin with credentials
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const res = await signIn('credentials', {
+      redirect: false,
+      role: 'lawyer',
+      email: EmailInput,
+      password: PassInput,
+      csrfToken,
+    });
 
-  // const handleLogin = async (e) => {
-  //   e.preventDefault();
-  //   const res = await signIn('credentials', {
-  //     redirect: false,
-  //     email: EmailInput,
-  //     password: PassInput,
-  //     csrfToken,
-  //   });
+    if (res?.ok) {
+      router.push('/LawyerDashboard');
+    } else {
+      setErrorMessage('Failed to login. Check your credentials.');
+    }
+  };
 
-  //   if (res?.ok) {
-  //     router.push('/Dashbord');
-  //   } else {
-  //     setErrorMessage('Failed to login. Check your credentials.');
-  //   }
-  // };
+  // handleSignup with credentials
+  const handleSignUP = async (e) => {
+    e.preventDefault();
 
-  // const handleSignUP = async (e) => {
-  //   e.preventDefault();
-  //   if (PassInput === ConformInput) {
-  //     const res = await signIn('credentials', {
-  //       redirect: false,
-  //       name: UserInput,
-  //       email: EmailInput,
-  //       password: PassInput,
-  //       csrfToken,
-  //       isSignup: isSignup,
-  //     });
+    if (PassInput !== ConformInput) {
+      return setErrorMessage('Passwords do not match');
+    }
 
-  //     if (res?.ok) {
-  //       router.push('/Dashbord');
-  //     } else {
-  //       setErrorMessage('Failed to sign up. Check your credentials.');
-  //     }
-  //   } else {
-  //     setErrorMessage('Passwords do not match');
-  //   }
-  // };
-  // -------------------------------------------------------------------------------------------------------------------
+    if (!UserFile) {
+      return setErrorMessage('Please select a file');
+    }
+
+    const formData = new FormData();
+    formData.append('username', UserInput);
+    formData.append('file', UserFile);
+
+    // upload doc and store in assests
+    const uploadRes = await fetch('/api/file/upload', {
+      method: 'POST',
+      body: formData,
+    });
+
+    let uploadData = {};
+
+    try {
+      uploadData = await uploadRes.json();
+    } catch (err) {
+      console.error("Failed to parse JSON response from upload API");
+      return setErrorMessage("File upload failed unexpectedly.");
+    }
+
+    if (!uploadRes.ok) {
+      return setErrorMessage('File upload failed: ' + (uploadData.error || "Unknown error"));
+    }
+
+    // Continue signup logic 
+    const res = await signIn('credentials', {
+      redirect: false,
+      role: 'lawyer',
+      name: UserInput,
+      email: EmailInput,
+      categories: JSON.stringify(selectedCategories),
+      fileName: uploadData.filename,
+      password: PassInput,
+      csrfToken,
+      isSignup: 'true',
+    });
+
+    if (res?.ok) {
+      router.push('/LawyerDashboard');
+    } else {
+      await fetch('/api/file/delete', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ filename: uploadData.filename }),
+      });
+      setErrorMessage('Failed to sign up. Check your credentials.');
+    }
+  };
 
   // switch btw login & signup
   const switchAuth = () => {
@@ -108,7 +159,7 @@ const LawyerLogin = ({ params }) => {
   return (
 
     <div className="w-full min-h-[70vh] flex items-center justify-center bg-[#000000] text-[#F1F1F1] mt-[-20px]">
-      <div className="flex flex-col items-center min-h-[80vh] p-5 gap-5 w-full sm:max-w-[500px] justify-center bg-[#000000] text-[#F1F1F1]">
+      <div className="flex flex-col items-center min-h-[70vh] p-5 gap-5 w-full sm:max-w-[500px] justify-center bg-[#000000] text-[#F1F1F1]">
         <h1 className="font-bold text-center text-xl sm:text-4xl">
           {isLogin ? 'Welcome Back' : 'Hii, There'}
         </h1>
@@ -134,6 +185,31 @@ const LawyerLogin = ({ params }) => {
             value={EmailInput}
             onChange={(e) => setEmailInput(e.target.value)}
           />
+
+          {/* CategorySelector */}
+          {!isLogin && (
+            <CategorySelector
+              value={selectedCategories}
+              onChange={handleCategoryChange}
+            />
+          )}
+
+          {!isLogin && (
+            <input
+              id="userfile"
+              name="userfile"
+              className="text-[#a2e840] w-full sm:w-[83%] bg-transparent border-2 border-white rounded-full p-2 z-10"
+              type="file"
+              accept="image/*,application/pdf"
+              onChange={(e) => {
+                const file = e.target.files[0];
+                if (file) {
+                  setUserFile(file);
+                }
+              }}
+            />
+          )}
+
           <input
             id="Password"
             name="Password"
@@ -163,15 +239,15 @@ const LawyerLogin = ({ params }) => {
           {/* Submit button */}
           {isLogin ? (
             <button
-
-              className="text-white w-full sm:w-40 bg-transparent border-2 border-white rounded-full p-2 z-20"
+              onClick={handleLogin}
+              className="text-white w-full sm:w-40 bg-transparent border-2 cursor-pointer border-white rounded-full p-2 z-20"
             >
               Login
             </button>
           ) : (
             <button
-
-              className="text-white w-full sm:w-40 bg-transparent border-2 border-white rounded-full p-2 z-20"
+              onClick={handleSignUP}
+              className="text-white w-full sm:w-40 bg-transparent border-2 cursor-pointer border-white rounded-full p-2 z-20"
             >
               Sign Up
             </button>
@@ -183,7 +259,7 @@ const LawyerLogin = ({ params }) => {
           <span className="w-full h-[1px] bg-[#F1F1F1]"></span>
         </div>
         <div className="text-[#F1F1F1]  relative z-[9999]">
-          <button className="text-sm hover:cursor-pointer font-light" onClick={switchAuth}>
+          <button onClick={switchAuth} className="text-sm hover:cursor-pointer font-light" >
             {isLogin ?
               <SpannedText text={signup} />
               :

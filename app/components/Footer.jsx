@@ -1,6 +1,7 @@
+'use client'
 import React from 'react';
 
-// Footer
+// Footer Component
 const Footer = () => {
   return (
       <div className="flex items-center justify-center p-2">

@@ -1,11 +1,12 @@
 import mongoose from 'mongoose';
 
-// Further can be modified based on needs
+// User Schema
 const userSchema = new mongoose.Schema({
   name: String,
   email: { type: String, unique: true },
+  password: String,
   profileImage: String,
-  email_verified: Boolean,
+  email_verified: { type: Boolean, default: false },
   oauthProvider: String,
   createdDate: { type: Date, default: Date.now },
 });

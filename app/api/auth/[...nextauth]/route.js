@@ -4,141 +4,167 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import dbConnect from "@/app/db/page";
 import Lawyer from '@/app/models/Lawyer';
 import User from '@/app/models/User';
+import Admin from '@/app/models/Admin';
 import bcrypt from 'bcryptjs';
 
-
-
 export const authOptions = NextAuth({
-
   providers: [
-
-    // Google Provider
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
-
-    // ----------------------------------------------------------------------------------------------------------------
-    // Credential Provider
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        name: { label: 'name', type: 'text', placeholder: 'UserName' },
-        email: { label: 'Email', type: 'email', placeholder: 'Email' },
+        name: { label: 'name', type: 'text' },
+        email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' },
+        role: { label: 'Role', type: 'text' },
+        fileName: { label: 'FileName', type: 'text' },
+        categories: { label: 'Categories', type: 'text' },
+        isSignup: { label: 'IsSignup', type: 'text' },
       },
 
       async authorize(credentials) {
-        const { isSignup, email, password, name } = credentials;
+        const { role, categories, fileName, isSignup, email, password, name } = credentials;
 
-        // Connect to database
         await dbConnect();
 
-        if (isSignup) {
-          // Signup Flow
-          const existingLawyer = await Lawyer.findOne({ email });
-          if (existingLawyer) {
-            throw new Error('Email already in use.');
-          }
-
-          const hashedPassword = await bcrypt.hash(password, 12);
-          const newLawyer = new Lawyer({
-            name,
-            email,
-            password: hashedPassword,
-          });
-          await newLawyer.save();
-          return newLawyer;
-
-        } else {
-          // Login Flow
-          const lawyer = await Lawyer.findOne({ email });
-          if (!lawyer) {
-            throw new Error('No user found with this email.');
-          }
-
-          const isPasswordValid = await bcrypt.compare(password, lawyer.password);
-          if (!isPasswordValid) {
-            throw new Error('Invalid password.');
-          }
-
-          return lawyer;
+        // Admin Login
+        if (role === 'admin') {
+          const admin = await Admin.findOne({ email });
+          if (!admin) throw new Error('No admin found.');
+          const valid = await bcrypt.compare(password, admin.password);
+          if (!valid) throw new Error('Invalid password.');
+          return { ...admin._doc, role: 'admin' };
         }
+
+        // User Login
+        if (role === 'user') {
+          if (isSignup === 'true') {
+            const existingUser = await User.findOne({ email });
+            if (existingUser) throw new Error('Email already in use.');
+            const hashedPassword = await bcrypt.hash(password, 12);
+            const newUser = new User({ name, email, password: hashedPassword });
+            await newUser.save();
+            return { ...newUser._doc, role: 'user' };
+          } else {
+            const user = await User.findOne({ email });
+            if (!user) throw new Error('No user found.');
+            const valid = await bcrypt.compare(password, user.password);
+            if (!valid) throw new Error('Invalid password.');
+            return { ...user._doc, role: 'user' };
+          }
+        }
+
+        // Lawyer Login
+        if (role === 'lawyer') {
+          if (isSignup === 'true') {
+            const existingLawyer = await Lawyer.findOne({ email });
+            if (existingLawyer) throw new Error('Email already in use.');
+            const hashedPassword = await bcrypt.hash(password, 12);
+            const parsedCategories = JSON.parse(categories || '{}');
+            const newLawyer = new Lawyer({
+              name,
+              email,
+              password: hashedPassword,
+              fileName,
+              categories: parsedCategories,
+              oauthProvider: 'Credentials',
+              upi: '',
+            });
+            await newLawyer.save();
+            return { ...newLawyer._doc, role: 'lawyer' };
+          } else {
+            const lawyer = await Lawyer.findOne({ email });
+            if (!lawyer) throw new Error('No lawyer found.');
+            const valid = await bcrypt.compare(password, lawyer.password);
+            if (!valid) throw new Error('Invalid password.');
+            return { ...lawyer._doc, role: 'lawyer' };
+          }
+        }
+
+        throw new Error('Invalid role.');
       }
     }),
   ],
-  // ------------------------------------------------------------------------------------------------------------------
-  database: process.env.MONGODB_URI,
 
-  // Callbacks
   callbacks: {
-    async signIn({ user, account, token }) {
-
-      // Connect db
+    async signIn({ user, account }) {
       await dbConnect();
 
-      // Check for existing User
-      const existingUser = await User.findOne({ email: user.email });
-
-      // Create User if not found
-      if (!existingUser) {
-        const newUser = new User({
-          name: user.name,
-          email: user.email,
-          profileImage: user.image || "",
-          email_verified: true,
-          oauthProvider: account.provider || "google",
-        });
-
-        // Save User
-        await newUser.save();
+      if (account?.provider === 'google') {
+        const existingUser = await User.findOne({ email: user.email });
+        if (!existingUser) {
+          const defaultPassword = user.name + '@123';
+          const hashedPassword = await bcrypt.hash(defaultPassword, 12);
+          const newUser = new User({
+            name: user.name,
+            email: user.email,
+            password: hashedPassword,
+            profileImage: user.image,
+            email_verified: true,
+            oauthProvider: "google",
+          });
+          await newUser.save();
+        }
       }
+
       return true;
     },
 
-    // Manage Session
     async session({ session, token }) {
-
-      // Connect db
       await dbConnect();
+      let currentUser;
+      const role = token.role;
 
-      // Check for User
-      const user = await User.findOne({ email: session.user.email });
-
-      // Add User to session
-      if (user) {
-        session.user = {
-          id: user._id,
-          name: user.name,
-          email: user.email,
-          image: user.profileImage,
-          bio: user.bio,
-          followers: user.followers,
-          following: user.following,
-          oauthProvider: user.oauthProvider,
-          createdDate: user.createdDate,
-          emailVerified: user.email_verified
-        };
-
-        // Add token id
-        if (user) {
-          token.id = user._id;
-        }
+      if (role === 'admin') {
+        currentUser = await Admin.findOne({ email: session.user.email });
+      } else if (role === 'lawyer') {
+        currentUser = await Lawyer.findOne({ email: session.user.email });
+      } else {
+        currentUser = await User.findOne({ email: session.user.email });
       }
+
+      if (currentUser) {
+        session.user = {
+          id: currentUser._id.toString(),
+          name: currentUser.name,
+          email: currentUser.email,
+          role,
+          oauthProvider: currentUser.oauthProvider,
+          createdDate: currentUser.createdDate,
+          ...(role === 'user ' && {
+            image: currentUser.profileImage,
+          }),
+          ...(role === 'lawyer' && {
+            fileName: currentUser.fileName,
+            categories: currentUser.categories,
+            isApproved: currentUser.lawyer_verified,
+            upi: currentUser.upi,
+          }),
+        };
+        if (token) token.id = currentUser._id;
+      }
+
       return session;
     },
 
-    // JavaScript Web token
-    async jwt({ token, account }) {
+    async jwt({ token, user, account }) {
+      if (user) {
+        token.role = user.role || 'user';
+        token.email = user.email;
+      }
       if (account) {
         token.accessToken = account.access_token;
       }
       return token;
     },
   },
+
   secret: process.env.NEXTAUTH_SECRET,
   session: {
-    jwt: true,
+    strategy: 'jwt',
   },
   debug: true,
 });
