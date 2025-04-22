@@ -96,19 +96,19 @@ const LawyerDashboard = ({ children }) => {
               {session.user.isApproved && (
                 <span
                   className={`text-xs font-semibold mt-1 px-3 py-1 rounded-full shadow-sm ${session.user.isApproved === "approved"
-                      ? "bg-green-600 text-white"
-                      : session.user.isApproved === "rejected"
-                        ? "bg-red-600 text-white"
-                        : "bg-yellow-400 text-black"
+                    ? "bg-green-600 text-white"
+                    : session.user.isApproved === "rejected"
+                      ? "bg-red-600 text-white"
+                      : "bg-yellow-400 text-black"
                     }`}
                   style={{ fontFamily: "var(--font-tektur)" }}
                 >
                   {session.user.isApproved === "approved"
-                      ? "Approved"
-                      : session.user.isApproved === "rejected"
-                        ? "Rejected"
-                        : "Pending Approval"
-                    }
+                    ? "Approved"
+                    : session.user.isApproved === "rejected"
+                      ? "Rejected"
+                      : "Pending Approval"
+                  }
                 </span>
               )}
             </div>

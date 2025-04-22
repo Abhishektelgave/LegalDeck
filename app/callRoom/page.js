@@ -67,9 +67,13 @@ const CallRoom = () => {
       const jitsi = new window.JitsiMeetExternalAPI(domain, options);
       jitsiRef.current = jitsi;
 
-      jitsi.addEventListener('readyToClose', () => {
+      jitsi.addEventListener('readyToClose', async () => {
         if (session?.user?.role === 'lawyer') {
-          router.push('/LawyerDashboard/CreateCase');
+          const res = await fetch('/api/book/appointment/updateAppointment/completedAppt', {
+            method:"POST",
+            body: JSON.stringify({ id: appt._id, status: 'completed' })
+          })
+          router.push('/LawyerDashboard/');
         } else {
           router.push('/UserDashboard');
         }

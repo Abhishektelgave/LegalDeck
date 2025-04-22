@@ -10,7 +10,9 @@ export const GET = async (req) => {
         }
 
         // fetch all users from the database
-        const lawyers = await Lawyer.find();
+        const lawyers = await Lawyer.find({
+            lawyer_verified: "approved"
+        });
 
         if (!lawyers.length) {
             return new Response(JSON.stringify({ message: "No User not found" }), { status: 404 });

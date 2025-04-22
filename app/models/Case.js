@@ -11,21 +11,13 @@ const documentSchema = new mongoose.Schema({
 
 // Case Schema
 const caseSchema = new mongoose.Schema({
-  lawyerId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Lawyer',
-    required: true,
-  },
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true,
-  },
+  lawyerId: { type: mongoose.Schema.Types.ObjectId, ref: 'Lawyer', required: true },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   category: String,
-  dateStarted: Date,
-  status: String,
+  dateStarted: { type: Date, default: Date.now },
+  status: { type: String, default: 'active' },
   documents: [documentSchema],
-  Disc: String,
-});
+  desc: String,
+}, { timestamps: true });
 
 export default mongoose.models.Case || mongoose.model('Case', caseSchema);

@@ -1,42 +1,47 @@
-import dbConnect from '@/app/db/page';
+import connectDB  from '@/app/db/page';
 import Appointment from '@/app/models/Appointment';
+import Case from '@/app/models/Case';
 
-export const POST = async (req) => {
-    try {
-        const connection = await dbConnect();
-        if (!connection) {
-            return new Response(JSON.stringify({ message: 'Database connection failed' }), { status: 500 });
-        }
+export async function POST(req) {
+  await connectDB();
+  const body = await req.json();
 
-        const body = await req.json();
-        const { lawyerId, userId,  date, time, category, fee } = body;
+  try {
+    let caseId = body.caseId;
 
-        if (!lawyerId ||!userId || !date || !time || !category || !fee) {
-            return new Response(JSON.stringify({ message: 'Invalid parameters' }), { status: 400 });
-        }
-
-        const existing = await Appointment.findOne({ lawyerId, userId, date, time, category });
-        if (existing) {
-            return new Response(JSON.stringify({ message: 'Appointment already scheduled' }), { status: 409 });
-        }
-
-        const newAppointment = new Appointment({
-            lawyerId,
-            userId,
-            date,
-            time,
-            category,
-            fee,
-            status: 'pending',
-            payment:'pending',
-        });
-
-        await newAppointment.save();
-
-        return new Response(JSON.stringify({ message: 'Appointment created successfully' }), { status: 200 });
-
-    } catch (err) {
-        console.error(err);
-        return new Response(JSON.stringify({ message: 'Server error: ' + err.message }), { status: 500 });
+    // If it's a new case, create one
+    if (caseId === 'New') {
+      const newCase = new Case({
+        lawyerId: body.lawyerId,
+        userId: body.userId,
+        category: body.category,
+      });
+      await newCase.save();
+      caseId = newCase._id;
     }
-};
+
+    // Create the appointment with the proper case ID
+    const appointment = new Appointment({
+      lawyerId: body.lawyerId,
+      userId: body.userId,
+      caseId,
+      date: body.date,
+      time: body.time,
+      category: body.category,
+      fee: body.fee,
+    });
+
+    await appointment.save();
+
+    return new Response(
+      JSON.stringify({ message: 'Appointment successfully booked.' }),
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error(error);
+    return new Response(
+      JSON.stringify({ message: 'Booking failed.', error: error.message }),
+      { status: 500 }
+    );
+  }
+}
