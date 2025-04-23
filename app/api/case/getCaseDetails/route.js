@@ -1,11 +1,12 @@
 import connectDB from '@/app/db/page';
 import Case from '@/app/models/Case';
 
-export async function GET(req, { params }) {
+export async function GET(req) {
   try {
     await connectDB();
 
-    const { id } = params;
+    const url = new URL(req.url);
+    const id = url.searchParams.get('id');
 
     if (!id) {
       return new Response(JSON.stringify({ message: 'Case ID is required' }), {

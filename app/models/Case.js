@@ -15,7 +15,8 @@ const caseSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   category: String,
   dateStarted: { type: Date, default: Date.now },
-  status: { type: String, default: 'active' },
+  status: { type: String, default: 'Not Started' },
+  caseProgress: { type: String, default: 'Initiated' },
   documents: [documentSchema],
   desc: String,
 }, { timestamps: true });

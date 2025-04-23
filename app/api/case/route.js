@@ -23,7 +23,8 @@ export async function POST(req) {
       userId: appt.userId,
       category: appt.category,
       dateStarted: new Date().toISOString().split('T')[0],
-      status: "Not Started",
+      status: "Active",
+      caseProgress: "Initiated",
       documents: [],
       desc: "",
     });
