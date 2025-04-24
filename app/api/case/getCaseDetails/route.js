@@ -15,7 +15,9 @@ export async function GET(req) {
       });
     }
 
-    const caseData = await Case.findById(id);
+    const caseData = await Case.findOne({ _id: id })
+      .populate('userId', 'name email')
+      .populate('lawyerId', 'name email');
 
     if (!caseData) {
       return new Response(JSON.stringify({ message: 'Case not found' }), {
@@ -24,7 +26,21 @@ export async function GET(req) {
       });
     }
 
-    return new Response(JSON.stringify(caseData), {
+    // Default data handling
+    const lawyerName = caseData.lawyerId?.name || 'Unknown user';
+    const lawyerEmail = caseData.lawyerId?.email || 'Unknown email';
+    const userName = caseData.userId?.name || 'Unknown user';
+    const userEmail = caseData.userId?.email || 'Unknown email';
+
+    const responseData = {
+      ...caseData.toObject(),
+      lawyerName,
+      lawyerEmail,
+      userName,
+      userEmail,
+    };
+
+    return new Response(JSON.stringify(responseData), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
     });

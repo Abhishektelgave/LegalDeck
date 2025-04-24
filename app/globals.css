@@ -53,6 +53,17 @@ body {
 }
 
 
+/* globals.css */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+
+
 /* .Low-Light {
   border-radius: 50%;
   box-shadow: 10px -1px 50px 10px #FF6F61;

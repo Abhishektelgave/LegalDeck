@@ -108,9 +108,12 @@ const Admin = () => {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <div className="flex items-center justify-between p-4 border-b border-white/10">
+      <div className="flex items-center justify-start p-4 border-b border-white/10">
         <Header />
-        <div className="flex items-center gap-4">
+        <span className='bg-[#ff5050] px-2.5 py-0.5 rounded-full'>
+          Admin
+        </span>
+        {/* <div className="flex items-center gap-4"> */}
           {/* Notification Button */}
           {/* <button className="relative">
             <lord-icon
@@ -125,11 +128,11 @@ const Admin = () => {
           </button> */}
           <button
             onClick={() => signOut({ callbackUrl: '/Auth/Admin' })}
-            className="px-4 py-2 cursor-pointer bg-white text-black rounded-full font-semibold hover:bg-gray-200 transition"
+            className="absolute right-10 px-4 py-2 cursor-pointer bg-white text-black rounded-full font-semibold hover:bg-gray-200 transition"
           >
             Sign Out
           </button>
-        </div>
+        {/* </div> */}
       </div>
 
       {/* Active Tabs selection */}

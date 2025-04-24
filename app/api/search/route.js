@@ -3,7 +3,7 @@ import Lawyer from '@/app/models/Lawyer';
 
 export const GET = async (req) => {
   try {
-    
+
     // Connect to the database
     const connection = await dbConnect();
     if (!connection) {
@@ -12,7 +12,7 @@ export const GET = async (req) => {
 
     // Extract the search query
     const search = req.nextUrl.searchParams.get('search');  // Get the search param from the URL
-    
+
     if (!search) {
       return new Response(JSON.stringify({ message: 'Search query missing' }), { status: 400 });
     }
@@ -25,6 +25,7 @@ export const GET = async (req) => {
         $regex: search,
         $options: "i", // Case-insensitive search
       },
+      lawyer_verified: "approved",
     });
 
     if (!lawyers.length) {

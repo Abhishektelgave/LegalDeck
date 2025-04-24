@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useAppointmentStore } from "@/app/store/appointment";
 
 const UserDashboard = () => {
   const { data: session } = useSession();
@@ -10,6 +11,7 @@ const UserDashboard = () => {
   const [showPending, setShowPending] = useState(false);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
+  const { setAppt } = useAppointmentStore();
   const router = useRouter();
 
   // Fetch approved appointments
@@ -58,8 +60,9 @@ const UserDashboard = () => {
     if (session) fetchPendingAppointments();
   }, [session]);
 
-  const handleCaseCall = (appt) => {
-    router.push(`/CaseProgress/${appt.caseId}`);
+  const handleCaseDetial = (appointment) => {
+    setAppt(appointment);
+    router.push(`/CaseProgress/${appointment.caseId}`);
   };
 
   function isWithinCallWindow(dateStr, timeStr, durationStr = "30 min") {
@@ -67,20 +70,21 @@ const UserDashboard = () => {
       const [hours, minutes] = timeStr.split(":").map(Number);
       const start = new Date(dateStr);
       start.setHours(hours, minutes, 0, 0);
-  
+
       const duration = parseInt(durationStr) || 30;
       const end = new Date(start.getTime() + duration * 60000);
       const now = new Date();
-  
+
       return now >= start && now <= end;
     } catch (err) {
       console.error("Invalid time window check:", err);
       return false;
     }
   }
-  
+
 
   const handleStartCall = (appointment) => {
+    // setAppt(appointment);
     router.push(`/callRoom?roomId=${appointment._id}`);
   };
 
@@ -204,7 +208,7 @@ const UserDashboard = () => {
 
               <div className="flex justify-end space-x-4">
                 <button
-                  onClick={() => handleCaseCall(appt)}
+                  onClick={() => handleCaseDetial(appt)}
                   className="border cursor-pointer border-white text-white px-4 py-2 rounded hover:bg-white hover:text-black transition duration-200 text-sm"
                 >
                   View Details
