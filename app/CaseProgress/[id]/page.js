@@ -37,24 +37,48 @@ const CaseProcessing = () => {
         }
     }, [session, id]);
 
+    const changeCaseStatus = async (action) => {
+        try {
+            const res = await fetch(`/api/case/updateCase`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id, status: action }),
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                setCaseDetails(data.case);
+            } else {
+                console.error('Error updating case:', data.message);
+            }
+
+        } catch (err) {
+            console.error('Unable to fetch data', err);
+        }
+    };
+
+
     if (!session || !appt) return null;
     if (loading) return <div className="text-center py-20 text-white">Loading case details...</div>;
     if (!caseDetails) return <div className="text-center py-20 text-white">No case found.</div>;
 
     return (
-        <div className='relative min-h-[94.3vh] bg-black text-white'>
+        <div className='relative min-h-[98.3vh] bg-black text-white'>
             <Header />
 
             {caseDetails.status === "Not Started" && (
                 <div className='flex items-center justify-center gap-5 py-4'>
-                    <button className='px-4 py-1 hover:bg-[#dcdcdc] rounded-full bg-white text-black text-xl'>Activate Case</button>
-                    <button className='px-4 py-1 hover:bg-[#dcdcdc] rounded-full bg-white text-black text-xl'>Reject Case</button>
+                    <button onClick={() => changeCaseStatus('Active')} className='px-4 cursor-pointer py-1 hover:bg-[#dcdcdc] rounded-full bg-white text-black text-xl'>Activate Case</button>
+                    <button onClick={() => changeCaseStatus('Rejected')} className='px-4 cursor-pointer py-1 hover:bg-[#dcdcdc] rounded-full bg-white text-black text-xl'>Reject Case</button>
                 </div>
             )}
 
             <div className="flex flex-col md:flex-row p-6 gap-6">
-                <div className="w-full md:w-3/5 transition-all duration-300 relative">
-                    <div className="absolute right-4 top-6 z-10">
+                <div className={`w-full transition-all duration-300 relative ${chatBox ? 'md:w-34/50':'md:w-47/50 '}`}>
+                    <div className="absolute right-6 top-7 z-10">
                         <button
                             onClick={() => setShowCase(prev => !prev)}
                             className='px-4 py-1 mb-4 cursor-pointer rounded-full bg-blue-500 text-white hover:bg-blue-700 text-sm'
@@ -70,7 +94,7 @@ const CaseProcessing = () => {
             </div>
 
             {chatBox ? (
-                <div className='absolute right-5 top-8 z-50'>
+                <div className='absolute right-5 top-18 z-50'>
                     <div className='absolute top-4 bg-white w-full h-12 font-bold -mt-4 rounded-t-4xl text-xl'>
                         <div className='text-black flex items-center gap-2 ml-5 mt-2'>
                             <Image
@@ -101,7 +125,7 @@ const CaseProcessing = () => {
                     />
                 </div>
             ) : (
-                <div onClick={() => setChatBox(true)} className='absolute flex items-center justify-center flex-col invert right-10 cursor-pointer bottom-5 z-50'>
+                <div onClick={() => setChatBox(true)} className='absolute flex items-center justify-center flex-col invert right-10 cursor-pointer bottom-12 z-50'>
                     <lord-icon
                         src="https://cdn.lordicon.com/ayhtotha.json"
                         trigger="hover"

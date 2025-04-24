@@ -24,7 +24,7 @@ const caseSchema = new mongoose.Schema({
   category: String,
   dateStarted: { type: Date, default: Date.now },
   status: { type: String, enum: ['Not Started', 'Active', 'Resolved', 'Rejected'], default: 'Not Started' },
-  caseProgress: { type: String, default: 'Initiated' },
+  caseProgress: { type: String, default: 'Not Initiated' },
   documents: [documentSchema],
   desc: String,
   messages: [messageSchema],
