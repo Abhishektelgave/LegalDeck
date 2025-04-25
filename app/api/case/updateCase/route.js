@@ -15,13 +15,13 @@ export async function POST(req) {
 
         const updatePayload = {};
 
-        const normalizedStatus = status.toLowerCase();
+        const normalizedStatus = status;
 
-        if (normalizedStatus === 'activated') {
-            updatePayload.status = 'active';
+        if (normalizedStatus === 'Active') {
+            updatePayload.status = 'Active';
             updatePayload.caseProgress = 'Initiated';
-        } else if (normalizedStatus === 'rejected') {
-            updatePayload.status = 'rejected';
+        } else if (normalizedStatus === 'Rejected') {
+            updatePayload.status = 'Rejected';
             await Appointment.updateMany(
                 { caseId: id },
                 { $set: { status: 'cancelled' } }

@@ -11,7 +11,7 @@ export const GET = async (req) => {
 
         // fetch all users from the database
         const lawyers = await Lawyer.find({
-            lawyer_verified: "approved"
+            lawyer_verified: "Approved"
         });
 
         if (!lawyers.length) {

@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const CaseComponent = ({ caseDetails }) => {
@@ -22,14 +22,14 @@ const CaseComponent = ({ caseDetails }) => {
     const [activeIndex, setActiveIndex] = useState(initialProgress >= 0 ? initialProgress : 0);
     const [progressIndex, setProgressIndex] = useState(initialProgress >= 0 ? initialProgress : 0);
     const [hoverIndex, setHoverIndex] = useState(null);
+    const [caseStatus, setCaseStatus] = useState(caseDetails.status);
     const scrollRef = useRef();
     const nextStageIndex = progressIndex + 1;
 
-    // Center the active card
     useEffect(() => {
         if (!scrollRef.current) return;
         const container = scrollRef.current;
-        const cardWidth = 180;
+        const cardWidth = 240;
         const offset = cardWidth * activeIndex - (container.offsetWidth - cardWidth) / 2;
         container.scrollTo({ left: offset, behavior: 'smooth' });
     }, [activeIndex]);
@@ -39,6 +39,24 @@ const CaseComponent = ({ caseDetails }) => {
             const next = dir === 'left' ? prev - 1 : prev + 1;
             return Math.min(Math.max(next, 0), stageLabels.length - 1);
         });
+    };
+
+    const UpdateCaseProgress = async (index) => {
+        const stage = stageLabels[index].label;
+        const res = await fetch('/api/case/updateProgress', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                id: caseDetails._id,
+                caseProgress: stage,
+            }),
+        });
+        if (res.ok) {
+            if (stage === 'Resolved') {
+                setCaseStatus('Resolved');
+            }
+            setProgressIndex(index);
+        }
     };
 
     return (
@@ -67,34 +85,25 @@ const CaseComponent = ({ caseDetails }) => {
                     <div>
                         <strong className="text-gray-300">Status:</strong>
                         <span className={`inline-block ml-2 px-2 py-1 rounded-full font-semibold
-              ${caseDetails.status === 'Resolved' ? 'bg-green-700 text-green-300' : ''}
-              ${caseDetails.status === 'Active' ? 'bg-yellow-700 text-yellow-300' : ''}
-              ${caseDetails.status === 'Rejected' ? 'bg-red-700 text-yellow-300' : ''}
-              ${!['Resolved', 'Active', 'Rejected'].includes(caseDetails.status) ? 'bg-gray-300 text-black' : ''}`}
-                        >{caseDetails.status}</span>
+              ${caseStatus === 'Resolved' ? 'bg-green-700 text-green-300' : ''}
+              ${caseStatus === 'Active' ? 'bg-yellow-700 text-yellow-300' : ''}
+              ${caseStatus === 'Rejected' ? 'bg-red-700 text-yellow-300' : ''}
+              ${!['Resolved', 'Active', 'Rejected'].includes(caseStatus) ? 'bg-gray-300 text-black' : ''}`}
+                        >{caseStatus}</span>
                     </div>
                 </div>
             </div>
-
-            <div className="text-center flex flex-col items-center justify-center gap-2 mb-4 text-white">
-                <strong className="text-gray-300 block">Description:</strong>
-                <div className=' flex items-center justify-center gap-2'>
-                    <p className="text-gray-400">{caseDetails.desc || 'No description available.'}</p>
-                    {!caseDetails.desc && <button className=" px-4 py-1 bg-white text-black rounded-full text-sm">Add description</button>}
-                </div>
-            </div>
-
             <div>
                 <h3 className="text-xl font-semibold mb-4 text-center text-white">Case Progress</h3>
-                <div className="relative flex items-center overflow-hidden">
+                <div className="relative flex -mx-5 items-center overflow-hidden">
                     <button
-                        className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white/10 hover:bg-white/20 p-2 rounded-full z-10 ml-2"
+                        className="absolute cursor-pointer left-0 top-1/2 transform -translate-y-1/2 bg-white/10 hover:bg-white/20 p-2 rounded-full z-10 ml-2"
                         onClick={() => handleScroll('left')}
                     >
                         <ChevronLeft className="text-white" />
                     </button>
                     <button
-                        className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white/10 hover:bg-white/20 p-2 rounded-full z-10 mr-2"
+                        className="absolute cursor-pointer right-0 top-1/2 transform -translate-y-1/2 bg-white/10 hover:bg-white/20 p-2 rounded-full z-10 mr-2"
                         onClick={() => handleScroll('right')}
                     >
                         <ChevronRight className="text-white" />
@@ -102,7 +111,7 @@ const CaseComponent = ({ caseDetails }) => {
 
                     <div
                         ref={scrollRef}
-                        className="flex items-center mx-5 overflow-x-auto gap-0 py-6 scroll-smooth custom-scrollbar"
+                        className="flex items-center min-h-[30vh] mx-15 overflow-x-auto gap-0 py-6 scroll-smooth custom-scrollbar"
                         style={{ scrollSnapType: 'x mandatory' }}
                     >
                         {stageLabels.map((stage, index) => {
@@ -120,14 +129,13 @@ const CaseComponent = ({ caseDetails }) => {
                                 >
                                     <div
                                         onClick={() => setActiveIndex(index)}
-                                        className={`relative flex flex-col items-center px-2 transition-all duration-300 ease-in-out cursor-pointer
-                      ${isCenter ? 'scale-110' : ''}`}
+                                        className={`relative flex flex-col items-center px-2 transition-all duration-300 ease-in-out cursor-pointer ${isCenter ? 'scale-110' : ''}`}
                                     >
                                         {showSet && (
                                             <button
                                                 className="absolute -top-4 cursor-pointer bg-blue-600 hover:bg-blue-500 text-white text-xs px-3 py-1 rounded-full shadow-md z-20"
                                                 onMouseDown={e => e.stopPropagation()}
-                                                onClick={() => setProgressIndex(index)}
+                                                onClick={() => UpdateCaseProgress(index)}
                                             >Set Stage</button>
                                         )}
                                         <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 border-4 transition-colors duration-300
@@ -152,10 +160,10 @@ const CaseComponent = ({ caseDetails }) => {
             </div>
 
             <style jsx>{`
-        .custom-scrollbar::-webkit-scrollbar { height: 8px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: rgba(255,255,255,0.2); border-radius: 10px; }
-      `}</style>
+                .custom-scrollbar::-webkit-scrollbar { height: 8px; }
+                .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+                .custom-scrollbar::-webkit-scrollbar-thumb { background-color: rgba(255,255,255,0.2); border-radius: 10px; }
+            `}</style>
         </div>
     );
 };

@@ -2,17 +2,23 @@ import mongoose from 'mongoose';
 
 // Document Schema
 const documentSchema = new mongoose.Schema({
-  name: String,
-  url: String,
-  from: String,
-  status: String,
-  needsESign: Boolean,
+  fileName: String,
+  path: String,
+  from: { type: String, enum: ['Lawyer', 'User'], default: 'User' },
+  status: { type: String, enum: ['Pending', 'Signed', 'Unsinged'], default: 'Unsinged' },
+  needsESign: { type: Boolean, default: false },
+}, { _id: false });
+
+const requestSchema = new mongoose.Schema({
+  fileName: String,
+  needsESign: { type: Boolean, default: false },
+  fulfilled: { type: Boolean, default: false },
 }, { _id: false });
 
 // Message Schema
 const messageSchema = new mongoose.Schema({
   sender: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  senderRole: { type: String, enum: ['User', 'Lawyer'], required: true },
+  senderRole: { type: String, enum: ['Lawyer', 'User'], required: true },
   message: { type: String },
   timestamp: { type: Date, default: Date.now },
 }, { _id: false });
@@ -26,6 +32,7 @@ const caseSchema = new mongoose.Schema({
   status: { type: String, enum: ['Not Started', 'Active', 'Resolved', 'Rejected'], default: 'Not Started' },
   caseProgress: { type: String, default: 'Not Initiated' },
   documents: [documentSchema],
+  requestedDocuments: [requestSchema],
   desc: String,
   messages: [messageSchema],
 }, { timestamps: true });

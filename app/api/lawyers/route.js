@@ -10,7 +10,7 @@ export const GET = async (req) => {
 
         // Fetch appointments for the user
         const lawyers = await Lawyer.find({
-            lawyer_verified: 'approved',
+            lawyer_verified: 'Approved',
         });
 
         if (!lawyers.length) {

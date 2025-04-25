@@ -6,7 +6,7 @@ const LawyerCard = ({ lawyer }) => {
 
   // Basic data
   const [showModal, setShowModal] = useState(false);
-  const [status, setStatus] = useState(lawyer.lawyer_verified || "pending");
+  const [status, setStatus] = useState(lawyer.lawyer_verified || "Pending");
 
   // Get File Name
   const handleOpenCertificate = () => {
@@ -27,17 +27,17 @@ const LawyerCard = ({ lawyer }) => {
               <p className="text-lg font-semibold">{lawyer.name || "Unknown User"}</p>
             </div>
             <span
-              className={`px-3 py-1 rounded-full text-xs font-semibold capitalize ${status === "approved"
+              className={`px-3 py-1 rounded-full text-xs font-semibold capitalize ${status === "Approved"
                 ? "bg-green-500"
-                : status === "rejected"
+                : status === "Rejected"
                   ? "bg-red-500"
                   : "bg-yellow-500 text-black"
                 }`}
             >
-              {status === "approved"
-                ? "approved"
-                : status === "rejected"
-                  ? "rejected"
+              {status === "Approved"
+                ? "Approved"
+                : status === "Rejected"
+                  ? "Rejected"
                   : "Pending"}
             </span>
           </div>

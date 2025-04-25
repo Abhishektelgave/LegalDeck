@@ -113,19 +113,6 @@ const Admin = () => {
         <span className='bg-[#ff5050] px-2.5 py-0.5 rounded-full'>
           Admin
         </span>
-        {/* <div className="flex items-center gap-4"> */}
-          {/* Notification Button */}
-          {/* <button className="relative">
-            <lord-icon
-              src="https://cdn.lordicon.com/aksvbzmu.json"
-              trigger="loop"
-              stroke="bold"
-              style={{ width: '30px', height: '30px' }}
-            />
-            <span className="absolute -top-2 -right-3 bg-red-600 text-white text-[10px] w-[18px] h-[18px] flex items-center justify-center rounded-full shadow-md">
-              0
-            </span>
-          </button> */}
           <button
             onClick={() => signOut({ callbackUrl: '/Auth/Admin' })}
             className="absolute right-10 px-4 py-2 cursor-pointer bg-white text-black rounded-full font-semibold hover:bg-gray-200 transition"

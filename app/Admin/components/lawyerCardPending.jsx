@@ -6,7 +6,7 @@ const LawyerCardPending = ({ lawyer }) => {
 
     // Basic data
     const [showModal, setShowModal] = useState(false);
-    const [status, setStatus] = useState(lawyer.lawyer_verified || "pending");
+    const [status, setStatus] = useState(lawyer.lawyer_verified || "Pending");
 
     // Get File Name
     const handleOpenCertificate = () => {
@@ -47,17 +47,17 @@ const LawyerCardPending = ({ lawyer }) => {
                         </div>
                         <span
                             className={`px-3 py-1 rounded-full text-xs font-semibold capitalize ${
-                                status === "approved"
+                                status === "Approved"
                                     ? "bg-green-500"
-                                    : status === "rejected"
+                                    : status === "Rejected"
                                     ? "bg-red-500"
                                     : "bg-yellow-500 text-black"
                             }`}
                         >
-                            {status === "approved"
-                                ? "approved"
-                                : status === "rejected"
-                                ? "rejected"
+                            {status === "Approved"
+                                ? "Approved"
+                                : status === "Rejected"
+                                ? "Rejected"
                                 : "Pending"}
                         </span>
                     </div>
@@ -96,16 +96,16 @@ const LawyerCardPending = ({ lawyer }) => {
                 <div className="absolute bottom-4 inset-x-4 flex justify-between items-center backdrop-blur-sm pt-3 border-t border-white/10">
                 
                     {/* Approve/Reject Left */}
-                    {status === "pending" ? (
+                    {status === "Pending" ? (
                         <div className="flex gap-2">
                             <button
-                                onClick={() => updateStatus("approved")}
+                                onClick={() => updateStatus("Approved")}
                                 className="text-sm cursor-pointer bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition"
                             >
                                 Approve
                             </button>
                             <button
-                                onClick={() => updateStatus("rejected")}
+                                onClick={() => updateStatus("Rejected")}
                                 className="text-sm cursor-pointer bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition"
                             >
                                 Reject

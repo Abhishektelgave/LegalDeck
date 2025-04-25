@@ -1,17 +1,128 @@
-"use client"
-import React from 'react';
+'use client';
+import React, { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import LawyerUploadComponent from './LawyerUploadComponent';
+import RequestDocumentComponent from './RequestDocumentComponent';
+import UserUploadComponent from './UserUploadComponent';
 
-const Documents = ({ caseDetails }) => {
-    return (
-        <div className="bg-black border border-white/30 p-6 rounded-xl shadow-md hover:shadow-white/40 transition-all duration-350 ease-in-out relative group">
-            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl pointer-events-none" />
-            <h2 className="text-2xl font-semibold mb-4">Documents</h2>
-            <div>
-                {/* You can map documents here */}
-                <p className="text-gray-300">Document list for case ID: {caseDetails._id}</p>
-            </div>
+export default function Documents({ caseDetails }) {
+  const { data: session } = useSession();
+  const [lawyerdocs, setLawyerDocs] = useState([]);
+  const [userdocs, setUserDocs] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [currentUrl, setCurrentUrl] = useState('');
+
+  const fetchDocs = async () => {
+    try {
+      const res = await fetch(`/api/case/documents/getDocs?id=${caseDetails._id}`);
+      if (res.ok) {
+        const data = await res.json();
+        setLawyerDocs(data.lawyerDocs || []);
+        setUserDocs(data.userDocs || []);
+      } else {
+        console.error("Failed to fetch documents");
+      }
+    } catch (err) {
+      console.error("Error fetching documents:", err);
+    }
+  };
+
+  useEffect(() => {
+    if (caseDetails._id) {
+      fetchDocs();
+    }
+  }, [caseDetails._id]);
+
+  const renderDocTags = (docs, fallbackText) => (
+    docs.length > 0 ? docs.map((d) => (
+      <span
+        key={d.fileName}
+        onClick={() => { setCurrentUrl(d.path); setShowModal(true); }}
+        className="bg-white text-black px-3 py-1 border rounded-2xl cursor-pointer hover:bg-gray-100"
+      >
+        {d.fileName}{d.needsESign ? ' 🔖' : ''}
+      </span>
+    )) : (
+      <span className="bg-white text-black px-3 py-1 border rounded-2xl">
+        {fallbackText}
+      </span>
+    )
+  );
+
+  return (
+    <div className="bg-black border border-white/30 p-6 rounded-xl shadow-md hover:shadow-white/40 transition-all duration-300 ease-in-out">
+      <h2 className="text-2xl font-semibold text-white mb-6">Documents</h2>
+
+      {/* Sent documents */}
+      <div className="grid grid-cols-2 gap-6 mb-8">
+        {/* Left: Lawyer */}
+        <div className="space-y-2">
+          <p className="text-white"><strong>Sent by Lawyer:</strong></p>
+          <div className="flex flex-wrap items-center gap-2">
+            {renderDocTags(lawyerdocs, "No documents sent by lawyer yet.")}
+          </div>
         </div>
-    );
-};
 
-export default Documents;
+        {/* Right: User */}
+        <div className="space-y-2">
+          <p className="text-white"><strong>Sent by User:</strong></p>
+          <div className="flex flex-wrap items-center gap-2">
+            {renderDocTags(userdocs, "No documents sent by user yet.")}
+          </div>
+        </div>
+      </div>
+
+      {/* Action Panels */}
+      {session?.user?.role === 'lawyer' ? (
+        <div className="grid grid-cols-2 gap-6">
+          {/* Upload */}
+          <div className="bg-black/80 border border-white/20 p-4 rounded-xl">
+            <p className="text-white mb-2"><strong>Upload Document</strong></p>
+            <LawyerUploadComponent
+              caseDetails={caseDetails}
+              onUploaded={fetchDocs}
+            />
+          </div>
+
+          {/* Request */}
+          <div className="bg-black/80 border border-white/20 p-4 rounded-xl">
+            <p className="text-white mb-2"><strong>Request Document</strong></p>
+            <RequestDocumentComponent
+              caseId={caseDetails._id}
+              onRequested={fetchDocs}
+            />
+          </div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 gap-6">
+          {/* Requested Docs Upload */}
+          <div className="bg-black/80 border border-white/20 p-4 rounded-xl">
+            <p className="text-white mb-2"><strong>Requested Documents</strong></p>
+            <UserUploadComponent
+              caseDetails={caseDetails}
+              onFulfilled={fetchDocs}
+            />
+          </div>
+
+          {/* Optional user section */}
+          <div className="bg-black/80 border border-white/20 p-4 rounded-xl flex items-center justify-center">
+            <p className="text-white/60">Your ad-hoc uploads here</p>
+          </div>
+        </div>
+      )}
+
+      {/* Preview Modal */}
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
+          <div className="bg-white rounded-xl w-4/5 h-[90vh] p-4 relative">
+            <button
+              onClick={() => setShowModal(false)}
+              className="absolute top-2 right-2 bg-gray-200 hover:bg-gray-300 rounded-full px-3 py-1"
+            >✕</button>
+            <iframe src={currentUrl} className="w-full h-full rounded-md" />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

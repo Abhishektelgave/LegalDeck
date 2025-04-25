@@ -5,6 +5,7 @@ const ChatBox = ({ caseDetails, senderId, senderRole }) => {
   const [messages, setMessages] = useState(caseDetails.messages || []);
   const [input, setInput] = useState('');
   const messagesContainerRef = useRef(null);
+  const role = senderRole === 'lawyer' ? 'Lawyer' : 'User';
 
   const caseId = caseDetails._id;
 
@@ -26,7 +27,7 @@ const ChatBox = ({ caseDetails, senderId, senderRole }) => {
       body: JSON.stringify({
         caseId,
         senderId,
-        senderRole,
+        senderRole: role,
         message: input,
       }),
     });
@@ -58,9 +59,9 @@ const ChatBox = ({ caseDetails, senderId, senderRole }) => {
             .map((msg, index) => (
               <div
                 key={index}
-                className={`max-w-[80%] p-3 rounded-xl text-sm ${msg.senderRole === senderRole
-                    ? 'bg-white text-black self-end'
-                    : 'bg-gray-800 text-white self-start'
+                className={`max-w-[80%] p-3 rounded-xl text-sm ${msg.senderRole === role
+                  ? 'bg-white text-black self-end'
+                  : 'bg-gray-800 text-white self-start'
                   }`}
               >
                 {msg.message}

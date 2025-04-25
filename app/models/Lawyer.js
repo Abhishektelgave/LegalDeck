@@ -10,8 +10,8 @@ const LawyerSchema = new mongoose.Schema({
   fileName: String,
   lawyer_verified: {
     type: String,
-    enum: ['pending', 'approved', 'rejected'],
-    default: 'pending',
+    enum: ['Pending', 'Approved', 'Rejected'],
+    default: 'Pending',
   },
   email_verified: { type: Boolean, default: false },
   close_appoitment: { type: Boolean, default: false },

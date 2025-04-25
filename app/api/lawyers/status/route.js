@@ -5,7 +5,7 @@ export async function POST(req) {
     try {
         const { id, lawyer_verified } = await req.json();
 
-        if (!id || !["approved", "rejected"].includes(lawyer_verified)) {
+        if (!id || !["Approved", "Rejected"].includes(lawyer_verified)) {
             return new Response(JSON.stringify({ error: "Invalid input" }), {
                 status: 400,
                 headers: { "Content-Type": "application/json" },

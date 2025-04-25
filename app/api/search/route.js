@@ -25,7 +25,7 @@ export const GET = async (req) => {
         $regex: search,
         $options: "i", // Case-insensitive search
       },
-      lawyer_verified: "approved",
+      lawyer_verified: "Approved",
     });
 
     if (!lawyers.length) {

@@ -66,7 +66,7 @@ const CaseProcessing = () => {
     if (!caseDetails) return <div className="text-center py-20 text-white">No case found.</div>;
 
     return (
-        <div className='relative min-h-[98.3vh] bg-black text-white'>
+        <div className='relative min-h-[98.3vh] cursor-default bg-black text-white'>
             <Header />
 
             {caseDetails.status === "Not Started" && (
@@ -76,7 +76,7 @@ const CaseProcessing = () => {
                 </div>
             )}
 
-            <div className="flex flex-col md:flex-row p-6 gap-6">
+            <div className="flex flex-col md:flex-row mt-5 p-6 gap-6">
                 <div className={`w-full transition-all duration-300 relative ${chatBox ? 'md:w-34/50':'md:w-47/50 '}`}>
                     <div className="absolute right-6 top-7 z-10">
                         <button
@@ -105,7 +105,7 @@ const CaseProcessing = () => {
                                 height={30}
                                 unoptimized={!defaultimg}
                             />
-                            {session.user.role === 'user' ? caseDetails.lawyerName : caseDetails.userName}
+                            {session.user.role === 'User' ? caseDetails.lawyerName : caseDetails.userName}
                         </div>
                     </div>
                     <div onClick={() => setChatBox(false)} className='absolute cursor-pointer right-1 top-4 text-red-700 font-bold -mt-2 mr-2 text-xl'>
@@ -125,7 +125,7 @@ const CaseProcessing = () => {
                     />
                 </div>
             ) : (
-                <div onClick={() => setChatBox(true)} className='absolute flex items-center justify-center flex-col invert right-10 cursor-pointer bottom-12 z-50'>
+                <div onClick={() => setChatBox(true)} className='absolute flex items-center justify-center flex-col invert right-10 cursor-pointer bottom-16 z-50'>
                     <lord-icon
                         src="https://cdn.lordicon.com/ayhtotha.json"
                         trigger="hover"
