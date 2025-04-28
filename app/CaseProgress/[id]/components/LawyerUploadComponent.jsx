@@ -21,6 +21,7 @@ export default function LawyerUploadComponent({ caseDetails, onUploaded }) {
     });
     if (res.ok) {
       setFile(null);
+      setNeedsESign(false);
       onUploaded();
     } else {
       alert('Upload failed');
@@ -42,7 +43,7 @@ export default function LawyerUploadComponent({ caseDetails, onUploaded }) {
         </label>
         <button
           onClick={upload}
-          className="px-4 py-2 bg-white text-black rounded hover:bg-gray-200"
+          className="px-4 py-2 bg-white cursor-pointer text-black rounded hover:bg-gray-200"
         >Upload Document</button>
       </div>
     );

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import LawyerUploadComponent from '@/app/CaseProgress/[id]/components/LawyerUploadComponent';
 import RequestDocumentComponent from '@/app/CaseProgress/[id]/components/RequestDocumentComponent';
+import getIframeUrl from '@/app/helpers/googleForm';
 
 export default function LawyerDocumentComponent({ caseDetails }) {
     const { data: session } = useSession();
@@ -35,7 +36,7 @@ export default function LawyerDocumentComponent({ caseDetails }) {
             fetchDocs();
         }
     }, [caseDetails._id]);
-
+      
     const renderDocTags = (docs, fallbackText) => (
         docs.length > 0 ? docs.map((d) => (
             <span
@@ -123,11 +124,19 @@ export default function LawyerDocumentComponent({ caseDetails }) {
                             <button
                                 onClick={() => setShowModal(false)}
                                 className="absolute top-2 right-2 bg-gray-200 hover:bg-gray-300 rounded-full px-3 py-1"
-                            >✕</button>
-                            <iframe src={currentUrl} className="w-full h-full rounded-md" />
+                            >
+                                ✕
+                            </button>
+
+                            <iframe
+                                src={getIframeUrl(currentUrl)}
+                                className="w-full h-full rounded-md"
+                                frameBorder="0"
+                            />
                         </div>
                     </div>
                 )}
+
             </div>
         );
     }

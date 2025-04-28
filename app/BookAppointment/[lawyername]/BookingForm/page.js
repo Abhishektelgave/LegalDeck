@@ -331,7 +331,7 @@ const BookingForm = ({ params }) => {
 
                 <button
                   type="submit"
-                  className="w-full bg-[#FF6F61] hover:bg-[#ff5a4d] text-white font-semibold py-2 px-4 rounded"
+                  className="w-full bg-[#FF6F61] cursor-pointer hover:bg-[#ff5a4d] text-white font-semibold py-2 px-4 rounded"
                   disabled={!form.date || !form.time}
                 >
                   Confirm Appointment

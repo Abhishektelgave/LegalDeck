@@ -77,7 +77,7 @@ const CaseProcessing = ({ params }) => {
             <div className='relative min-h-[98.3vh] cursor-default bg-black text-white'>
                 <Header />
 
-                {caseDetails.status === "Not Started" && !session.user.role === 'user' && (
+                {caseDetails.status === "Not Started" && session.user.role !== 'user' && (
                     <div className='flex items-center justify-center gap-5 py-4'>
                         <button
                             onClick={() => changeCaseStatus('Active')}
@@ -120,7 +120,7 @@ const CaseProcessing = ({ params }) => {
                                     height={30}
                                     unoptimized={!defaultimg}
                                 />
-                                {session.user.role === 'User' ? caseDetails.lawyerName : caseDetails.userName}
+                                {session.user.role === 'user' ? caseDetails.lawyerName : caseDetails.userName}
                             </div>
                         </div>
                         <div onClick={() => setChatBox(false)} className='absolute cursor-pointer right-1 top-4 text-red-700 font-bold -mt-2 mr-2 text-xl'>

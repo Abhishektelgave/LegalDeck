@@ -25,7 +25,9 @@ export async function GET(req) {
             return doc.from === "Lawyer" && doc.needsESign === true;
         });
         const userDocs = foundCase.documents.filter((doc) => doc.from === "User");
-        const lawyerEsigndocs = foundCase.requestedDocuments.filter((doc) => doc.from === "Lawyer");
+        const lawyerEsigndocs = foundCase.requestedDocuments.filter((doc) => {
+            return doc.from === "Lawyer" && doc.fulfilled === false;
+        });
 
         return new Response(JSON.stringify({ lawyerDocs, userDocs, lawyerEsignRequestDocs, lawyerEsigndocs }), {
             status: 200,

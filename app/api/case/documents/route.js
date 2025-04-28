@@ -36,7 +36,7 @@ export async function POST(req) {
   try {
     const { id, fileName, uri, from, needsESign } = await parseFormData(req);
     const updatedFrom = from === 'lawyer' ? 'Lawyer' : 'User';
-    const updateStatus = needsESign ? 'Pending' : 'Unsinged';
+    const updateStatus = needsESign ? 'Pending' : 'Unsigned';
 
     await dbConnect();
     const c = await Case.findById(id);

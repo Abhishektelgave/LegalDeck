@@ -4,6 +4,8 @@ import { useSession } from 'next-auth/react';
 import UploadRequestedDocs from '@/app/CaseProgress/[id]/components/UploadRequestedDocs'
 import UserUploadEsignComponent from '@/app/CaseProgress/[id]/components/UserUploadEsignComponent'
 import RequestUploadDocumentComponent from '@/app/CaseProgress/[id]/components/RequestUploadDocumentComponent'
+import getIframeUrl from '@/app/helpers/googleForm';
+
 
 
 export default function LawyerDocumentComponent({ caseDetails }) {
@@ -114,7 +116,7 @@ export default function LawyerDocumentComponent({ caseDetails }) {
                     <div className="bg-black/80 border border-white/20 p-4 rounded-xl">
                         <p className="text-white mb-2"><strong>Request Document</strong></p>
                         <div className="flex flex-wrap items-center gap-2">
-                            {renderRequestedDocTags(lawyerEsigndocs, "No documents sent yet.")}
+                            {renderRequestedDocTags(lawyerEsigndocs, "No Requested documents yet.")}
                         </div>
                     </div>
                 </div>
@@ -125,8 +127,15 @@ export default function LawyerDocumentComponent({ caseDetails }) {
                             <button
                                 onClick={() => setShowModal(false)}
                                 className="absolute top-2 right-2 bg-gray-200 hover:bg-gray-300 rounded-full px-3 py-1"
-                            >✕</button>
-                            <iframe src={currentUrl} className="w-full h-full rounded-md" />
+                            >
+                                ✕
+                            </button>
+
+                            <iframe
+                                src={getIframeUrl(currentUrl)}
+                                className="w-full h-full rounded-md"
+                                frameBorder="0"
+                            />
                         </div>
                     </div>
                 )}
