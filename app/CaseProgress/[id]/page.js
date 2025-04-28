@@ -72,80 +72,82 @@ const CaseProcessing = ({ params }) => {
         return <div className="text-center py-20 text-white">No case found.</div>;
     }
 
-    return (
-        <div className='relative min-h-[98.3vh] cursor-default bg-black text-white'>
-            <Header />
+    if (session) {
+        return (
+            <div className='relative min-h-[98.3vh] cursor-default bg-black text-white'>
+                <Header />
 
-            {caseDetails.status === "Not Started" && (
-                <div className='flex items-center justify-center gap-5 py-4'>
-                    <button
-                        onClick={() => changeCaseStatus('Active')}
-                        className='px-4 cursor-pointer py-1 hover:bg-[#dcdcdc] rounded-full bg-white text-black text-xl'>
-                        Activate Case
-                    </button>
-                    <button
-                        onClick={() => changeCaseStatus('Rejected')}
-                        className='px-4 cursor-pointer py-1 hover:bg-[#dcdcdc] rounded-full bg-white text-black text-xl'>
-                        Reject Case
-                    </button>
-                </div>
-            )}
-
-            <div className="flex flex-col md:flex-row mt-5 p-6 gap-6">
-                <div className={`w-full transition-all duration-300 relative ${chatBox ? 'md:w-34/50' : 'md:w-47/50 '}`}>
-                    <div className="absolute right-6 top-7 z-10">
+                {caseDetails.status === "Not Started" && !session.user.role === 'user' && (
+                    <div className='flex items-center justify-center gap-5 py-4'>
                         <button
-                            onClick={() => setShowCase(prev => !prev)}
-                            className='px-4 py-1 mb-4 cursor-pointer rounded-full bg-blue-500 text-white hover:bg-blue-700 text-sm'>
-                            {showCase ? 'View Documents' : 'View Case Details'}
+                            onClick={() => changeCaseStatus('Active')}
+                            className='px-4 cursor-pointer py-1 hover:bg-[#dcdcdc] rounded-full bg-white text-black text-xl'>
+                            Activate Case
+                        </button>
+                        <button
+                            onClick={() => changeCaseStatus('Rejected')}
+                            className='px-4 cursor-pointer py-1 hover:bg-[#dcdcdc] rounded-full bg-white text-black text-xl'>
+                            Reject Case
                         </button>
                     </div>
+                )}
 
-                    {showCase
-                        ? <CaseComponent caseDetails={caseDetails} />
-                        : <Documents caseDetails={caseDetails} />}
-                </div>
-            </div>
-
-            {chatBox ? (
-                <div className='absolute right-5 top-18 z-50'>
-                    <div className='absolute top-4 bg-white w-full h-12 font-bold -mt-4 rounded-t-4xl text-xl'>
-                        <div className='text-black flex items-center gap-2 ml-5 mt-2'>
-                            <Image
-                                className="rounded-full"
-                                src={defaultimg}
-                                alt="Profile"
-                                width={30}
-                                height={30}
-                                unoptimized={!defaultimg}
-                            />
-                            {session.user.role === 'User' ? caseDetails.lawyerName : caseDetails.userName}
+                <div className="flex flex-col md:flex-row mt-5 p-6 gap-6">
+                    <div className={`w-full transition-all duration-300 relative ${chatBox ? 'md:w-34/50' : 'md:w-47/50 '}`}>
+                        <div className="absolute right-6 top-7 z-10">
+                            <button
+                                onClick={() => setShowCase(prev => !prev)}
+                                className='px-4 py-1 mb-4 cursor-pointer rounded-full bg-blue-500 text-white hover:bg-blue-700 text-sm'>
+                                {showCase ? 'View Documents' : 'View Case Details'}
+                            </button>
                         </div>
+
+                        {showCase
+                            ? <CaseComponent caseDetails={caseDetails} />
+                            : <Documents caseDetails={caseDetails} />}
                     </div>
-                    <div onClick={() => setChatBox(false)} className='absolute cursor-pointer right-1 top-4 text-red-700 font-bold -mt-2 mr-2 text-xl'>
+                </div>
+
+                {chatBox ? (
+                    <div className='absolute right-5 top-18 z-50'>
+                        <div className='absolute top-4 bg-white w-full h-12 font-bold -mt-4 rounded-t-4xl text-xl'>
+                            <div className='text-black flex items-center gap-2 ml-5 mt-2'>
+                                <Image
+                                    className="rounded-full"
+                                    src={defaultimg}
+                                    alt="Profile"
+                                    width={30}
+                                    height={30}
+                                    unoptimized={!defaultimg}
+                                />
+                                {session.user.role === 'User' ? caseDetails.lawyerName : caseDetails.userName}
+                            </div>
+                        </div>
+                        <div onClick={() => setChatBox(false)} className='absolute cursor-pointer right-1 top-4 text-red-700 font-bold -mt-2 mr-2 text-xl'>
+                            <lord-icon
+                                src="https://cdn.lordicon.com/zxvuvcnc.json"
+                                trigger="hover"
+                                colors="primary:#000000,secondary:#ffffff"
+                                style={{ 'width': '35px', 'height': '35px' }} />
+                        </div>
+                        <ChatBox
+                            caseDetails={caseDetails}
+                            senderId={session.user.id}
+                            senderRole={session.user.role}
+                        />
+                    </div>
+                ) : (
+                    <div onClick={() => setChatBox(true)} className='absolute flex items-center justify-center flex-col invert right-10 cursor-pointer bottom-16 z-50'>
                         <lord-icon
-                            src="https://cdn.lordicon.com/zxvuvcnc.json"
+                            src="https://cdn.lordicon.com/ayhtotha.json"
                             trigger="hover"
-                            colors="primary:#000000,secondary:#ffffff"
-                            style={{ 'width': '35px', 'height': '35px' }} />
+                            style={{ width: '60px', height: '60px' }} />
+                        <span className='text-black font-bold -mt-3 -ml-2 text-xl'>Chat</span>
                     </div>
-                    <ChatBox
-                        caseDetails={caseDetails}
-                        senderId={session.user.id}
-                        senderRole={session.user.role}
-                    />
-                </div>
-            ) : (
-                <div onClick={() => setChatBox(true)} className='absolute flex items-center justify-center flex-col invert right-10 cursor-pointer bottom-16 z-50'>
-                    <lord-icon
-                        src="https://cdn.lordicon.com/ayhtotha.json"
-                        trigger="hover"
-                        style={{ width: '60px', height: '60px' }} />
-                    <span className='text-black font-bold -mt-3 -ml-2 text-xl'>Chat</span>
-                </div>
-            )}
-        </div>
-    );
+                )}
+            </div>
+        );
+    };
 };
 
 export default CaseProcessing;
