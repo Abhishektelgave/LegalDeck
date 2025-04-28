@@ -196,11 +196,28 @@ const LawyerDashboard = ({ children }) => {
 
           <div className="bg-white opacity-25 mx-auto h-[1px] w-[95vw]"></div>
 
-          {pathname !== "/LawyerDashboard" && (
-            <Link href={"/LawyerDashboard"} className="back z-[9999] absolute left-10">
-              <Image src={backImg} width={30} alt="backBtn" className="backImg invert" />
-            </Link>
-          )}
+          {/* Navigation Bar (touching divider) */}
+          <div className="flex gap-0 mx-15 items-center justify-start ">
+                        <Link
+                            href="/LawyerDashboard/Cases"
+                            className={`px-6 py-3 text-sm md:text-base font-medium ${pathname === "/LawyerDashboard/Cases"
+                                    ? "bg-white text-black border-t-2 border-x-2 border-white"
+                                    : "text-gray-400 hover:text-white transition-all"
+                                }`}
+                        >
+                            Cases
+                        </Link>
+
+                        <Link
+                            href="/LawyerDashboard/Appointments"
+                            className={`px-6 py-3 text-sm md:text-base font-medium ${pathname === "/LawyerDashboard/Appointments"
+                                    ? "bg-white text-black border-t-2 border-x-2 border-white"
+                                    : "text-gray-400 hover:text-white transition-all"
+                                }`}
+                        >
+                            Appointments
+                        </Link>
+                    </div>
 
           <div className="content flex items-center justify-center gap-5 w-full py-5 px-4">
             {children}

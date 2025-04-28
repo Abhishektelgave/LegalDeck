@@ -14,7 +14,7 @@ export const GET = async (req) => {
 
     await dbConnect();
 
-    const DURATION = 30; // minutes
+    const DURATION = 60; // minutes
     const WORK_START = dayjs(`${date} 10:00`);
     const WORK_END = dayjs(`${date} 20:00`);
     const BREAKS = [{ start: dayjs(`${date} 13:00`), end: dayjs(`${date} 14:00`) }];

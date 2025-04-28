@@ -8,15 +8,9 @@ const AppointmentSchema = new mongoose.Schema({
   date: { type: String, required: true },
   time: { type: String, required: true },
   category: { type: String, required: true },
-  fee: { type: Number },
   status: {
     type: String,
     enum: ['pending', 'confirmed', 'cancelled', 'completed'],
-    default: 'pending',
-  },
-  payment: {
-    type: String,
-    enum: ['pending', 'completed', 'rejected'],
     default: 'pending',
   },
 }, { timestamps: true });

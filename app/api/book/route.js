@@ -15,6 +15,7 @@ export async function POST(req) {
         lawyerId: body.lawyerId,
         userId: body.userId,
         category: body.category,
+        fee: body.fee,
       });
       await newCase.save();
       caseId = newCase._id;
@@ -28,7 +29,6 @@ export async function POST(req) {
       date: body.date,
       time: body.time,
       category: body.category,
-      fee: body.fee,
     });
 
     await appointment.save();

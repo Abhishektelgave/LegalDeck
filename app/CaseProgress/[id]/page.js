@@ -1,37 +1,41 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Header from '@/app/components/Header';
-import { useAppointmentStore } from '@/app/store/appointment';
 import { useSession } from 'next-auth/react';
 import ChatBox from '@/app/CaseProgress/[id]/components/ChatBox';
 import { useParams } from 'next/navigation';
 import CaseComponent from '@/app/CaseProgress/[id]/components/CaseComponent';
 import Documents from '@/app/CaseProgress/[id]/components/Documents';
-import defaultimg from '@/public/images/defaultprofile.png'
+import defaultimg from '@/public/images/defaultprofile.png';
 import Image from 'next/image';
 
-const CaseProcessing = () => {
+const CaseProcessing = ({ params }) => {
     const { data: session } = useSession();
-    const appt = useAppointmentStore((state) => state.appt);
+    const id = React.use(params).id;  // Get the id from URL params
     const [caseDetails, setCaseDetails] = useState(null);
     const [loading, setLoading] = useState(true);
     const [chatBox, setChatBox] = useState(false);
     const [showCase, setShowCase] = useState(true);
-    const params = useParams();
-    const id = params?.id;
 
+    // Fetch case details when the component mounts or session/id changes
     useEffect(() => {
         const fetchCaseDetails = async () => {
             try {
                 const res = await fetch(`/api/case/getCaseDetails?id=${id}`);
                 const data = await res.json();
-                setCaseDetails(data);
+                console.log('Fetched Case Details:', data); // Log the response for debugging
+                if (res.ok) {
+                    setCaseDetails(data);
+                } else {
+                    console.error('Error fetching case details:', data.message);
+                }
             } catch (err) {
-                console.error('Unable to fetch data', err);
+                console.error('Unable to fetch data:', err);
             } finally {
                 setLoading(false);
             }
         };
+
         if (session && id) {
             fetchCaseDetails();
         }
@@ -60,10 +64,13 @@ const CaseProcessing = () => {
         }
     };
 
+    if (!session || loading) {
+        return <div className="text-center py-20 text-white">Loading case details...</div>;
+    }
 
-    if (!session || !appt) return null;
-    if (loading) return <div className="text-center py-20 text-white">Loading case details...</div>;
-    if (!caseDetails) return <div className="text-center py-20 text-white">No case found.</div>;
+    if (!caseDetails) {
+        return <div className="text-center py-20 text-white">No case found.</div>;
+    }
 
     return (
         <div className='relative min-h-[98.3vh] cursor-default bg-black text-white'>
@@ -71,18 +78,25 @@ const CaseProcessing = () => {
 
             {caseDetails.status === "Not Started" && (
                 <div className='flex items-center justify-center gap-5 py-4'>
-                    <button onClick={() => changeCaseStatus('Active')} className='px-4 cursor-pointer py-1 hover:bg-[#dcdcdc] rounded-full bg-white text-black text-xl'>Activate Case</button>
-                    <button onClick={() => changeCaseStatus('Rejected')} className='px-4 cursor-pointer py-1 hover:bg-[#dcdcdc] rounded-full bg-white text-black text-xl'>Reject Case</button>
+                    <button
+                        onClick={() => changeCaseStatus('Active')}
+                        className='px-4 cursor-pointer py-1 hover:bg-[#dcdcdc] rounded-full bg-white text-black text-xl'>
+                        Activate Case
+                    </button>
+                    <button
+                        onClick={() => changeCaseStatus('Rejected')}
+                        className='px-4 cursor-pointer py-1 hover:bg-[#dcdcdc] rounded-full bg-white text-black text-xl'>
+                        Reject Case
+                    </button>
                 </div>
             )}
 
             <div className="flex flex-col md:flex-row mt-5 p-6 gap-6">
-                <div className={`w-full transition-all duration-300 relative ${chatBox ? 'md:w-34/50':'md:w-47/50 '}`}>
+                <div className={`w-full transition-all duration-300 relative ${chatBox ? 'md:w-34/50' : 'md:w-47/50 '}`}>
                     <div className="absolute right-6 top-7 z-10">
                         <button
                             onClick={() => setShowCase(prev => !prev)}
-                            className='px-4 py-1 mb-4 cursor-pointer rounded-full bg-blue-500 text-white hover:bg-blue-700 text-sm'
-                        >
+                            className='px-4 py-1 mb-4 cursor-pointer rounded-full bg-blue-500 text-white hover:bg-blue-700 text-sm'>
                             {showCase ? 'View Documents' : 'View Case Details'}
                         </button>
                     </div>
@@ -113,10 +127,7 @@ const CaseProcessing = () => {
                             src="https://cdn.lordicon.com/zxvuvcnc.json"
                             trigger="hover"
                             colors="primary:#000000,secondary:#ffffff"
-                            style=
-                            {{ 'width': '35px', 'height': '35px' }}>
-                        </lord-icon>
-
+                            style={{ 'width': '35px', 'height': '35px' }} />
                     </div>
                     <ChatBox
                         caseDetails={caseDetails}
@@ -129,8 +140,7 @@ const CaseProcessing = () => {
                     <lord-icon
                         src="https://cdn.lordicon.com/ayhtotha.json"
                         trigger="hover"
-                        style={{ width: '60px', height: '60px' }}>
-                    </lord-icon>
+                        style={{ width: '60px', height: '60px' }} />
                     <span className='text-black font-bold -mt-3 -ml-2 text-xl'>Chat</span>
                 </div>
             )}

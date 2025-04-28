@@ -1,35 +1,24 @@
 'use client';
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter } from 'next/navigation';
-import { useAppointmentStore } from '@/app/store/appointment';
+import { useRouter } from "next/navigation";
+import { useAppointmentStore } from "@/app/store/appointment";
 
 const LawyerDashboard = () => {
-  const { data: session, status } = useSession();
-  const router = useRouter();
-  const { setAppt } = useAppointmentStore();
-
+  const { data: session } = useSession();
   const [appointments, setAppointments] = useState([]);
-  const [completedApp, setCompletedApp] = useState([]);
+  const [nextAppointment, setNextAppointment] = useState(null);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
-  const [hasMounted, setHasMounted] = useState(false);
-  const [showCompleted, setShowCompleted] = useState(false);
-
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
+  const { setAppt } = useAppointmentStore();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const lawyerId = session?.user?.id;
-        if (!lawyerId) return;
-
-        const res = await fetch(`/api/book/approvedApp/lawyerApp?lawyerId=${lawyerId}`);
+        const res = await fetch(`/api/book/approvedApp/lawyerApp?lawyerId=${session?.user.id}`);
         const data = await res.json();
-
-        if (!res.ok) throw new Error(data.message || 'Failed to fetch approved appointments.');
+        if (!res.ok) throw new Error(data.message || 'Failed to fetch appointments.');
 
         const sortedAppointments = (data.appointments || []).sort((a, b) => {
           const dateA = new Date(`${a.date}T${a.time}`);
@@ -45,141 +34,116 @@ const LawyerDashboard = () => {
       }
     };
 
-    if (status === 'authenticated' && session?.user?.id) {
-      fetchAppointments();
-    }
-  }, [session, status]);
+    if (session) fetchAppointments();
+  }, [session]);
 
   useEffect(() => {
-    const fetchCompletedAppointments = async () => {
-      try {
-        const lawyerId = session?.user?.id;
-        if (!lawyerId) return;
-
-        const res = await fetch(`/api/book/completedApp?lawyerId=${lawyerId}`);
-        const data = await res.json();
-
-        if (!res.ok) throw new Error(data.message || 'Failed to fetch completed appointments.');
-
-        const sortedCompleted = (data.appointments || []).sort((a, b) => {
-          const dateA = new Date(`${a.date}T${a.time}`);
-          const dateB = new Date(`${b.date}T${b.time}`);
-          return dateB - dateA; // reversed order
-        });
-
-        setCompletedApp(sortedCompleted);
-      } catch (err) {
-        setMessage(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (status === 'authenticated' && session?.user?.id) {
-      fetchCompletedAppointments();
+    if (appointments.length > 0) {
+      const now = new Date();
+      const upcoming = appointments.find(appt => {
+        const apptStart = new Date(`${appt.date}T${appt.time}`);
+        const apptEnd = new Date(apptStart.getTime() + 60 * 60 * 1000); // 1 hour
+        return now < apptEnd;
+      });
+      setNextAppointment(upcoming || null);
     }
-  }, [session, status]);
+  }, [appointments]);
 
-
-  const handleCaseDetial = (appointment) => {
-    setAppt(appointment);
+  const handleCaseDetail = (appointment) => {
     router.push(`/CaseProgress/${appointment.caseId}`);
   };
 
   const handleStartCall = (appointment) => {
-    setAppt(appointment);
     router.push(`/callRoom?roomId=${appointment._id}`);
   };
 
-  if (!hasMounted) return null;
+  function isWithinCallWindow(dateStr, timeStr, durationStr = "60") {
+    try {
+      const [hours, minutes] = timeStr.split(":").map(Number);
+      const start = new Date(dateStr);
+      start.setHours(hours, minutes, 0, 0);
+      const duration = parseInt(durationStr) || 60;
+      const end = new Date(start.getTime() + duration * 60000);
+      const now = new Date();
 
-  const currentAppointments = showCompleted ? completedApp : appointments;
+      return now >= start && now <= end;
+    } catch (err) {
+      console.error("Invalid time window check:", err);
+      return false;
+    }
+  }
 
   return (
-    <div className="relative w-full mx-auto p-6 bg-[#151515] text-white rounded-lg">
+    <div className="relative w-full min-h-screen bg-[#151515] p-8 text-white">
       <h1 className="text-3xl font-bold mb-6 border-b border-white/10 pb-4">
-        Your Appointments
+        Next Appointment
       </h1>
-      <button
-        onClick={() => setShowCompleted(!showCompleted)}
-        className="absolute top-5 px-4 py-1.5 cursor-pointer right-6 border rounded-lg bg-white text-black hover:bg-gray-300"
-      >
-        {showCompleted ? 'Confirmed Appointments' : 'Completed Appointments'}
-      </button>
-
       {loading ? (
-        <p>Loading...</p>
+        <p className="text-white/70">Loading...</p>
       ) : message ? (
         <p className="text-red-400">{message}</p>
-      ) : currentAppointments.length === 0 ? (
-        <p className="text-yellow-400">No appointments found.</p>
+      ) : !nextAppointment ? (
+        <p className="text-yellow-400">No next appointment listed.</p>
       ) : (
-        <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2">
-          {currentAppointments.map((appt) => (
-            <div
-              key={appt._id}
-              className="bg-black border cursor-default border-white/30 p-6 rounded-xl shadow-md hover:shadow-white/40 transition-all duration-350 ease-in-out relative group"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl pointer-events-none" />
+        <div className="bg-black border border-white/30 p-6 rounded-xl shadow-md hover:shadow-white/40 transition-all duration-350 ease-in-out relative group">
+          <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl pointer-events-none" />
 
-              <div className="flex justify-between items-center mb-4">
-                <div className="text-left">
-                  <p className="text-xs uppercase text-white/60">From</p>
-                  <p className="text-sm font-semibold">{appt.userName || "Unknown User"}</p>
-                </div>
-
-                <div className="w-1/3 h-[2px] bg-white/20 relative mx-2" />
-
-                <div className="text-right">
-                  <p className="text-xs uppercase text-white/60">To</p>
-                  <p className="text-sm font-semibold">{session?.user.name}</p>
-                </div>
-              </div>
-
-              <div className="text-center -mt-2">
-                <span className="px-4 py-1 text-xs tracking-wider uppercase border border-white rounded-full text-white">
-                  {appt.category || "Not Specified"}
-                </span>
-              </div>
-
-              <div className="flex justify-between items-center text-sm mt-4">
-                <span>
-                  <p><span className="font-medium">Date:</span> {appt.date}</p>
-                  <p><span className="font-medium">Time:</span> {appt.time}</p>
-                </span>
-                <span className="font-medium">Duration: {appt.duration || '30 min'}</span>
-              </div>
-
-              <div className="flex justify-between items-center mt-4 mb-4 text-sm">
-                <span className={`px-3 py-1 rounded-full text-xs font-semibold capitalize ${appt.status === "confirmed" || appt.status ==="completed"
-                    ? "bg-green-600"
-                    : appt.status === "pending"
-                      ? "bg-yellow-600"
-                      : "bg-red-600"
-                  }`}>
-                  {appt.status}
-                </span>
-              </div>
-
-              <div className="flex justify-end space-x-4">
-                <button
-                  onClick={() => handleCaseDetial(appt)}
-                  className="border border-white cursor-pointer text-white px-4 py-2 rounded hover:bg-white hover:text-black transition duration-200 text-sm"
-                >
-                  View Details
-                </button>
-
-                {!showCompleted && (
-                  <button
-                    onClick={() => handleStartCall(appt)}
-                    className="bg-white cursor-pointer text-black px-4 py-2 rounded hover:bg-gray-300 transition duration-200 text-sm"
-                  >
-                    Join Video Call
-                  </button>
-                )}
-              </div>
+          <div className="flex justify-between items-center mb-4">
+            <div className="text-left">
+              <p className="text-xs uppercase text-white/60">From</p>
+              <p className="text-sm font-semibold">{nextAppointment.userName}</p>
             </div>
-          ))}
+            <div className="w-1/3 h-[2px] bg-white/20 mx-2" />
+            <div className="text-right">
+              <p className="text-xs uppercase text-white/60">To</p>
+              <p className="text-sm font-semibold">{session?.user?.name}</p>
+            </div>
+          </div>
+
+          <div className="text-center -mt-2">
+            <span className="px-4 py-1 text-xs tracking-wider uppercase border border-white rounded-full text-white">
+              {nextAppointment.category || "Not Specified"}
+            </span>
+          </div>
+
+          <div className="flex justify-between items-center text-sm mt-4">
+            <span>
+              <p><span className="font-medium">Date:</span> {nextAppointment.date}</p>
+              <p><span className="font-medium">Time:</span> {nextAppointment.time}</p>
+            </span>
+            <span className="font-medium">Duration: {nextAppointment.duration || '60 min'}</span>
+          </div>
+
+          <div className="flex justify-between items-center mt-4 mb-4 text-sm">
+            <span />
+            <span
+              className={`px-3 py-1 rounded-full text-xs font-semibold capitalize ${nextAppointment.status === "confirmed"
+                ? "bg-green-600"
+                : nextAppointment.status === "pending"
+                  ? "bg-yellow-600"
+                  : "bg-red-600"
+              }`}
+            >
+              {nextAppointment.status}
+            </span>
+          </div>
+
+          <div className="flex justify-end space-x-4">
+            <button
+              onClick={() => handleCaseDetail(nextAppointment)}
+              className="border cursor-pointer border-white text-white px-4 py-2 rounded hover:bg-white hover:text-black transition duration-200 text-sm"
+            >
+              View Details
+            </button>
+            {isWithinCallWindow(nextAppointment.date, nextAppointment.time, nextAppointment.duration) && (
+              <button
+                onClick={() => handleStartCall(nextAppointment)}
+                className="bg-white cursor-pointer text-black px-4 py-2 rounded hover:bg-gray-300 transition duration-200 text-sm"
+              >
+                Join Video Call
+              </button>
+            )}
+          </div>
         </div>
       )}
     </div>

@@ -1,4 +1,3 @@
-// Handles marking a document as requiring e-sign
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import connect from '@/app/db/page';

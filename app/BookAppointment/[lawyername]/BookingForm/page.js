@@ -25,6 +25,13 @@ const BookingForm = ({ params }) => {
   const [selectedCaseId, setSelectedCaseId] = useState('');
 
   const today = new Date().toISOString().split('T')[0];
+  const minDateObj = new Date();
+  const maxDateObj = new Date();
+  minDateObj.setDate(minDateObj.getDate() + 1);
+  maxDateObj.setDate(maxDateObj.getDate() + 6);
+  const minDate = minDateObj.toISOString().split('T')[0];
+  const maxDate = maxDateObj.toISOString().split('T')[0];
+
 
   useEffect(() => {
     if (!session) router.push('/Auth/Login');
@@ -41,8 +48,8 @@ const BookingForm = ({ params }) => {
         if (res.ok) {
           setForm((prev) => ({
             ...prev,
-            lawyerId:lawyer._id,
-            userId:session.user.id,
+            lawyerId: lawyer._id,
+            userId: session.user.id,
             caseId: selectedCaseId,
             category: data.category || '',
           }));
@@ -58,9 +65,20 @@ const BookingForm = ({ params }) => {
     fetchCaseDetails();
   }, [selectedCaseId]);
 
+
   const handleDateChange = async (e) => {
     const selectedDate = e.target.value;
+    const dayOfWeek = new Date(selectedDate).getDay(); // 0=Sunday, 6=Saturday
+
+    if (dayOfWeek === 0 || dayOfWeek === 6) {
+      // Don't allow selection of Saturday or Sunday
+      alert('Weekends are not allowed. Please select a weekday.');
+      setForm((prev) => ({ ...prev, date: '', time: '' }));
+      return;
+    }
+
     setForm((prev) => ({ ...prev, date: selectedDate, time: '' }));
+
 
     if (!lawyer?._id || !selectedDate) return;
 
@@ -180,7 +198,8 @@ const BookingForm = ({ params }) => {
                     onChange={handleDateChange}
                     className="w-full bg-[#2c2c2c] text-white border border-gray-600 rounded p-2"
                     required
-                    min={today}
+                    min={minDate}
+                    max={maxDate}
                   />
                 </div>
 
@@ -274,7 +293,8 @@ const BookingForm = ({ params }) => {
                     onChange={handleDateChange}
                     className="w-full bg-[#2c2c2c] text-white border border-gray-600 rounded p-2"
                     required
-                    min={today}
+                    min={minDate}
+                    max={maxDate}
                   />
                 </div>
 

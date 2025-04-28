@@ -18,10 +18,16 @@ export async function GET(req) {
         }
 
         // Filter documents from the case
-        const lawyerDocs = foundCase.documents.filter((doc) => doc.from === "Lawyer");
+        const lawyerDocs = foundCase.documents.filter((doc) => {
+            return doc.from === "Lawyer" && doc.needsESign === false;
+        });
+        const lawyerEsignRequestDocs = foundCase.documents.filter((doc) => {
+            return doc.from === "Lawyer" && doc.needsESign === true;
+        });
         const userDocs = foundCase.documents.filter((doc) => doc.from === "User");
+        const lawyerEsigndocs = foundCase.requestedDocuments.filter((doc) => doc.from === "Lawyer");
 
-        return new Response(JSON.stringify({ lawyerDocs, userDocs }), {
+        return new Response(JSON.stringify({ lawyerDocs, userDocs, lawyerEsignRequestDocs, lawyerEsigndocs }), {
             status: 200,
             headers: { "Content-Type": "application/json" },
         });
