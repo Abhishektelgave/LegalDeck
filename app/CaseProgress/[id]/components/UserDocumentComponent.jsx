@@ -2,8 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import UploadRequestedDocs from '@/app/CaseProgress/[id]/components/UploadRequestedDocs'
-import UserUploadEsignComponent from '@/app/CaseProgress/[id]/components/UserUploadEsignComponent'
-import RequestUploadDocumentComponent from '@/app/CaseProgress/[id]/components/RequestUploadDocumentComponent'
 import getIframeUrl from '@/app/helpers/googleForm';
 
 

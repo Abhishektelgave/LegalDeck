@@ -1,11 +1,13 @@
 'use client';
 import React, { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
 
 export default function UploadRequestedDocs({ doc, caseId, refreshDocs }) {
+    const { data: session } = useSession();
     const [selectedFile, setSelectedFile] = useState(null);
     const [loading, setLoading] = useState(false);
     const [docPresent, setDocPresent] = useState(false);
-    
+
 
     useEffect(() => {
         if (doc?.path && doc.path !== '') {
@@ -18,6 +20,43 @@ export default function UploadRequestedDocs({ doc, caseId, refreshDocs }) {
     const handleFileChange = (e) => {
         setSelectedFile(e.target.files[0]);
     };
+
+    const handelESign = async (doc) => {
+        if (!session?.user?.name || !session?.user?.email) {
+            console.error('User not logged in properly.');
+            return;
+        }
+
+        try {
+            const res = await fetch('/api/esign/initiate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    caseId,
+                    docId: doc._id,
+                    signerName: session.user.name,
+                    signerEmail: session.user.email,
+                }),
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                if (data.signingUrl) {
+                    // Redirect user to BoldSign signing page
+                    window.location.href = data.signingUrl;
+                }
+            } else {
+                console.error('E-Sign initiation failed', data.error);
+            }
+        } catch (err) {
+            console.error('Error initiating e-sign', err);
+        }
+    };
+
+
 
     const handleUpload = async () => {
         if (!selectedFile) return;
@@ -89,12 +128,12 @@ export default function UploadRequestedDocs({ doc, caseId, refreshDocs }) {
                     </button>
                 </>
             ) : doc.needsESign ? (
-                <a
-                    href={`/eSign?docId=${doc._id}`} // Better to pass _id not fileName
-                    className="bg-green-600 hover:bg-green-700 text-white px-4 py-1 rounded-md"
+                <button
+                    onClick={() => handelESign(doc)}
+                    className="bg-green-600 cursor-pointer hover:bg-green-700 text-white px-4 py-1 rounded-md"
                 >
                     Go to E-Sign
-                </a>
+                </button>
             ) : (
                 <button
                     onClick={() => sendDoc(doc)}
