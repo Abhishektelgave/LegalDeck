@@ -2,6 +2,43 @@ import dbConnect from "@/app/db/page";
 import Appointment from "@/app/models/Appointment";
 import Case from "@/app/models/Case";
 
+export async function GET(request) {
+
+  const url = new URL(request.url);
+  const id = url.searchParams.get("id");
+
+  try {
+    // Connect to the database
+    await dbConnect();
+
+    console.log(id)
+    // Find the case by ID
+    const caseDetails = await Case.findById(id)
+      .populate('lawyerId', 'name email')
+      .populate('userId', 'name email')
+      .exec();
+
+    if (!caseDetails) {
+      return new Response(
+        JSON.stringify({ message: 'Case not found' }),
+        { status: 404 }
+      );
+    }
+
+    // Return the case details
+    return new Response(
+      JSON.stringify({caseDetails }),
+      { status: 200 }
+    );
+  } catch (err) {
+    console.error(err);
+    return new Response(
+      JSON.stringify({ message: 'Error fetching case details' + err.message }),
+      { status: 500 }
+    );
+  }
+}
+
 export async function POST(req) {
   try {
     const body = await req.json();

@@ -4,22 +4,16 @@ import { useSession, signIn, getCsrfToken } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Header from '@/app/components/Header';
 
-// Admin Login Page
 const AdminLogin = () => {
-
-    // Error Verification States
     const [isClient, setIsClient] = useState(true);
     const [csrfToken, setCsrfToken] = useState('');
     const [errorMessage, setErrorMessage] = useState("");
 
-    // Input Fields
     const [EmailInput, setEmailInput] = useState("");
     const [PassInput, setPassInput] = useState("");
 
-    // get Session & redirect if session
     const { data: session } = useSession();
     const router = useRouter();
-
 
     useEffect(() => {
         if (session) {
@@ -39,7 +33,6 @@ const AdminLogin = () => {
         setAdminData();
     }, [session]);
 
-    // csrf token generation
     useEffect(() => {
         const fetchCsrfToken = async () => {
             const token = await getCsrfToken();
@@ -48,7 +41,6 @@ const AdminLogin = () => {
         fetchCsrfToken();
     }, []);
 
-    // handleLogin with credentials
     const handleLogin = async (e) => {
         e.preventDefault();
 
@@ -62,25 +54,25 @@ const AdminLogin = () => {
         if (result?.error) {
             setErrorMessage(result.error);
         } else {
-            router.push('/Admin'); // Redirect on success
+            router.push('/Admin');
         }
     };
-
 
     return (
         <>
             <Header />
-            <div className="w-full min-h-[85vh] flex items-center justify-center bg-[#000000] text-[#F1F1F1] mt-[-20px]">
-                <div className="flex flex-col items-center min-h-[70vh] p-5 gap-5 w-full sm:max-w-[500px] justify-center bg-[#000000] text-[#F1F1F1]">
-                    <h1 className="font-bold text-center text-2xl sm:text-4xl">
-                        'Hii, Admin'
-                    </h1>
-                    {/* Form */}
-                    <form className="flex w-full  relative z-[9999] flex-col items-center justify-center gap-5">
+            <div className="w-full min-h-[85vh] flex items-center justify-center bg-black text-white px-4">
+                <div className="flex flex-col items-center w-full max-w-md bg-black text-white p-5 gap-6">
+                    <h1 className="font-bold text-center text-2xl sm:text-4xl">Hii, Admin</h1>
+
+                    <form
+                        className="flex flex-col w-full items-center gap-5"
+                        onSubmit={handleLogin}
+                    >
                         <input
                             id="Email"
                             name="Email"
-                            className="text-white w-full sm:w-[83%] bg-transparent border-2 border-white rounded-full p-2 z-10"
+                            className="w-full bg-transparent border-2 border-white rounded-full p-2 placeholder-white"
                             placeholder="Email"
                             type="email"
                             value={EmailInput}
@@ -89,20 +81,20 @@ const AdminLogin = () => {
                         <input
                             id="Password"
                             name="Password"
-                            className="text-white w-full sm:w-[83%] bg-transparent border-2 border-white rounded-full p-2 z-10"
+                            className="w-full bg-transparent border-2 border-white rounded-full p-2 placeholder-white"
                             placeholder="Password"
                             type="password"
                             value={PassInput}
                             onChange={(e) => setPassInput(e.target.value)}
                         />
-                        {/* Error message */}
+
                         {errorMessage && (
-                            <div className="p-2 font-bold text-[#FF6F61] z-20">{errorMessage}</div>
+                            <div className="text-sm font-semibold text-[#FF6F61]">{errorMessage}</div>
                         )}
 
-                        {/* Submit buttons */}
-                        <button onClick={handleLogin}
-                            className="text-white cursor-pointer w-full sm:w-40 bg-transparent border-2 border-white rounded-full p-2 z-20"
+                        <button
+                            type="submit"
+                            className="w-full sm:w-40 bg-transparent border-2 border-white rounded-full p-2 hover:bg-white hover:text-black transition"
                         >
                             Login
                         </button>
@@ -110,7 +102,7 @@ const AdminLogin = () => {
                 </div>
             </div>
         </>
-    )
-}
+    );
+};
 
 export default AdminLogin;

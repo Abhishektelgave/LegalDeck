@@ -138,7 +138,7 @@ export const authOptions = NextAuth({
             image: currentUser.profileImage,
           }),
           ...(role === 'lawyer' && {
-            fileName: currentUser.fileName,
+            close_appoitment: currentUser.close_appoitment,
             categories: currentUser.categories,
             isApproved: currentUser.lawyer_verified,
             upi: currentUser.upi,

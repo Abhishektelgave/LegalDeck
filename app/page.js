@@ -9,11 +9,23 @@ export default function Home() {
   return (
     <>
       {/* Header */}
-      <header className="w-full h-[12vh] flex items-center justify-between p-4">
+      <header className="w-full flex flex-col sm:flex-row items-center gap-2 justify-between p-4">
         <Header />
         <div className="panel flex items-center text-xl gap-8 pr-2 justify-center">
-          <Link href={"/Auth/Admin"} className="hover:text-[#FF6F61] pl-2 pt-1 pb-1 pr-2  rounded-xl">Admin</Link>
-          <Link href={"/Auth/Login"} className="hover:text-[#FF6F61] pl-2 pt-1 pb-1 pr-2 rounded-xl">Login</Link>
+          <Link
+            href={"/Auth/Admin"}
+            className="hover:text-[#FF6F61] pl-2 pt-1 pb-1 pr-2 rounded-xl"
+            aria-label="Admin Page"
+          >
+            Admin
+          </Link>
+          <Link
+            href={"/Auth/Login"}
+            className="hover:text-[#FF6F61] pl-2 pt-1 pb-1 pr-2 rounded-xl"
+            aria-label="Login Page"
+          >
+            Login
+          </Link>
         </div>
       </header>
 
@@ -56,7 +68,9 @@ export default function Home() {
           </motion.p>
         </section>
       </main>
-      <div className="relative w-full flex items-center ">
+
+      {/* Divider */}
+      <div className="relative w-full flex items-center">
         <div className="bg-[#FF6F61] h-[2px] w-full"></div>
       </div>
     </>

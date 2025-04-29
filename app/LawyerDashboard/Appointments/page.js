@@ -97,12 +97,12 @@ const LawyerDashboard = () => {
 
     return (
         <div className="relative w-full mx-auto p-6 bg-[#151515] text-white rounded-lg">
-            <h1 className="text-3xl font-bold mb-6 border-b border-white/10 pb-4">
+            <h1 className="text-sm sm:text-3xl font-bold mb-6 border-b border-white/10 pb-4">
                 Your Appointments
             </h1>
             <button
                 onClick={() => setShowCompleted(!showCompleted)}
-                className="absolute top-5 px-4 py-1.5 cursor-pointer right-6 border rounded-lg bg-white text-black hover:bg-gray-300"
+                className="absolute text-sm sm:text-lg top-5 px-1 py-1 sm:px-4 sm:py-1.5 cursor-pointer right-4 sm:right-6 border rounded-lg bg-white text-black hover:bg-gray-300"
             >
                 {showCompleted ? 'Confirmed Appointments' : 'Completed Appointments'}
             </button>

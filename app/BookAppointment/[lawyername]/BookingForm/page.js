@@ -42,7 +42,7 @@ const BookingForm = ({ params }) => {
       if (!selectedCaseId) return;
 
       try {
-        const res = await fetch(`/api/case/${selectedCaseId}`);
+        const res = await fetch(`/api/case?id=${selectedCaseId}`);
         const data = await res.json();
 
         if (res.ok) {
@@ -51,8 +51,10 @@ const BookingForm = ({ params }) => {
             lawyerId: lawyer._id,
             userId: session.user.id,
             caseId: selectedCaseId,
-            category: data.category || '',
+            category: data.caseDetails.category || '',
+            fee: data.caseDetails.fee || 0,
           }));
+
         } else {
           setMessage(data.message || 'Failed to fetch case details');
         }
@@ -64,6 +66,7 @@ const BookingForm = ({ params }) => {
 
     fetchCaseDetails();
   }, [selectedCaseId]);
+
 
 
   const handleDateChange = async (e) => {

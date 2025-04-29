@@ -1,11 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { useSession, signOut } from "next-auth/react";
+import { useSession, signOut, update, getSession } from "next-auth/react";
 import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 import defaultimg from "@/public/images/defaultprofile.png";
-import backImg from "@/public/images/back.png";
 import Loading from "@/app/components/LoadingPage";
 
 // Lawyer Dashboard Layout
@@ -17,7 +16,7 @@ const LawyerDashboard = ({ children }) => {
   const pathname = usePathname();
 
   // Basic data
-  const [closeApp, setCloseApp] = useState(true);
+  const [closeApp, setCloseApp] = useState(false);
   const [appointments, setAppointments] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
 
@@ -66,7 +65,10 @@ const LawyerDashboard = ({ children }) => {
     });
     if (res.ok) {
       setCloseApp(!closeApp)
+      await getSession();
       router.push("/LawyerDashboard");
+      router.refresh();
+
     }
   };
 
@@ -166,7 +168,7 @@ const LawyerDashboard = ({ children }) => {
                 </button>
 
                 {showDropdown && (
-                  <div className="absolute top-12 right-0 w-80 max-h-[300px] overflow-y-auto bg-white text-black rounded-lg shadow-lg z-[9999] p-2">
+                  <div className="absolute top-12 -right-25 sm:-right-0 w-80 max-h-[300px] overflow-y-auto bg-white text-black rounded-lg shadow-lg z-[9999] p-2">
                     {appointments.length === 0 ? (
                       <p className="text-sm p-2">No pending appointments</p>
                     ) : (
@@ -226,7 +228,7 @@ const LawyerDashboard = ({ children }) => {
 
         <div className="bg-[#191919] h-1 w-full"></div>
 
-        {session.user.close_appoitment && closeApp ? (
+        {closeApp ? (
           <button
             onClick={() => handleAction("false")}
             className="fixed z-[10000] cursor-pointer bottom-6 right-6 bg-[#e0e0e0] hover:bg-[#ffffff] hover:text-[#000000] text-[#181818] px-6 py-3 rounded-full shadow-lg flex items-center gap-2 text-sm md:text-base transition-all ease-in-out duration-200"

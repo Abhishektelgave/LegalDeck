@@ -1,4 +1,4 @@
-import connectDB  from '@/app/db/page';
+import connectDB from '@/app/db/page';
 import Appointment from '@/app/models/Appointment';
 import Case from '@/app/models/Case';
 
@@ -7,15 +7,20 @@ export async function POST(req) {
   const body = await req.json();
 
   try {
-    let caseId = body.caseId;
+
+    let { caseId, lawyerId, userId, fee, category, date, time } = body;
+
+    if(!caseId || !lawyerId || !userId || !fee || !category || !date || !time){
+      return new Response(JSON.stringify({message:'Missing Parameters'}),{status:404})
+    }
 
     // If it's a new case, create one
     if (caseId === 'New') {
       const newCase = new Case({
-        lawyerId: body.lawyerId,
-        userId: body.userId,
-        category: body.category,
-        fee: body.fee,
+        lawyerId,
+        userId,
+        category,
+        fee,
       });
       await newCase.save();
       caseId = newCase._id;
@@ -23,12 +28,12 @@ export async function POST(req) {
 
     // Create the appointment with the proper case ID
     const appointment = new Appointment({
-      lawyerId: body.lawyerId,
-      userId: body.userId,
+      lawyerId,
+      userId,
       caseId,
-      date: body.date,
-      time: body.time,
-      category: body.category,
+      date,
+      time,
+      category,
     });
 
     await appointment.save();

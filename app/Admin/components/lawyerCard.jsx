@@ -20,7 +20,7 @@ const LawyerCard = ({ lawyer }) => {
   return (
     <>
       <div className="relative bg-neutral-900 border border-neutral-700 p-6 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 space-y-6 pb-20">
-        <div className="text-white space-y-4">
+        <div className="text-white space-y-2 sm:space-y-4">
           <div className="flex justify-between items-start">
             <div>
               <p className="text-xs text-white/50 uppercase">Name</p>
@@ -82,10 +82,10 @@ const LawyerCard = ({ lawyer }) => {
           </button>
         </div>
       </div>
-      {/* Modal */}
+
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
-          <div className="bg-white rounded-xl w-4/5 h-[80vh] p-4 relative">
+          <div className="bg-white rounded-xl w-full sm:w-4/5 h-[80vh] sm:h-[90vh] p-4 relative overflow-hidden">
             <button
               onClick={() => setShowModal(false)}
               className="absolute cursor-pointer top-2 right-2 text-black bg-gray-200 hover:bg-gray-300 rounded-full px-3 py-1"
@@ -98,6 +98,7 @@ const LawyerCard = ({ lawyer }) => {
               )}`}
               title="pdf"
               className="w-full h-full rounded-md"
+              style={{ objectFit: "contain" }}
             />
           </div>
         </div>

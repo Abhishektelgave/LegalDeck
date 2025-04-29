@@ -121,12 +121,18 @@ const lawyername = ({ children, params }) => {
                             </div>
 
                             <div className="flex gap-4 flex-wrap">
-                                <Link
-                                    href={`/BookAppointment/${lawyername}/BookingForm`}
-                                    className="flex items-center cursor-pointer z-[9999] border border-[#dcdcdc] hover:border-[#ffffff] px-2 py-0.5     rounded-lg bg-[#dcdcdc] text-xl hover:-translate-y-1 transition-all ease-in-out duration-150 hover:bg-[#ffffff]  text-[#121212] "
-                                    style={{ fontFamily: "var(--font-tektur)" }}>
-                                    <span>BookAppointment</span>
-                                </Link>
+                                {searchResult.close_appoitment ?
+                                <p className="w-[19vw] text-yellow-200">
+                                    Lawyer has temporarily closed appointments.
+                                </p>
+                                :
+                                    <Link
+                                        href={`/BookAppointment/${lawyername}/BookingForm`}
+                                        className="flex items-center cursor-pointer z-[9999] border border-[#dcdcdc] hover:border-[#ffffff] px-2 py-0.5     rounded-lg bg-[#dcdcdc] text-xl hover:-translate-y-1 transition-all ease-in-out duration-150 hover:bg-[#ffffff]  text-[#121212] "
+                                        style={{ fontFamily: "var(--font-tektur)" }}>
+                                        <span>BookAppointment</span>
+                                    </Link>
+                                }
                             </div>
                         </div>
                         <Link

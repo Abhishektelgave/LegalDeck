@@ -39,7 +39,7 @@ const LawyerCardPending = ({ lawyer }) => {
     return (
         <>
             <div className="relative bg-neutral-900 border border-neutral-700 p-6 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 space-y-6 pb-20">
-                <div className="text-white space-y-4">
+                <div className="text-white space-y-2 sm:space-y-4">
                     <div className="flex justify-between items-start">
                         <div>
                             <p className="text-xs text-white/50 uppercase">Name</p>
