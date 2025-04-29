@@ -70,7 +70,7 @@ const Edit = () => {
 
     if (session) {
         return (
-            <div className="min-w-[31vw] flex items-center justify-center bg-[#121212] text-[#F1F1F1]">
+            <div className="min-w-[31vw] flex items-center justify-center border-1 border-[#FFFFFF] -mt-3.5 p-10 rounded-2xl bg-[#121212] text-[#F1F1F1]">
                 <form
                     onSubmit={handleSubmit}
                     className="flex relative z-[9999] flex-col items-center gap-5 w-full justify-center"
@@ -98,7 +98,7 @@ const Edit = () => {
 
                     <button
                         type="submit"
-                        className="text-white w-[83%] bg-[#FF6F61] border border-white rounded-full p-2"
+                        className="text-[#000000] cursor-pointer w-[83%] hover:bg-[#ffffff] bg-[#e6e5e5] border border-white rounded-full p-2"
                     >
                         Save Changes
                     </button>

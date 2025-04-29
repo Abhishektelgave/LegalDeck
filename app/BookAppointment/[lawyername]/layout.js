@@ -102,7 +102,7 @@ const lawyername = ({ children, params }) => {
                                 </Link>
                                 <p className="text-sm">{searchResult.email}</p>
                             </div>
-                            <div className="flex gap-3 flex-wrap w-[300px]">
+                            <div className="flex gap-3 flex-wrap w-[330px]">
                                 {searchResult.categories && (
                                     <div className="flex gap-3 flex-wrap w-full md:w-auto mt-2">
                                         {Object.entries(searchResult.categories).map(([key, value], index) => (

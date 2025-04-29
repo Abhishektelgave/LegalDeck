@@ -94,7 +94,7 @@ const PaymentPage = ({ params }) => {
           const result = await verificationRes.json();
           if (!verificationRes.ok) throw new Error(result.message || "Verification failed");
 
-          router.push('/UserDashboard')
+          router.push(`/BookAppointment/${caseDetails.lawyerName}/Ratings`)
         },
         prefill: {
           name: caseDetails.lawyerName,

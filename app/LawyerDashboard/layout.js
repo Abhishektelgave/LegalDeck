@@ -76,7 +76,7 @@ const LawyerDashboard = ({ children }) => {
   if (session) {
     return (
       <>
-        <div className="w-full min-h-screen relative bg-[#151515] text-[#F1F1F1]">
+        <div className="w-[100vw] min-h-screen relative bg-[#151515] text-[#F1F1F1]">
           <div className="profile relative flex flex-wrap items-center px-2 md:px-10 lg:px-20 py-4 gap-6">
             <Image
               className="rounded-full"
@@ -113,7 +113,7 @@ const LawyerDashboard = ({ children }) => {
               )}
             </div>
 
-            <div className="flex gap-3 flex-wrap w-[300px]">
+            <div className="flex gap-3 flex-wrap w-[330px]">
               {session.user.categories && (
                 <div className="flex gap-3 flex-wrap w-full md:w-auto mt-2">
                   {Object.entries(session.user.categories).map(([key, value], index) =>
@@ -127,7 +127,7 @@ const LawyerDashboard = ({ children }) => {
                       </span>
                     )
                   )}
-                </div>  
+                </div>
               )}
             </div>
 
@@ -198,26 +198,26 @@ const LawyerDashboard = ({ children }) => {
 
           {/* Navigation Bar (touching divider) */}
           <div className="flex gap-0 mx-15 items-center justify-start ">
-                        <Link
-                            href="/LawyerDashboard/Cases"
-                            className={`px-6 py-3 text-sm md:text-base font-medium ${pathname === "/LawyerDashboard/Cases"
-                                    ? "bg-white text-black border-t-2 border-x-2 border-white"
-                                    : "text-gray-400 hover:text-white transition-all"
-                                }`}
-                        >
-                            Cases
-                        </Link>
+            <Link
+              href="/LawyerDashboard/Cases"
+              className={`px-6 py-3 text-sm md:text-base font-medium ${pathname === "/LawyerDashboard/Cases"
+                ? "bg-white text-black border-t-2 border-x-2 border-white"
+                : "text-gray-400 hover:text-white transition-all"
+                }`}
+            >
+              Cases
+            </Link>
 
-                        <Link
-                            href="/LawyerDashboard/Appointments"
-                            className={`px-6 py-3 text-sm md:text-base font-medium ${pathname === "/LawyerDashboard/Appointments"
-                                    ? "bg-white text-black border-t-2 border-x-2 border-white"
-                                    : "text-gray-400 hover:text-white transition-all"
-                                }`}
-                        >
-                            Appointments
-                        </Link>
-                    </div>
+            <Link
+              href="/LawyerDashboard/Appointments"
+              className={`px-6 py-3 text-sm md:text-base font-medium ${pathname === "/LawyerDashboard/Appointments"
+                ? "bg-white text-black border-t-2 border-x-2 border-white"
+                : "text-gray-400 hover:text-white transition-all"
+                }`}
+            >
+              Appointments
+            </Link>
+          </div>
 
           <div className="content flex items-center justify-center gap-5 w-full py-5 px-4">
             {children}
