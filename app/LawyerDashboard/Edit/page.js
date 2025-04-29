@@ -88,7 +88,7 @@ const Edit = () => {
                         onChange={handleCategoryChange}
                     />
 
-                    {session.user.isApproved === 'approved' ? <input
+                    {session.user.isApproved === 'Approved' ? <input
                         name="upi"
                         placeholder="UPI ID"
                         value={formData.upi}

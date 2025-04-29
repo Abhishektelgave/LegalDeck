@@ -17,7 +17,7 @@ export async function GET(req) {
 
     const caseData = await Case.findOne({ _id: id })
       .populate('userId', 'name email')
-      .populate('lawyerId', 'name email');
+      .populate('lawyerId', 'name email upi');
 
     if (!caseData) {
       return new Response(JSON.stringify({ message: 'Case not found' }), {
@@ -29,6 +29,7 @@ export async function GET(req) {
     // Default data handling
     const lawyerName = caseData.lawyerId?.name || 'Unknown user';
     const lawyerEmail = caseData.lawyerId?.email || 'Unknown email';
+    const upi = caseData.lawyerId?.upi || 'Unknown upi';
     const userName = caseData.userId?.name || 'Unknown user';
     const userEmail = caseData.userId?.email || 'Unknown email';
 
@@ -36,6 +37,7 @@ export async function GET(req) {
       ...caseData.toObject(),
       lawyerName,
       lawyerEmail,
+      upi,
       userName,
       userEmail,
     };

@@ -15,17 +15,26 @@ const LawyerDashboard = () => {
 
   useEffect(() => {
     const fetchAppointments = async () => {
+      if (!session?.user?.id && !session?.user?._id) {
+        console.error("User ID is missing from session:", session);
+        setMessage("Session error: User ID is missing.");
+        setLoading(false);
+        return;
+      }
+  
+      const userId = session?.user?.id || session?.user?._id;
+  
       try {
-        const res = await fetch(`/api/book/approvedApp/lawyerApp?lawyerId=${session?.user.id}`);
+        const res = await fetch(`/api/book/approvedApp/lawyerApp?lawyerId=${userId}`);
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || 'Failed to fetch appointments.');
-
+  
         const sortedAppointments = (data.appointments || []).sort((a, b) => {
           const dateA = new Date(`${a.date}T${a.time}`);
           const dateB = new Date(`${b.date}T${b.time}`);
           return dateA - dateB;
         });
-
+  
         setAppointments(sortedAppointments);
       } catch (err) {
         setMessage(err.message);
@@ -33,9 +42,10 @@ const LawyerDashboard = () => {
         setLoading(false);
       }
     };
-
+  
     if (session) fetchAppointments();
   }, [session]);
+  
 
   useEffect(() => {
     if (appointments.length > 0) {

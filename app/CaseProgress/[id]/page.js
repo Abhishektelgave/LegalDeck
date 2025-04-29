@@ -8,6 +8,8 @@ import CaseComponent from '@/app/CaseProgress/[id]/components/CaseComponent';
 import Documents from '@/app/CaseProgress/[id]/components/Documents';
 import defaultimg from '@/public/images/defaultprofile.png';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+
 
 const CaseProcessing = ({ params }) => {
     const { data: session } = useSession();
@@ -16,6 +18,8 @@ const CaseProcessing = ({ params }) => {
     const [loading, setLoading] = useState(true);
     const [chatBox, setChatBox] = useState(false);
     const [showCase, setShowCase] = useState(true);
+    const router = useRouter();
+    const [counter, setCounter] = useState(5);
 
     // Fetch case details when the component mounts or session/id changes
     useEffect(() => {
@@ -23,7 +27,6 @@ const CaseProcessing = ({ params }) => {
             try {
                 const res = await fetch(`/api/case/getCaseDetails?id=${id}`);
                 const data = await res.json();
-                console.log('Fetched Case Details:', data); // Log the response for debugging
                 if (res.ok) {
                     setCaseDetails(data);
                 } else {
@@ -40,6 +43,27 @@ const CaseProcessing = ({ params }) => {
             fetchCaseDetails();
         }
     }, [session, id]);
+
+    useEffect(() => {
+        if (!caseDetails) return;
+
+        if (session.user.role === 'user' && caseDetails.status === 'Resolved' && caseDetails.payment === 'pending') {
+            const timeoutId = setTimeout(() => {
+                router.push(`/PaymentPage/${caseDetails._id}`);
+            }, 5000);
+
+            const intervalId = setInterval(() => {
+                setCounter(prev => prev - 1);
+            }, 1000);
+
+            // Clean up both on unmount or re-run
+            return () => {
+                clearTimeout(timeoutId);
+                clearInterval(intervalId);
+            };
+        }
+    }, [caseDetails, router]);
+
 
     const changeCaseStatus = async (action) => {
         try {
@@ -63,6 +87,10 @@ const CaseProcessing = ({ params }) => {
             console.error('Unable to fetch data', err);
         }
     };
+
+    const handlePayment = (id) => {
+        router.push(`/PaymentPage/${id}`)
+    }
 
     if (!session || loading) {
         return <div className="text-center py-20 text-white">Loading case details...</div>;
@@ -89,6 +117,29 @@ const CaseProcessing = ({ params }) => {
                             className='px-4 cursor-pointer py-1 hover:bg-[#dcdcdc] rounded-full bg-white text-black text-xl'>
                             Reject Case
                         </button>
+                    </div>
+                )}
+
+                {caseDetails.status === "Resolved" && caseDetails.payment === 'pending' && session.user.role === 'user' && (
+                    <div className='flex flex-col items-center justify-center gap-5 py-4'>
+                        <button
+                            onClick={() => handlePayment(id)}
+                            className='px-4 cursor-pointer py-1 hover:bg-[#a1e89a] rounded-full bg-yellow-300 text-black text-xl'>
+                            Payment Pending
+                        </button>
+                        <p>You will be redirected in
+                            <span className='text-red-500'>
+                                {' ' + counter + ' '}
+                            </span>
+                            seconds</p>
+                    </div>
+                )}
+                {caseDetails.status === "Resolved" && session.user.role === 'lawyer' && (
+                    <div className='flex flex-col items-center justify-center gap-5 py-4'>
+                        <div
+                            className={`px-4 py-1 rounded-full ${caseDetails.payment === 'pending' ? 'bg-yellow-300' : 'bg-green-300'} text-black text-xl`}>
+                            Payment {' ' + caseDetails.payment}
+                        </div>
                     </div>
                 )}
 

@@ -127,7 +127,7 @@ const LawyerDashboard = ({ children }) => {
                       </span>
                     )
                   )}
-                </div>
+                </div>  
               )}
             </div>
 
@@ -137,7 +137,7 @@ const LawyerDashboard = ({ children }) => {
                 className="flex items-center z-[9999] border border-[#dcdcdc] hover:border-[#ffffff] px-2 py-0.5 rounded-lg bg-[#dcdcdc] text-xl hover:-translate-y-1 transition-all ease-in-out duration-150 hover:bg-[#ffffff] text-[#121212]"
                 style={{ fontFamily: "var(--font-tektur)" }}
               >
-                <span>{session.user.isApproved === 'approved' && !session.user.upi ? "Add UPI" : "Edit"}</span>
+                <span>{session.user.isApproved === 'Approved' && !session.user.upi ? "Add UPI" : "Edit"}</span>
                 <div className="cursor-pointer mt-1 px-2 editInc rounded-lg">
                   <lord-icon
                     src="https://cdn.lordicon.com/gwlusjdu.json"

@@ -19,7 +19,7 @@ const CaseComponent = ({ caseDetails }) => {
         { label: 'Post-Judgment Procedures', desc: 'Execution or appeal process' },
         { label: 'Resolved', desc: 'Case is concluded' },
     ];
-
+    
     const initialProgress = stageLabels.findIndex(s => s.label === caseDetails.caseProgress);
     const [activeIndex, setActiveIndex] = useState(initialProgress >= 0 ? initialProgress : 0);
     const [progressIndex, setProgressIndex] = useState(initialProgress >= 0 ? initialProgress : 0);
@@ -27,7 +27,7 @@ const CaseComponent = ({ caseDetails }) => {
     const [caseStatus, setCaseStatus] = useState(caseDetails.status);
     const scrollRef = useRef();
     const nextStageIndex = progressIndex + 1;
-
+    
     useEffect(() => {
         if (!scrollRef.current) return;
         const container = scrollRef.current;

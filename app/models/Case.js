@@ -30,6 +30,7 @@ const messageSchema = new mongoose.Schema({
 const caseSchema = new mongoose.Schema({
   lawyerId: { type: mongoose.Schema.Types.ObjectId, ref: 'Lawyer', required: true },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  razorpay_order_id: String,
   category: { type: String },
   dateStarted: { type: Date, default: Date.now },
   status: { type: String, enum: ['Not Started', 'Active', 'Resolved', 'Rejected'], default: 'Not Started' },
