@@ -88,6 +88,14 @@ const CaseProcessing = ({ params }) => {
         }
     };
 
+    const gotoDashboard = (session)=>{
+        if(session.user.role === 'user'){
+            router.push('/UserDashboard')
+        }else{
+            router.push('/LawyerDashboard');
+        }
+    }
+
     const handlePayment = (id) => {
         router.push(`/PaymentPage/${id}`)
     }
@@ -103,45 +111,58 @@ const CaseProcessing = ({ params }) => {
     if (session) {
         return (
             <div className='relative min-h-[98.3vh] cursor-default bg-black text-white'>
-                <Header />
-
-                {caseDetails.status === "Not Started" && session.user.role !== 'user' && (
-                    <div className='flex items-center justify-center gap-5 py-4'>
-                        <button
-                            onClick={() => changeCaseStatus('Active')}
-                            className='px-4 cursor-pointer py-1 hover:bg-[#dcdcdc] rounded-full bg-white text-black text-xl'>
-                            Activate Case
-                        </button>
-                        <button
-                            onClick={() => changeCaseStatus('Rejected')}
-                            className='px-4 cursor-pointer py-1 hover:bg-[#dcdcdc] rounded-full bg-white text-black text-xl'>
-                            Reject Case
-                        </button>
-                    </div>
-                )}
-
-                {caseDetails.status === "Resolved" && caseDetails.payment === 'pending' && session.user.role === 'user' && (
-                    <div className='flex flex-col items-center justify-center gap-5 py-4'>
-                        <button
-                            onClick={() => handlePayment(id)}
-                            className='px-4 cursor-pointer py-1 hover:bg-[#a1e89a] rounded-full bg-yellow-300 text-black text-xl'>
-                            Payment Pending
-                        </button>
-                        <p>You will be redirected in
-                            <span className='text-red-500'>
-                                {' ' + counter + ' '}
-                            </span>
-                            seconds</p>
-                    </div>
-                )}
-                {caseDetails.status === "Resolved" && session.user.role === 'lawyer' && (
-                    <div className='flex flex-col items-center justify-center gap-5 py-4'>
-                        <div
-                            className={`px-4 py-1 rounded-full ${caseDetails.payment === 'pending' ? 'bg-yellow-300' : 'bg-green-300'} text-black text-xl`}>
-                            Payment {' ' + caseDetails.payment}
+                <div className="head flex mx-10 items-center justify-between">
+                    <Header />
+                    <button
+                        onClick={()=>gotoDashboard(session)}
+                        className="flex items-center z-[9999] justify-center cursor-pointer hover:-translate-y-1 hover:text-[#000000] bg-[#dcdcdc] text-[#121212] font-semibold px-5 py-2 mr-10 rounded-full shadow-md hover:bg-[#ffffff] transition-all ease-in-out duration-150"
+                    >
+                        Dashboard
+                    </button>
+                </div>
+                {
+                    caseDetails.status === "Not Started" && session.user.role !== 'user' && (
+                        <div className='flex items-center justify-center gap-5 py-4'>
+                            <button
+                                onClick={() => changeCaseStatus('Active')}
+                                className='px-4 cursor-pointer py-1 hover:bg-[#dcdcdc] rounded-full bg-white text-black text-xl'>
+                                Activate Case
+                            </button>
+                            <button
+                                onClick={() => changeCaseStatus('Rejected')}
+                                className='px-4 cursor-pointer py-1 hover:bg-[#dcdcdc] rounded-full bg-white text-black text-xl'>
+                                Reject Case
+                            </button>
                         </div>
-                    </div>
-                )}
+                    )
+                }
+
+                {
+                    caseDetails.status === "Resolved" && caseDetails.payment === 'pending' && session.user.role === 'user' && (
+                        <div className='flex flex-col items-center justify-center gap-5 py-4'>
+                            <button
+                                onClick={() => handlePayment(id)}
+                                className='px-4 cursor-pointer py-1 hover:bg-[#a1e89a] rounded-full bg-yellow-300 text-black text-xl'>
+                                Payment Pending
+                            </button>
+                            <p>You will be redirected in
+                                <span className='text-red-500'>
+                                    {' ' + counter + ' '}
+                                </span>
+                                seconds</p>
+                        </div>
+                    )
+                }
+                {
+                    caseDetails.status === "Resolved" && session.user.role === 'lawyer' && (
+                        <div className='flex flex-col items-center justify-center gap-5 py-4'>
+                            <div
+                                className={`px-4 py-1 rounded-full ${caseDetails.payment === 'pending' ? 'bg-yellow-300' : 'bg-green-300'} text-black text-xl`}>
+                                Payment {' ' + caseDetails.payment}
+                            </div>
+                        </div>
+                    )
+                }
 
                 <div className="flex flex-col md:flex-row mt-5 p-6 gap-6">
                     <div className={`w-full transition-all duration-300 relative ${chatBox ? 'md:w-34/50' : 'md:w-47/50 '}`}>
@@ -159,44 +180,46 @@ const CaseProcessing = ({ params }) => {
                     </div>
                 </div>
 
-                {chatBox ? (
-                    <div className='absolute right-5 top-18 z-50'>
-                        <div className='absolute top-4 bg-white w-full h-12 font-bold -mt-4 rounded-t-4xl text-xl'>
-                            <div className='text-black flex items-center gap-2 ml-5 mt-2'>
-                                <Image
-                                    className="rounded-full"
-                                    src={defaultimg}
-                                    alt="Profile"
-                                    width={30}
-                                    height={30}
-                                    unoptimized={!defaultimg}
-                                />
-                                {session.user.role === 'user' ? caseDetails.lawyerName : caseDetails.userName}
+                {
+                    chatBox ? (
+                        <div className='absolute right-5 top-18 z-50'>
+                            <div className='absolute top-4 bg-white w-full h-12 font-bold -mt-4 rounded-t-4xl text-xl'>
+                                <div className='text-black flex items-center gap-2 ml-5 mt-2'>
+                                    <Image
+                                        className="rounded-full"
+                                        src={defaultimg}
+                                        alt="Profile"
+                                        width={30}
+                                        height={30}
+                                        unoptimized={!defaultimg}
+                                    />
+                                    {session.user.role === 'user' ? caseDetails.lawyerName : caseDetails.userName}
+                                </div>
                             </div>
+                            <div onClick={() => setChatBox(false)} className='absolute cursor-pointer right-1 top-4 text-red-700 font-bold -mt-2 mr-2 text-xl'>
+                                <lord-icon
+                                    src="https://cdn.lordicon.com/zxvuvcnc.json"
+                                    trigger="hover"
+                                    colors="primary:#000000,secondary:#ffffff"
+                                    style={{ 'width': '35px', 'height': '35px' }} />
+                            </div>
+                            <ChatBox
+                                caseDetails={caseDetails}
+                                senderId={session.user.id}
+                                senderRole={session.user.role}
+                            />
                         </div>
-                        <div onClick={() => setChatBox(false)} className='absolute cursor-pointer right-1 top-4 text-red-700 font-bold -mt-2 mr-2 text-xl'>
+                    ) : (
+                        <div onClick={() => setChatBox(true)} className='absolute flex items-center justify-center flex-col invert right-10 cursor-pointer bottom-16 z-50'>
                             <lord-icon
-                                src="https://cdn.lordicon.com/zxvuvcnc.json"
+                                src="https://cdn.lordicon.com/ayhtotha.json"
                                 trigger="hover"
-                                colors="primary:#000000,secondary:#ffffff"
-                                style={{ 'width': '35px', 'height': '35px' }} />
+                                style={{ width: '60px', height: '60px' }} />
+                            <span className='text-black font-bold -mt-3 -ml-2 text-xl'>Chat</span>
                         </div>
-                        <ChatBox
-                            caseDetails={caseDetails}
-                            senderId={session.user.id}
-                            senderRole={session.user.role}
-                        />
-                    </div>
-                ) : (
-                    <div onClick={() => setChatBox(true)} className='absolute flex items-center justify-center flex-col invert right-10 cursor-pointer bottom-16 z-50'>
-                        <lord-icon
-                            src="https://cdn.lordicon.com/ayhtotha.json"
-                            trigger="hover"
-                            style={{ width: '60px', height: '60px' }} />
-                        <span className='text-black font-bold -mt-3 -ml-2 text-xl'>Chat</span>
-                    </div>
-                )}
-            </div>
+                    )
+                }
+            </div >
         );
     };
 };

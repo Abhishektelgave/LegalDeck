@@ -1,5 +1,6 @@
 import connectDB from "@/app/db/page";
 import Rating from "@/app/models/Rating";
+import Lawyer from '@/app/models/Lawyer'
 
 
 export const GET = async (req) => {
@@ -57,6 +58,13 @@ export async function POST(req) {
       });
 
       await newRating.save();
+
+      await Lawyer.findByIdAndUpdate(
+        lawyerId,
+        { $push: { ratings: rating } },
+        { new: true }
+      );
+
       return new Response(JSON.stringify({ message: "Rating submitted successfully." }), {
         status: 201,
       });

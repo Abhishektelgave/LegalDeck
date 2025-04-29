@@ -1,0 +1,101 @@
+[33mcommit b82ab7f4623793e0e07418ec8918c35b208bf7c6[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Abhishek Telgave <abhishek84621@gmail.com>
+Date:   Tue Apr 29 22:15:07 2025 +0530
+
+    fixed close appointments button
+
+[33mcommit 89aae8d89f1cf4b2363696884146e5991b6f0cc3[m
+Author: Abhishek Telgave <abhishek84621@gmail.com>
+Date:   Tue Apr 29 19:35:20 2025 +0530
+
+    added ratings to lawyers
+
+[33mcommit e1325bbb945419625620310835eba30639468a6f[m
+Author: Abhishek Telgave <abhishek84621@gmail.com>
+Date:   Tue Apr 29 17:03:41 2025 +0530
+
+    updated readme file
+
+[33mcommit bb7f6f383d8ebf5048cfa0d7c3fff2c6f62f39de[m
+Author: Abhishek Telgave <abhishek84621@gmail.com>
+Date:   Tue Apr 29 16:54:00 2025 +0530
+
+    added payment page
+
+[33mcommit 0420d814d9ed08c26ca9f0605bf24344f69974de[m
+Author: Abhishek Telgave <abhishek84621@gmail.com>
+Date:   Mon Apr 28 21:26:42 2025 +0530
+
+    tried to add e-sign
+
+[33mcommit 2a4341c2bc64884688132d6f04bb0f5af339dce1[m
+Author: Abhishek Telgave <abhishek84621@gmail.com>
+Date:   Mon Apr 28 20:00:38 2025 +0530
+
+    upload and send requested documents without E-sign
+
+[33mcommit dd6f5f9c595b660bbb75ebe32d10c66343f9952b[m
+Author: Abhishek Telgave <abhishek84621@gmail.com>
+Date:   Mon Apr 28 16:11:33 2025 +0530
+
+    changed dashboards
+
+[33mcommit e53011f93c407d5d3a1b2229d297355bc33db9e1[m
+Author: Abhishek Telgave <abhishek84621@gmail.com>
+Date:   Mon Apr 28 16:09:41 2025 +0530
+
+    changed Case Model
+
+[33mcommit bb3029b8e6766b346f4fceffffea728fadc3149b[m
+Author: Abhishek Telgave <abhishek84621@gmail.com>
+Date:   Sat Apr 26 03:43:05 2025 +0530
+
+    upload and request for docs from lawyer completed
+
+[33mcommit 80dff2cf74543aa6baac264ef046699ebfe03e05[m
+Author: Abhishek Telgave <abhishek84621@gmail.com>
+Date:   Thu Apr 24 18:09:13 2025 +0530
+
+    updated case progress component
+
+[33mcommit 49bcc85db2d08a858b84360bcfc471dc12f97f09[m
+Author: Abhishek Telgave <abhishek84621@gmail.com>
+Date:   Thu Apr 24 15:20:14 2025 +0530
+
+    chatbox added
+
+[33mcommit 14d6ce2509a834ec9a3ca8a036d1ad588d430f71[m
+Author: Abhishek Telgave <abhishek84621@gmail.com>
+Date:   Wed Apr 23 20:18:10 2025 +0530
+
+    changed Case model
+
+[33mcommit 7929e4725731294ee58418877263c745e07d75f4[m
+Author: Abhishek Telgave <abhishek84621@gmail.com>
+Date:   Tue Apr 22 22:34:52 2025 +0530
+
+    just a commit
+
+[33mcommit b20a99b231126c4beb8433da39e5c4e03117bea3[m
+Author: Abhishek Telgave <abhishek84621@gmail.com>
+Date:   Tue Apr 22 20:54:19 2025 +0530
+
+    Book Appointment related to previous Case
+
+[33mcommit 293a0f0fc2444633ed81de26b8d22c7b5e70c9e6[m
+Author: Abhishek Telgave <abhishek84621@gmail.com>
+Date:   Tue Apr 22 15:38:16 2025 +0530
+
+    Second Commpit till Appointments and Meeting
+
+[33mcommit 05043586ae39dab627fa3cef625f0ec321da85e5[m
+Author: Abhishek Telgave <abhishek84621@gmail.com>
+Date:   Mon Apr 7 15:14:28 2025 +0530
+
+    first commit
+
+[33mcommit ca0a1f41cdb3bef8cafc7ddb40af2be8edec3764[m
+Author: Abhishek Telgave <abhishek84621@gmail.com>
+Date:   Thu Mar 27 14:10:48 2025 +0530
+
+    Initial commit from Create Next App

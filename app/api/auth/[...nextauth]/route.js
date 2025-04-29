@@ -139,6 +139,7 @@ export const authOptions = NextAuth({
           }),
           ...(role === 'lawyer' && {
             close_appoitment: currentUser.close_appoitment,
+            ratings: currentUser.ratings,
             categories: currentUser.categories,
             isApproved: currentUser.lawyer_verified,
             upi: currentUser.upi,

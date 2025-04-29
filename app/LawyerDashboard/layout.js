@@ -6,6 +6,7 @@ import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 import defaultimg from "@/public/images/defaultprofile.png";
 import Loading from "@/app/components/LoadingPage";
+import { FaStar } from "react-icons/fa";
 
 // Lawyer Dashboard Layout
 const LawyerDashboard = ({ children }) => {
@@ -43,6 +44,7 @@ const LawyerDashboard = ({ children }) => {
 
     if (status === "authenticated" && session?.user?.id && pathname === "/LawyerDashboard") {
       fetchAppointments();
+      window.scrollTo(0, 0);
       setCloseApp(session.user.close_appoitment);
     }
   }, [pathname, session, status]);
@@ -76,6 +78,9 @@ const LawyerDashboard = ({ children }) => {
   if (!session) return null;
 
   if (session) {
+    const avg = session.user.ratings.length
+      ? session.user.ratings.reduce((a, b) => a + b, 0) / session.user.ratings.length
+      : 0;
     return (
       <>
         <div className="w-[100vw] min-h-screen relative bg-[#151515] text-[#F1F1F1]">
@@ -95,24 +100,43 @@ const LawyerDashboard = ({ children }) => {
               <p className="text-sm">{session.user.email}</p>
 
               {/* 👇 Approval Status UI */}
-              {session.user.isApproved && (
-                <span
-                  className={`text-xs font-semibold mt-1 px-3 py-1 rounded-full shadow-sm ${session.user.isApproved === "Approved"
-                    ? "bg-green-600 text-white"
-                    : session.user.isApproved === "Rejected"
-                      ? "bg-red-600 text-white"
-                      : "bg-yellow-400 text-black"
-                    }`}
-                  style={{ fontFamily: "var(--font-tektur)" }}
-                >
-                  {session.user.isApproved === "Approved"
-                    ? "Approved"
-                    : session.user.isApproved === "Rejected"
-                      ? "Rejected"
-                      : "Pending Approval"
-                  }
-                </span>
-              )}
+              <div className="flex gap-2">
+                {session.user.isApproved && (
+                  <>
+                    <span
+                      className={`text-xs font-semibold mt-1 px-3 py-1 rounded-full shadow-sm ${session.user.isApproved === "Approved"
+                        ? "bg-green-600 text-white"
+                        : session.user.isApproved === "Rejected"
+                          ? "bg-red-600 text-white"
+                          : "bg-yellow-400 text-black"
+                        }`}
+                      style={{ fontFamily: "var(--font-tektur)" }}
+                    >
+                      {session.user.isApproved === "Approved"
+                        ? "Approved"
+                        : session.user.isApproved === "Rejected"
+                          ? "Rejected"
+                          : "Pending Approval"
+                      }
+                    </span>
+                    {session.user.isApproved === 'Approved' && (
+                      <span>
+                        <div className="flex items-center gap-1">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <FaStar
+                              key={star}
+                              className="cursor-pointer w-4.5 transition-all"
+                              size={28}
+                              color={(avg) >= star ? "#FFFFFF" : "#444"}
+                            />
+                          ))}
+                          {'(' + session.user.ratings.length + ') '}
+                        </div>
+                      </span>
+                    )}
+                  </>
+                )}
+              </div>
             </div>
 
             <div className="flex gap-3 flex-wrap w-[330px]">

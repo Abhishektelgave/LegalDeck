@@ -107,7 +107,7 @@ export default function UploadRequestedDocs({ doc, caseId, refreshDocs }) {
     };
 
     return (
-        <div className="flex items-center justify-between gap-2 w-full">
+        <div className="flex items-center flex-wrap justify-between gap-2 w-full">
             <span className="cursor-default w-[10vw] truncate">
                 {doc.fileName}{doc.needsESign ? ' 🔖' : ''}
             </span>

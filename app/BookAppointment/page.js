@@ -18,6 +18,17 @@ const BookAppointment = () => {
     const [searchResults, setSearchResults] = useState([]);
     const [allLawyers, setAllLawyers] = useState([]);
     const [errorMessage, setErrorMessage] = useState("");
+    const [selectedCategory, setSelectedCategory] = useState("");
+    const [minRating, setMinRating] = useState("");
+
+    const categoriesList = {
+        Murder: { name: 'Murder', fee: 1500 },
+        Accident: { name: 'Accident', fee: 1800 },
+        Divorce: { name: 'Divorce', fee: 2000 },
+        Land_Issues: { name: 'Land Issues', fee: 1200 },
+        Legal_Issues: { name: 'Legal Issues', fee: 1000 },
+      };
+
 
     // Check for Authentication
     useEffect(() => {
@@ -33,7 +44,7 @@ const BookAppointment = () => {
 
         if (searchQuery) {
             try {
-                const res = await fetch(`/api/search?search=${searchQuery}`);
+                const res = await fetch(`/api/search?search=${searchQuery}&category=${selectedCategory}&minRating=${minRating}`);
                 const data = await res.json();
 
                 if (res.status === 404) {
@@ -82,15 +93,38 @@ const BookAppointment = () => {
                 </div>
                 <div className="w-full min-h-[81.7vh] bg-[#000000] text-[#F1F1F1]">
                     <div className="searchBar w-[80vw] mx-auto">
-                        <form onSubmit={handleSearch} method="GET" className=" relative z-[9999] mx-auto p-7 flex items-center justify-center gap-5">
+                        <form onSubmit={handleSearch} method="GET" className="relative z-[9999] mx-auto p-7 flex items-center justify-center gap-5 flex-wrap">
                             <input
-                                className="searchInput z-[999] w-[83%] bg-transparent border-2 border-white rounded-full p-2"
+                                className="searchInput z-[999] w-[300px] bg-transparent border-2 border-white rounded-full p-2"
                                 type="text"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 placeholder="Search for a Lawyer"
                             />
-                            <button type="GET" className="cursor-pointer searchButton z-[999] bg-white text-black rounded-full px-4 py-2">
+
+                            <select
+                                value={selectedCategory}
+                                onChange={(e) => setSelectedCategory(e.target.value)}
+                                className="p-2 rounded bg-white text-black"
+                            >
+                                <option value="">All Categories</option>
+                                {Object.keys(categoriesList).map((key) => (
+                                    <option key={key} value={key}>{categoriesList[key].name}</option>
+                                ))}
+                            </select>
+
+                            <select
+                                value={minRating}
+                                onChange={(e) => setMinRating(e.target.value)}
+                                className="p-2 rounded bg-white text-black"
+                            >
+                                <option value="">Any Rating</option>
+                                {[5, 4, 3, 2, 1].map((r) => (
+                                    <option key={r} value={r}>{r}★ & up</option>
+                                ))}
+                            </select>
+
+                            <button type="submit" className="cursor-pointer searchButton z-[999] bg-white text-black rounded-full px-4 py-2">
                                 Search
                             </button>
                         </form>

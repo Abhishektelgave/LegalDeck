@@ -110,7 +110,7 @@ const Admin = () => {
         </div>
         <button
           onClick={() => signOut({ callbackUrl: '/Auth/Admin' })}
-          className="px-4 py-2 bg-white text-black rounded-full font-semibold hover:bg-gray-200 transition text-sm md:text-base"
+          className="px-4 py-2 bg-white cursor-pointer text-black rounded-full font-semibold hover:bg-gray-200 transition text-sm md:text-base"
         >
           Sign Out
         </button>
@@ -120,31 +120,28 @@ const Admin = () => {
       <div className="flex flex-wrap justify-center mt-6 gap-3 px-4">
         <button
           onClick={() => setActiveTab('all')}
-          className={`px-6 py-2 rounded-full text-sm font-semibold ${
-            activeTab === 'all'
+          className={`px-6 py-2 cursor-pointer rounded-full text-sm sm:text-lg font-semibold ${activeTab === 'all'
               ? 'bg-white text-black'
               : 'bg-white/10 text-white hover:bg-white/20'
-          }`}
+            }`}
         >
           All Lawyers
         </button>
         <button
           onClick={() => setActiveTab('new')}
-          className={`px-6 py-2 rounded-full text-sm font-semibold ${
-            activeTab === 'new'
+          className={`px-6 py-2 cursor-pointer rounded-full text-sm sm:text-lg font-semibold ${activeTab === 'new'
               ? 'bg-white text-black'
               : 'bg-white/10 text-white hover:bg-white/20'
-          }`}
+            }`}
         >
           New Applicants
         </button>
         <button
           onClick={() => setActiveTab('rejected')}
-          className={`px-6 py-2 rounded-full text-sm font-semibold ${
-            activeTab === 'rejected'
+          className={`px-6 py-2 cursor-pointer rounded-full text-sm sm:text-lg font-semibold ${activeTab === 'rejected'
               ? 'bg-white text-black'
               : 'bg-white/10 text-white hover:bg-white/20'
-          }`}
+            }`}
         >
           Rejected Applicants
         </button>

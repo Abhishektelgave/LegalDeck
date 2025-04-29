@@ -103,7 +103,7 @@ const GiveRating = () => {
 
         <button
           type="submit"
-          className="bg-[#e7e7e7] text-[#000000] py-2 rounded-lg hover:bg-[#ffffff] transition-all"
+          className="bg-[#e7e7e7] cursor-pointer text-[#000000] py-2 rounded-lg hover:bg-[#ffffff] transition-all"
         >
           Submit Rating
         </button>

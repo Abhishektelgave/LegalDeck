@@ -3,36 +3,38 @@ import Lawyer from '@/app/models/Lawyer';
 
 export const GET = async (req) => {
   try {
+    await dbConnect();
 
-    // Connect to the database
-    const connection = await dbConnect();
-    if (!connection) {
-      return new Response(JSON.stringify({ message: 'Database connection failed' }), { status: 500 });
+    const search = req.nextUrl.searchParams.get('search') || '';
+    const category = req.nextUrl.searchParams.get('category') || '';
+    const minRating = parseFloat(req.nextUrl.searchParams.get('minRating')) || 0;
+
+    const filters = {
+      name: { $regex: search, $options: "i" },
+      lawyer_verified: "Approved"
+    };
+
+    if (category) {
+      filters[`categories.${category}`] = { $exists: true };
     }
 
-    // Extract the search query
-    const search = req.nextUrl.searchParams.get('search');  // Get the search param from the URL
+    const allLawyers = await Lawyer.find(filters);
 
-    if (!search) {
-      return new Response(JSON.stringify({ message: 'Search query missing' }), { status: 400 });
-    }
-
-    // Debug line 
-
-    // Find users based on the search query
-    const lawyers = await Lawyer.find({
-      name: {
-        $regex: search,
-        $options: "i", // Case-insensitive search
-      },
-      lawyer_verified: "Approved",
+    // Filter by rating manually if needed
+    const filteredByRating = allLawyers.filter(lawyer => {
+      const ratings = lawyer.ratings || [];
+      const avg = ratings.length
+        ? ratings.reduce((a, b) => a + b, 0) / ratings.length
+        : 0;
+      return avg >= minRating;
     });
 
-    if (!lawyers.length) {
+    if (filteredByRating.length === 0) {
       return new Response(JSON.stringify({ message: 'No lawyers found' }), { status: 404 });
     }
 
-    return new Response(JSON.stringify(lawyers), { status: 200 });
+    return new Response(JSON.stringify(filteredByRating), { status: 200 });
+
   } catch (error) {
     return new Response(JSON.stringify({ message: 'Server error :' + error }), { status: 500 });
   }

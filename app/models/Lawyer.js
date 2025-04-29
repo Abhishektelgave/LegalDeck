@@ -5,7 +5,7 @@ const LawyerSchema = new mongoose.Schema({
   name: String,
   email: { type: String, unique: true },
   password: String,
-  ratings: { type: Array, default: [] },
+  ratings: { type: [Number], default: [] },
   categories: { type: Object, default: {} },
   fileName: String,
   lawyer_verified: {
