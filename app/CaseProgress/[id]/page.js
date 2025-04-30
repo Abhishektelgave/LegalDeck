@@ -181,7 +181,7 @@ const CaseProcessing = ({ params }) => {
                 </div>
                 {
                     chatBox ? (
-                        <div className={`fixed right-10 bottom-5 z-50`}>
+                        <div className={`fixed right-6 sm:right-10 bottom-5 z-50`}>
                             <div className='absolute top-4 bg-white w-full h-12 font-bold -mt-4 rounded-t-4xl text-xl'>
                                 <div className='text-black flex items-center gap-2 ml-5 mt-2'>
                                     <Image
