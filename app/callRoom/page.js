@@ -69,10 +69,10 @@ const CallRoom = () => {
 
       jitsi.addEventListener('readyToClose', async () => {
         if (session?.user?.role === 'lawyer') {
-          // const res = await fetch('/api/book/appointment/updateAppointment/completedAppt', {
-          //   method:"POST",
-          //   body: JSON.stringify({ id: appt._id, status: 'completed' })
-          // })
+          const res = await fetch('/api/book/appointment/updateAppointment/completedAppt', {
+            method: "POST",
+            body: JSON.stringify({ id: appt._id, status: 'completed' })
+          })
           router.push(`/CaseProgress/${appt.caseId}`);
         } else {
           router.push('/UserDashboard');

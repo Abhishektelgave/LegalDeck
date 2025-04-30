@@ -169,25 +169,25 @@ const BookingForm = ({ params }) => {
         <div className="flex justify-center mt-6 gap-4">
           <button
             onClick={() => setActiveTab('New Case')}
-            className={`px-6 py-2 rounded-full cursor-pointer font-semibold ${activeTab === 'New Case' ? 'bg-white text-black' : 'bg-white/10 text-white hover:bg-white/20'}`}
+            className={`px-6 py-2 rounded-full cursor-pointer text-sm sm:text-lg font-semibold ${activeTab === 'New Case' ? 'bg-white text-black' : 'bg-white/10 text-white hover:bg-white/20'}`}
           >
             New Case
           </button>
           <button
             onClick={() => setActiveTab('Continue Case')}
-            className={`px-6 py-2 rounded-full cursor-pointer font-semibold ${activeTab === 'Continue Case' ? 'bg-white text-black' : 'bg-white/10 text-white hover:bg-white/20'}`}
+            className={`px-6 py-2 rounded-full cursor-pointer text-sm sm:text-lg font-semibold ${activeTab === 'Continue Case' ? 'bg-white text-black' : 'bg-white/10 text-white hover:bg-white/20'}`}
           >
             Continue Case
           </button>
         </div>
 
         {/* Main Form */}
-        <main className="w-[50vw]">
+        <main className="w-[80vw] md:w-[40vw] sm:w-[50vw]">
           {message ? (
             <p className="text-center text-red-400">{message}</p>
           ) : activeTab === 'New Case' ? (
             <div className="w-full mx-auto bg-[#1e1e1e] text-white p-6 rounded-lg shadow-md">
-              <h2 className="text-2xl font-bold mb-4">
+              <h2 className=" text-sm sm:text-lg  font-bold mb-4">
                 Book Appointment with {lawyer.name}
               </h2>
               <form onSubmit={handleSubmit} className="space-y-4">
@@ -278,7 +278,7 @@ const BookingForm = ({ params }) => {
             </div>
           ) : (
             <div className="w-full mx-auto bg-[#1e1e1e] text-white p-6 rounded-lg shadow-md">
-              <h2 className="text-2xl font-bold mb-4">
+              <h2 className=" text-sm sm:text-lg  font-bold mb-4">
                 Book Next Appointment with {lawyer.name}
               </h2>
               <form onSubmit={handleSubmit} className="space-y-4">

@@ -44,7 +44,6 @@ const LawyerDashboard = ({ children }) => {
 
     if (status === "authenticated" && session?.user?.id && pathname === "/LawyerDashboard") {
       fetchAppointments();
-      window.scrollTo(0, 0);
       setCloseApp(session.user.close_appoitment);
     }
   }, [pathname, session, status]);
@@ -263,7 +262,7 @@ const LawyerDashboard = ({ children }) => {
         ) : (
           <button
             onClick={() => handleAction("true")}
-            className="fixed z-[10000] cursor-pointer bottom-6 right-6 bg-[#e0e0e0] hover:bg-[#ffffff] hover:text-[#000000] text-[#181818] px-6 py-3 rounded-full shadow-lg flex items-center gap-2 text-sm md:text-base transition-all ease-in-out duration-200"
+            className="fixed z-[10000] cursor-pointer bottom-6 right-6 bg-[#e0e0e0] hover:bg-[#ffffff] hover:text-[#000000] text-[#181818] px-6 py-3 rounded-full shadow-lg flex items-center gap-2 text-sm sm:text-lg md:text-base transition-all ease-in-out duration-200"
             style={{ fontFamily: "var(--font-tektur)" }}
           >
             <span>Close Appointment</span>

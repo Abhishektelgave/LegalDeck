@@ -32,11 +32,11 @@ export default function LawyerUploadComponent({ caseDetails, onUploaded }) {
 
     return (
       <div className="flex flex-col items-center justify-center border-2 border-white border-dotted p-4 gap-2">
-        <input type="file" onChange={e => setFile(e.target.files?.[0] || null)} />
+        <input type="file" className='ml-30 md:ml-10 sm:ml-15' onChange={e => setFile(e.target.files?.[0] || null)} />
         <label className="flex items-center gap-2">
           <input
             type="checkbox"
-            checked={needsESign}
+            checked={needsESign}  
             onChange={e => setNeedsESign(e.target.checked)}
           />
           Request E-Signature

@@ -88,10 +88,10 @@ const CaseProcessing = ({ params }) => {
         }
     };
 
-    const gotoDashboard = (session)=>{
-        if(session.user.role === 'user'){
+    const gotoDashboard = (session) => {
+        if (session.user.role === 'user') {
             router.push('/UserDashboard')
-        }else{
+        } else {
             router.push('/LawyerDashboard');
         }
     }
@@ -111,11 +111,11 @@ const CaseProcessing = ({ params }) => {
     if (session) {
         return (
             <div className='relative min-h-[98.3vh] cursor-default bg-black text-white'>
-                <div className="head flex mx-10 items-center justify-between">
+                <div className="flex items-center m-2 justify-between ">
                     <Header />
                     <button
-                        onClick={()=>gotoDashboard(session)}
-                        className="flex items-center z-[9999] justify-center cursor-pointer hover:-translate-y-1 hover:text-[#000000] bg-[#dcdcdc] text-[#121212] font-semibold px-5 py-2 mr-10 rounded-full shadow-md hover:bg-[#ffffff] transition-all ease-in-out duration-150"
+                        onClick={() => gotoDashboard(session)}
+                        className="flex items-center justify-center cursor-pointer hover:-translate-y-1 hover:text-[#000000] bg-[#dcdcdc] text-[#121212] font-semibold px-5 py-2 sm:mr-5 rounded-full shadow-md hover:bg-[#ffffff] transition-all ease-in-out duration-150"
                     >
                         Dashboard
                     </button>
@@ -125,12 +125,12 @@ const CaseProcessing = ({ params }) => {
                         <div className='flex items-center justify-center gap-5 py-4'>
                             <button
                                 onClick={() => changeCaseStatus('Active')}
-                                className='px-4 cursor-pointer py-1 hover:bg-[#dcdcdc] rounded-full bg-white text-black text-xl'>
+                                className='px-4  cursor-pointer py-1 hover:bg-[#dcdcdc] rounded-full bg-white text-black sm:text-xl text-sm'>
                                 Activate Case
                             </button>
                             <button
                                 onClick={() => changeCaseStatus('Rejected')}
-                                className='px-4 cursor-pointer py-1 hover:bg-[#dcdcdc] rounded-full bg-white text-black text-xl'>
+                                className='px-4 cursor-pointer py-1 hover:bg-[#dcdcdc] rounded-full bg-white text-black sm:text-xl text-sm'>
                                 Reject Case
                             </button>
                         </div>
@@ -142,7 +142,7 @@ const CaseProcessing = ({ params }) => {
                         <div className='flex flex-col items-center justify-center gap-5 py-4'>
                             <button
                                 onClick={() => handlePayment(id)}
-                                className='px-4 cursor-pointer py-1 hover:bg-[#a1e89a] rounded-full bg-yellow-300 text-black text-xl'>
+                                className='px-4 cursor-pointer py-1 hover:bg-[#a1e89a] rounded-full bg-yellow-300 text-black sm:text-xl text-sm'>
                                 Payment Pending
                             </button>
                             <p>You will be redirected in
@@ -164,9 +164,9 @@ const CaseProcessing = ({ params }) => {
                     )
                 }
 
-                <div className="flex flex-col md:flex-row mt-5 p-6 gap-6">
+                <div className="flex flex-col md:flex-row p-6 gap-6">
                     <div className={`w-full transition-all duration-300 relative ${chatBox ? 'md:w-34/50' : 'md:w-47/50 '}`}>
-                        <div className="absolute right-6 top-7 z-10">
+                        <div className="absolute right-2 sm:right-6 top-5 sm:top-7 z-10">
                             <button
                                 onClick={() => setShowCase(prev => !prev)}
                                 className='px-4 py-1 mb-4 cursor-pointer rounded-full bg-blue-500 text-white hover:bg-blue-700 text-sm'>
@@ -182,7 +182,7 @@ const CaseProcessing = ({ params }) => {
 
                 {
                     chatBox ? (
-                        <div className='absolute right-5 top-18 z-50'>
+                        <div className={`absolute ${(caseDetails.status === "Not Started" && session.user.role !== 'user') ? 'left-0 md:right-5 sm:right-5 top-34' : 'left-3 md:right-5 sm:right-5 top-18'} w-[90vw] z-50`}>
                             <div className='absolute top-4 bg-white w-full h-12 font-bold -mt-4 rounded-t-4xl text-xl'>
                                 <div className='text-black flex items-center gap-2 ml-5 mt-2'>
                                     <Image
@@ -210,7 +210,7 @@ const CaseProcessing = ({ params }) => {
                             />
                         </div>
                     ) : (
-                        <div onClick={() => setChatBox(true)} className='absolute flex items-center justify-center flex-col invert right-10 cursor-pointer bottom-16 z-50'>
+                        <div onClick={() => setChatBox(true)} className={`absolute flex items-center justify-center flex-col invert ${(caseDetails.status === "Not Started" && session.user.role !== 'user') ? ' right-6 sm:right-10 bottom-6 sm:bottom-6' : 'right-6 sm:right-10 bottom-10 sm:bottom-16'} cursor-pointer  z-50`}>
                             <lord-icon
                                 src="https://cdn.lordicon.com/ayhtotha.json"
                                 trigger="hover"

@@ -11,7 +11,7 @@ const GiveRating = () => {
   const router = useRouter();
 
   const [category, setCategory] = useState("");
-  const [rating, setRating] = useState(5);
+  const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(null);
   const [comment, setComment] = useState("");
   const [submitMsg, setSubmitMsg] = useState("");
@@ -64,7 +64,7 @@ const GiveRating = () => {
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="bg-[#1f1f1f] text-white border border-[#444] p-2 rounded-lg"
+            className="bg-[#1f1f1f] text-white border fke border-[#444] p-2 rounded-lg"
           >
             <option value="">-- Choose a category --</option>
             {Object.entries(lawyer.categories).map(([key, value]) => (

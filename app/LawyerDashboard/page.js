@@ -64,6 +64,7 @@ const LawyerDashboard = () => {
   };
 
   const handleStartCall = (appointment) => {
+    setAppt(appointment)
     router.push(`/callRoom?roomId=${appointment._id}`);
   };
 
@@ -145,14 +146,14 @@ const LawyerDashboard = () => {
             >
               View Details
             </button>
-            {isWithinCallWindow(nextAppointment.date, nextAppointment.time, nextAppointment.duration) && (
+            {/* {isWithinCallWindow(nextAppointment.date, nextAppointment.time, nextAppointment.duration) && ( */}
               <button
                 onClick={() => handleStartCall(nextAppointment)}
                 className="bg-white cursor-pointer text-black px-4 py-2 rounded hover:bg-gray-300 transition duration-200 text-sm"
               >
                 Join Video Call
               </button>
-            )}
+            {/* )} */}
           </div>
         </div>
       )}

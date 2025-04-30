@@ -12,7 +12,7 @@ const ProfileContainer = ({ lawyer }) => {
     : 0;
 
   return (
-    <Link href={{ pathname: `/BookAppointment/${lawyer.name}` }} className="profileContain z-[999] relative flex items-center p-2 border border-[#FF6F61] rounded-lg w-fit">
+    <Link href={{ pathname: `/BookAppointment/${lawyer.name}` }} className="profileContain z-[999] relative flex items-center p-2 border border-[#FF6F61] rounded-lg w-[80vw] sm:w-fit">
       <div className="pp flex gap-2">
         <Image src={defaultImg} width={50} height={50} className='rounded-full' alt="Profile Picture" />
         <div className="content">

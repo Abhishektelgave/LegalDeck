@@ -42,7 +42,7 @@ const Cases = () => {
   }, [session]);
 
   return (
-    <div className="relative w-full min-h-screen bg-[#151515] p-8 text-white">
+    <div className="relative w-full min-h-screen bg-[#151515] p-4 sm:p-8 text-white">
       <h1 className="text-3xl font-bold mb-6 border-b border-white/10 pb-4">
         Your Cases
       </h1>

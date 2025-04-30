@@ -40,7 +40,7 @@ const ChatBox = ({ caseDetails, senderId, senderRole }) => {
   };
 
   return (
-    <div className="h-[85vh] w-[30vw] bg-[#000000] rounded-4xl flex flex-col shadow-lg overflow-hidden border-2 border-[#FFFFFF]">
+    <div className="h-[85vh] w-full md:w-[50vw] sm:w-[30vw] bg-[#000000] rounded-4xl flex flex-col shadow-lg overflow-hidden border-2 border-[#FFFFFF]">
 
       {/* Messages Area */}
       <div

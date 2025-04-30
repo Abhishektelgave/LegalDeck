@@ -36,18 +36,18 @@ export default function LawyerDocumentComponent({ caseDetails }) {
             fetchDocs();
         }
     }, [caseDetails._id]);
-      
+
     const renderDocTags = (docs, fallbackText) => (
         docs.length > 0 ? docs.map((d) => (
             <span
                 key={d.fileName}
                 onClick={() => { setCurrentUrl(d.path); setShowModal(true); }}
-                className="bg-white text-black px-3 py-1 border rounded-2xl cursor-pointer hover:bg-gray-100"
+                className="bg-white text-black text-sm px-3 py-1 border rounded-2xl cursor-pointer hover:bg-gray-100"
             >
                 {d.fileName}{d.needsESign ? ' 🔖' : ''}
             </span>
         )) : (
-            <span className="bg-white text-black px-3 py-1 border rounded-2xl">
+            <span className="bg-white  text-sm  text-black px-3 py-1 border rounded-2xl">
                 {fallbackText}
             </span>
         )
@@ -57,12 +57,12 @@ export default function LawyerDocumentComponent({ caseDetails }) {
         docs.length > 0 ? docs.map((d) => (
             <span
                 key={d.fileName}
-                className="bg-white text-black px-3 py-1 border rounded-2xl cursor-pointer hover:bg-gray-100"
+                className="bg-white text-black px-3 text-sm py-1 border rounded-2xl cursor-pointer hover:bg-gray-100"
             >
                 {d.fileName}{d.needsESign ? ' 🔖' : ''}
             </span>
         )) : (
-            <span className="bg-white text-black px-3 py-1 border rounded-2xl">
+            <span className="bg-white text-black  text-sm  px-3 py-1 border rounded-2xl">
                 {fallbackText}
             </span>
         )
@@ -71,34 +71,38 @@ export default function LawyerDocumentComponent({ caseDetails }) {
     if (session && session.user.role === 'lawyer') {
         return (
             <div className="bg-black border border-white/30 p-6 rounded-xl shadow-md hover:shadow-white/40 transition-all duration-300 ease-in-out">
-                <h2 className="text-2xl font-semibold text-white mb-6">Documents</h2>
-                <div className="grid grid-cols-2 gap-6 mb-8">
-                    <div className="space-y-2">
-                        <p className="text-white"><strong>Sent Docs:</strong></p>
-                        <div className="flex flex-wrap items-center gap-2">
-                            {renderDocTags(lawyerdocs, "No documents sent yet.")}
+                <h2 className="text-sm sm:text-2xl text-left  font-semibold mb-4 sm:text-center text-white">Documents</h2>
+                <div className="flex w-full sm:flex-row flex-col p-2 gap-4">
+                    <div className='flex flex-col flex-wrap gap-4 sm:w-[48vw]'>
+                        <div className="space-y-2">
+                            <p className="text-white text-sm  sm:text-lg"><strong>Sent Docs:</strong></p>
+                            <div className="flex flex-wrap items-center gap-2">
+                                {renderDocTags(lawyerdocs, "No documents sent yet.")}
+                            </div>
+                        </div>
+                        <div className="space-y-2">
+                            <p className="text-white text-sm sm:text-lg"><strong>Recived Docs:</strong></p>
+                            <div className="flex flex-wrap items-center gap-2">
+                                {renderDocTags(userdocs, "No documents sent by user yet.")}
+                            </div>
                         </div>
                     </div>
-                    <div className="space-y-2">
-                        <p className="text-white"><strong>Recived Docs:</strong></p>
-                        <div className="flex flex-wrap items-center gap-2">
-                            {renderDocTags(userdocs, "No documents sent by user yet.")}
+                    <div className='flex flex-col flex-wrap gap-4 sm:w-[48vw]'>
+                        <div className="space-y-2">
+                            <p className="text-white text-sm sm:text-lg"><strong>Requested Docs for e-sign:</strong></p>
+                            <div className="flex flex-wrap items-centerRequested gap-2">
+                                {renderDocTags(lawyerEsignrequestdocs, "No documents Requested for E-sign.")}
+                            </div>
                         </div>
-                    </div>
-                    <div className="space-y-2">
-                        <p className="text-white"><strong>Requested Docs for e-sign:</strong></p>
-                        <div className="flex flex-wrap items-centerRequested gap-2">
-                            {renderDocTags(lawyerEsignrequestdocs, "No documents Requested for E-sign.")}
-                        </div>
-                    </div>
-                    <div className="space-y-2">
-                        <p className="text-white"><strong>Requested Docs:</strong></p>
-                        <div className="flex flex-wrap items-center gap-2">
-                            {renderRequestedDocTags(lawyerEsigndocs, "No documents Requested.")}
+                        <div className="space-y-2">
+                            <p className="text-white text-sm sm:text-lg"><strong>Requested Docs:</strong></p>
+                            <div className="flex flex-wrap items-center gap-2">
+                                {renderRequestedDocTags(lawyerEsigndocs, "No documents Requested.")}
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div className="grid grid-cols-2 gap-6">
+                <div className="flex flex-col sm:grid sm:grid-cols-2 gap-6">
                     {/* Upload */}
                     <div className="bg-black/80 border border-white/20 p-4 rounded-xl">
                         <p className="text-white mb-2"><strong>Upload Document</strong></p>

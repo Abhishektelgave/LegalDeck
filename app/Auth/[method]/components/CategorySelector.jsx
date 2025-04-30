@@ -45,9 +45,8 @@ export default function CategorySelector({ value = {}, onChange }) {
   };
 
   return (
-    <div className="space-y-4 w-[25vw]">
+    <div className="space-y-4 w-50 sm:w-[24vw]">
       <label className="block font-medium">Categories</label>
-
       {/* Selected Categories */}
       <div className="flex flex-wrap gap-2 mt-2 border border-gray-300 rounded-lg p-2 min-h-[40px]">
         {Object.keys(selected).map((key) => (

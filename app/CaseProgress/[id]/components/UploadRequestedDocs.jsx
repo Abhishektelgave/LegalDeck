@@ -107,13 +107,12 @@ export default function UploadRequestedDocs({ doc, caseId, refreshDocs }) {
     };
 
     return (
-        <div className="flex items-center flex-wrap justify-between gap-2 w-full">
-            <span className="cursor-default w-[10vw] truncate">
+        <div className="flex items-left sm:items-center sm:flex-row flex-col  gap-2">
+            <span className="cursor-default sm:w-[10vw] truncate">
                 {doc.fileName}{doc.needsESign ? ' 🔖' : ''}
             </span>
-
             {!docPresent ? (
-                <>
+                <div className='flex flex-col sm:flex-row items-start w-[10vw] sm:w-full'>
                     <input
                         type="file"
                         className="cursor-pointer"
@@ -126,7 +125,7 @@ export default function UploadRequestedDocs({ doc, caseId, refreshDocs }) {
                     >
                         {loading ? "Uploading..." : "Upload"}
                     </button>
-                </>
+                </div>
             ) : doc.needsESign ? (
                 <button
                     onClick={() => handelESign(doc)}

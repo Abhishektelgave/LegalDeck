@@ -86,10 +86,10 @@ export default function LawyerDocumentComponent({ caseDetails }) {
 
     if (session && session.user.role === 'user') {
         return (
-            <div className="bg-black border border-white/30 p-6 rounded-xl shadow-md hover:shadow-white/40 transition-all duration-300 ease-in-out">
+            <div className="bg-black border border-white/30 p-4 rounded-xl shadow-md hover:shadow-white/40 transition-all duration-300 ease-in-out">
                 <h2 className="text-2xl font-semibold text-white mb-6">Documents</h2>
-                <div className="grid grid-cols-2 gap-6 mb-8">
-                    <div className="space-y-2">
+                <div className="flex flex-col sm:flex-row gap-4 p-2 mb-2">
+                    <div className="space-y-2 sm:w-[48vw]">
                         <p className="text-white"><strong>recived:</strong></p>
                         <div className="flex flex-wrap items-center gap-2">
                             {renderDocTags(lawyerdocs, "No documents sent by lawyer yet.")}
@@ -102,16 +102,16 @@ export default function LawyerDocumentComponent({ caseDetails }) {
                         </div>
                     </div>
                 </div>
-                <div className="grid grid-cols-2 gap-6">
+                <div className="flex flex-col sm:flex-row gap-4  mb-2">
                     {/* Requested Docs Upload */}
-                    <div className="bg-black/80 border border-white/20 p-4 rounded-xl">
+                    <div className="bg-black/80 h-full sm:w-[48vw] border border-white/20 p-4 rounded-xl">
                         <p className="text-white mb-2"><strong>Requested Documents for E-sing</strong></p>
                         <div className="flex flex-wrap items-center gap-2">
                             {renderEsignDocRequestTags(lawyerEsignrequestdocs, "No documents sent yet.")}
                         </div>
                     </div>
 
-                    <div className="bg-black/80 border border-white/20 p-4 rounded-xl">
+                    <div className="bg-black/80 h-full  sm:w-[48vw] border border-white/20 p-4 rounded-xl">
                         <p className="text-white mb-2"><strong>Request Document</strong></p>
                         <div className="flex flex-wrap items-center gap-2">
                             {renderRequestedDocTags(lawyerEsigndocs, "No Requested documents yet.")}

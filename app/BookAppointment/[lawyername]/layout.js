@@ -84,73 +84,75 @@ const lawyername = ({ children, params }) => {
     if (session && searchResult) {
         return (
             <LawyerContext.Provider value={searchResult}>
-                <div className="w-full min-h-screen relative bg-[#121212] text-[#F1F1F1]">
-                    <div className="flex items-center justify-between ">
-                        {/* Profile Section */}
-                        <div className="profile relative flex flex-wrap items-center px-2 md:px-10 lg:px-20 py-4 gap-6">
-                            <Image
-                                className="rounded-full"
-                                src={defaultimg}
-                                alt="Profile"
-                                width={80}
-                                height={80}
-                                unoptimized={defaultimg ? false : true}
-                            />
-                            <div className="profileData flex flex-col items-start relative z-[9999]">
-                                <Link href={`/BookAppointment/${lawyername}`} className="text-2xl md:text-3xl font-bold">
-                                    <SpannedText text={searchResult.name} />
-                                </Link>
-                                <p className="text-sm">{searchResult.email}</p>
-                            </div>
-                            <div className="flex gap-3 flex-wrap w-[330px]">
-                                {searchResult.categories && (
-                                    <div className="flex gap-3 flex-wrap w-full md:w-auto mt-2">
-                                        {Object.entries(searchResult.categories).map(([key, value], index) => (
-                                            value?.name && (
-                                                <span
-                                                    key={index}
-                                                    className="px-3 py-1 cursor-pointer border-2 border-[#fefefe] hover:text-[#161616] hover:bg-[#ebebeb] text-[#ebebeb] flex items-center justify-center rounded-lg text-sm font-medium hover:scale-105 transition-all"
-                                                    style={{ fontFamily: "var(--font-tektur)" }}
-                                                >
-                                                    {value.name}
-                                                </span>
-                                            )
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
+                <div className="w-[100vw] min-h-screen relative bg-[#121212] text-[#F1F1F1] ">
+                    {/* Profile Section */}
+                    <div className="profile relative flex flex-wrap items-center px-2 md:px-10 lg:px-20 py-4 gap-6">
+                        <Image
+                            className="rounded-full"
+                            src={defaultimg}
+                            alt="Profile"
+                            width={80}
+                            height={80}
+                            unoptimized={defaultimg ? false : true}
+                        />
+                        <div className="profileData flex flex-col items-start relative z-[999]">
+                            <Link href={`/BookAppointment/${lawyername}`} className="text-2xl md:text-3xl font-bold">
+                                <SpannedText text={searchResult.name} />
+                            </Link>
+                            <p className="text-sm">{searchResult.email}</p>
+                        </div>
+                        <div className="flex gap-3 flex-wrap w-[330px]">
+                            {searchResult.categories && (
+                                <div className="flex gap-3 flex-wrap w-full md:w-auto mt-2">
+                                    {Object.entries(searchResult.categories).map(([key, value], index) => (
+                                        value?.name && (
+                                            <span
+                                                key={index}
+                                                className="px-3 py-1 cursor-pointer border-2 border-[#fefefe] hover:text-[#161616] hover:bg-[#ebebeb] text-[#ebebeb] flex items-center justify-center rounded-lg text-sm font-medium hover:scale-105 transition-all"
+                                                style={{ fontFamily: "var(--font-tektur)" }}
+                                            >
+                                                {value.name}
+                                            </span>
+                                        )
+                                    ))}
+                                </div>
+                            )}
+                        </div>
 
-                            <div className="flex gap-4 flex-wrap">
-                                {searchResult.close_appoitment ?
+                        <div className="flex gap-4 flex-wrap">
+                            {searchResult.close_appoitment ?
                                 <p className="w-[19vw] text-yellow-200">
                                     Lawyer has temporarily closed appointments.
                                 </p>
                                 :
-                                    <Link
-                                        href={`/BookAppointment/${lawyername}/BookingForm`}
-                                        className="flex items-center cursor-pointer z-[9999] border border-[#dcdcdc] hover:border-[#ffffff] px-2 py-0.5     rounded-lg bg-[#dcdcdc] text-xl hover:-translate-y-1 transition-all ease-in-out duration-150 hover:bg-[#ffffff]  text-[#121212] "
-                                        style={{ fontFamily: "var(--font-tektur)" }}>
-                                        <span>BookAppointment</span>
-                                    </Link>
-                                }
+                                <Link
+                                    href={`/BookAppointment/${lawyername}/BookingForm`}
+                                    className="flex items-center cursor-pointer z-[9999] border border-[#dcdcdc] hover:border-[#ffffff] px-2 py-0.5     rounded-lg bg-[#dcdcdc] text-xl hover:-translate-y-1 transition-all ease-in-out duration-150 hover:bg-[#ffffff]  text-[#121212] "
+                                    style={{ fontFamily: "var(--font-tektur)" }}>
+                                    <span>BookAppointment</span>
+                                </Link>
+                            }
+                        </div>
+                        <div className="ml-auto flex items-center gap-4">
+                            <div className="relative">
+                                <Link
+                                    href={'/UserDashboard'}
+                                    className="ml-auto flex items-center z-[9999] justify-center cursor-pointer hover:-translate-y-1 hover:text-[#000000] bg-[#dcdcdc] text-[#121212] font-semibold px-5 py-2 rounded-full shadow-md hover:bg-[#ffffff] transition-all ease-in-out duration-150"
+                                >
+                                    Dashboard
+                                </Link>
                             </div>
                         </div>
-                        <Link
-                            href={'/UserDashboard'}
-                            className="flex items-center z-[9999] justify-center cursor-pointer hover:-translate-y-1 hover:text-[#000000] bg-[#dcdcdc] text-[#121212] font-semibold px-5 py-2 mr-10 rounded-full shadow-md hover:bg-[#ffffff] transition-all ease-in-out duration-150"
-                        >
-                            Dashboard
-                        </Link>
                     </div>
 
                     <div className="bg-[#FF6F61] opacity-25 mx-auto h-[1px] w-[95vw]"></div>
 
                     {/* Back Button */}
-                    {pathname !== `/BookAppointment/${lawyername}` && (
+                    {/* {pathname !== `/BookAppointment/${lawyername}` && (
                         <Link href={`/BookAppointment/${lawyername}`} className="back absolute left-10 z-[999]">
                             <Image src={backImg} width={30} alt="Back" className="backImg invert" />
                         </Link>
-                    )}
+                    )} */}
 
                     {/* Main Content */}
                     <div className="tea flex flex-col items-center justify-center gap-5 w-full pt-5 pb-5 px-10">

@@ -34,11 +34,11 @@ const ReviewPage = () => {
             ) : reviews.length === 0 ? (
                 <p className="text-center text-[#B0B0B0]">No reviews yet.</p>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="sm:grid flex flex-col sm:grid-cols-1 md:grid-cols-2 -ml-2 gap-2 sm:gap-4">
                     {reviews.map((review, idx) => (
                         <div
                             key={idx}
-                            className={`border border-[#444] p-4 rounded-lg bg-[#1f1f1f] shadow-md hover:shadow-[0_0_4px_#FFFFFF] transition-shadow ${reviews.length % 2 !== 0 && idx === reviews.length - 1 ? "col-span-2 w-[50vw] mx-auto justify-center" : ""
+                            className={`border border-[#444] p-4 rounded-lg bg-[#1f1f1f] shadow-md hover:shadow-[0_0_4px_#FFFFFF] transition-shadow ${reviews.length % 2 !== 0 && idx === reviews.length - 1 ? "col-span-2 sm:w-[50vw] sm:mx-auto sm:justify-center" : ""
                                 }`}
                         >
                             <div className="flex items-center justify-between mb-2">

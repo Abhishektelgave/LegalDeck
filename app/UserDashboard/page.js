@@ -74,7 +74,7 @@ const UserDashboard = () => {
   }
 
   return (
-    <div className="relative w-full min-h-screen bg-[#151515] p-8 text-white">
+    <div className="relative w-full min-h-screen bg-[#151515] p-4 sm:p-8 text-white">
       <h1 className="text-3xl font-bold mb-6 border-b border-white/10 pb-4">
         Next Appointment
       </h1>
@@ -85,7 +85,7 @@ const UserDashboard = () => {
       ) : !nextAppointment ? (
         <p className="text-yellow-400">No next appointment listed.</p>
       ) : (
-        <div className="bg-black border w-[50vw] mx-auto border-white/30 p-6 rounded-xl shadow-md hover:shadow-white/40 transition-all duration-350 ease-in-out relative group">
+        <div className="bg-black border w-[80vw] sm:w-[50vw] mx-auto border-white/30 p-4 sm:p-6 rounded-xl shadow-md hover:shadow-white/40 transition-all duration-350 ease-in-out relative group">
           <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl pointer-events-none" />
 
           <div className="flex justify-between items-center mb-4">

@@ -82,11 +82,11 @@ const BookAppointment = () => {
     if (session) {
         return (
             <>
-                <div className="flex items-center justify-between ">
+                <div className="flex items-center m-2 justify-between ">
                     <Header />
                     <Link
                         href={'/UserDashboard'}
-                        className="flex items-center z-[9999] justify-center cursor-pointer hover:-translate-y-1 hover:text-[#000000] bg-[#dcdcdc] text-[#121212] font-semibold px-5 py-2 mr-10 rounded-full shadow-md hover:bg-[#ffffff] transition-all ease-in-out duration-150"
+                        className="flex items-center z-[9999] justify-center cursor-pointer hover:-translate-y-1 hover:text-[#000000] bg-[#dcdcdc] text-[#121212] font-semibold px-5 py-2 sm:mr-5 rounded-full shadow-md hover:bg-[#ffffff] transition-all ease-in-out duration-150"
                     >
                         Dashboard
                     </Link>
@@ -105,7 +105,7 @@ const BookAppointment = () => {
                             <select
                                 value={selectedCategory}
                                 onChange={(e) => setSelectedCategory(e.target.value)}
-                                className="p-2 rounded bg-white text-black"
+                                className="p-2 rounded-full bg-white text-black"
                             >
                                 <option value="">All Categories</option>
                                 {Object.keys(categoriesList).map((key) => (
@@ -116,7 +116,7 @@ const BookAppointment = () => {
                             <select
                                 value={minRating}
                                 onChange={(e) => setMinRating(e.target.value)}
-                                className="p-2 rounded bg-white text-black"
+                                className="p-2 rounded-full bg-white text-black"
                             >
                                 <option value="">Any Rating</option>
                                 {[5, 4, 3, 2, 1].map((r) => (
@@ -137,7 +137,7 @@ const BookAppointment = () => {
                         {searchResults.length > 0 ? (<>
                             <div className="mx-10 font-bold text-[#e7e7e7]">Search Results</div>
                             <div className="bg-[#cbcbcb] opacity-50 my-1 mx-auto h-[1px] w-[95vw]"></div>
-                            <div className="mx-10 p-2  relative z-[9999] flex flex-wrap  gap-4">
+                            <div className="mx-5 sm:mx-10 p-2  relative z-[9999] flex flex-wrap  gap-4">
                                 {searchResults.length > 0 && searchResults.map((lawyer) => <span key={lawyer.email}> <ProfileContainer key={lawyer._id} lawyer={lawyer} /></span>)}
                             </div>
                         </>) : ""}
@@ -148,7 +148,7 @@ const BookAppointment = () => {
                     <div className="mx-10 font-bold text-[#ededed] mt-8">Recomended</div>
                     <div className="bg-[#cfcfcf] opacity-50 my-1 mx-auto h-[1px] w-[95vw]"></div>
 
-                    <div className="mx-10 p-2  relative z-[9999] min-h-[30vh] flex flex-wrap  gap-4">
+                    <div className="mx-5 sm:mx-10 p-2  relative z-[9999] min-h-[30vh] flex flex-row flex-wrap  gap-4">
                         {allLawyers.length > 0 ? (
                             allLawyers.map((lawyer) => <span key={lawyer.email}>
                                 <ProfileContainer key={lawyer._id} lawyer={lawyer} />
