@@ -1,0 +1,75 @@
+[{
+  "_id": {
+    "$oid": "681241b5b4d3d40b826b988d"
+  },
+  "lawyerId": {
+    "$oid": "68123c93b4d3d40b826b9716"
+  },
+  "userId": {
+    "$oid": "68124027b4d3d40b826b97e4"
+  },
+  "caseId": {
+    "$oid": "681241b5b4d3d40b826b988b"
+  },
+  "date": "2025-05-02",
+  "time": "10:00",
+  "category": "Murder",
+  "status": "completed",
+  "createdAt": {
+    "$date": "2025-04-30T15:28:53.689Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-30T15:33:58.622Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681241c6b4d3d40b826b98a1"
+  },
+  "lawyerId": {
+    "$oid": "68123c93b4d3d40b826b9716"
+  },
+  "userId": {
+    "$oid": "68124027b4d3d40b826b97e4"
+  },
+  "caseId": {
+    "$oid": "681241b5b4d3d40b826b988b"
+  },
+  "date": "2025-05-02",
+  "time": "12:00",
+  "category": "Murder",
+  "status": "completed",
+  "createdAt": {
+    "$date": "2025-04-30T15:29:10.269Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-30T15:34:05.907Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68124587020d21c36f4766fb"
+  },
+  "lawyerId": {
+    "$oid": "68123c93b4d3d40b826b9716"
+  },
+  "userId": {
+    "$oid": "68123cd7b4d3d40b826b9734"
+  },
+  "caseId": {
+    "$oid": "68124587020d21c36f4766f9"
+  },
+  "date": "2025-04-30",
+  "time": "21:21",
+  "category": "Accident",
+  "status": "confirmed",
+  "createdAt": {
+    "$date": "2025-04-30T15:45:11.257Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-30T16:09:19.020Z"
+  },
+  "__v": 0
+}]

@@ -17,34 +17,34 @@ oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
 
 export async function POST(req) {
   try {
-    const { to, subject, message } = await req.json();
+    const { summary, description, startTime, endTime } = await req.json();
 
-    const gmail = google.gmail({ version: 'v1', auth: oAuth2Client });
+    const calendar = google.calendar({ version: 'v3', auth: oAuth2Client });
 
-    const rawMessage = Buffer.from(
-      `To: ${to}\r\n` +
-      `Subject: ${subject}\r\n` +
-      `Content-Type: text/html; charset=utf-8\r\n\r\n` +
-      `${message}`
-    )
-      .toString('base64')
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_')
-      .replace(/=+$/, '');
-
-    const response = await gmail.users.messages.send({
-      userId: 'me',
-      requestBody: {
-        raw: rawMessage,
+    const event = {
+      summary,
+      description,
+      start: {
+        dateTime: startTime,
+        timeZone: 'Asia/Kolkata',
       },
+      end: {
+        dateTime: endTime,
+        timeZone: 'Asia/Kolkata',
+      },
+    };
+
+    const response = await calendar.events.insert({
+      calendarId: 'primary',
+      requestBody: event,
     });
 
     return new Response(
-      JSON.stringify({ success: true, messageId: response.data.id }),
+      JSON.stringify({ success: true, eventId: response.data.id }),
       { status: 200, headers: { 'Content-Type': 'application/json' } }
     );
   } catch (error) {
-    console.error('Email send error:', error);
+    console.error('Calendar event error:', error);
     return new Response(
       JSON.stringify({ success: false, error: error.message }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }

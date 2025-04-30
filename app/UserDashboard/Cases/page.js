@@ -49,7 +49,7 @@ const Cases = () => {
       </h1>
 
       {loading ? (
-        <p className="text-white/70"><LoadingPage /></p>
+        <span className="text-white/70"><LoadingPage /></span>
       ) : message ? (
         <p className="text-red-400">{message}</p>
       ) : cases.length === 0 ? (

@@ -168,7 +168,6 @@ const BookingForm = ({ params }) => {
     }
   };
 
-  if (loading) return <LoadingPage />;
 
   if (session && lawyer) {
     return (
@@ -218,7 +217,7 @@ const BookingForm = ({ params }) => {
                 <div>
                   <label className="block mb-1">Select Time</label>
                   {loadingSlots ? (
-                    <p className="text-sm text-gray-400"><LoadingPage /></p>
+                    <span className="text-sm text-gray-400">Loading Slots ....</span>
                   ) : availableSlots.length > 0 ? (
                     <div className="grid grid-cols-3 gap-2">
                       {availableSlots.map((slot) => (
@@ -312,7 +311,7 @@ const BookingForm = ({ params }) => {
                 <div>
                   <label className="block mb-1">Select Time</label>
                   {loadingSlots ? (
-                    <p className="text-sm text-gray-400">Loading slots...</p>
+                    <span className="text-sm text-gray-400">Loading slots...</span>
                   ) : availableSlots.length > 0 ? (
                     <div className="grid grid-cols-3 gap-2">
                       {availableSlots.map((slot) => (

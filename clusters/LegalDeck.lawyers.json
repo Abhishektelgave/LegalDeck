@@ -1,0 +1,139 @@
+[{
+  "_id": {
+    "$oid": "68123c93b4d3d40b826b9716"
+  },
+  "name": "Abhishek Telgave",
+  "email": "abhishektelgave84621@gmail.com",
+  "password": "$2b$12$4EtqDVG7CnrCDhtcKKBdkOSIilyXfLRqf8xRGzsfn58SneXFzUXG6",
+  "ratings": [
+    3,
+    5
+  ],
+  "categories": {
+    "Murder": {
+      "name": "Murder",
+      "fee": 1500
+    },
+    "Accident": {
+      "name": "Accident",
+      "fee": 1800
+    },
+    "Divorce": {
+      "name": "Divorce",
+      "fee": 2000
+    },
+    "Land_Issues": {
+      "name": "Land Issues",
+      "fee": 1200
+    }
+  },
+  "fileName": "AbhishekTelgave.pdf",
+  "lawyer_verified": "Approved",
+  "email_verified": false,
+  "close_appoitment": false,
+  "oauthProvider": "Credentials",
+  "upi": "",
+  "createdDate": {
+    "$date": "2025-04-30T15:06:59.811Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68123cffb4d3d40b826b9741"
+  },
+  "name": "Amit Gundoba",
+  "email": "amitgundoba@gmail.com",
+  "password": "$2b$12$KkVl2pW/R87EMjMVAAKM4uvE2E3NN80w2B2v8nSQM9ET/h4octqEq",
+  "ratings": [
+    4
+  ],
+  "categories": {
+    "Murder": {
+      "name": "Murder",
+      "fee": 1500
+    },
+    "Land_Issues": {
+      "name": "Land Issues",
+      "fee": 1200
+    },
+    "Divorce": {
+      "name": "Divorce",
+      "fee": 2000
+    }
+  },
+  "fileName": "AbhishekTelgave.pdf",
+  "lawyer_verified": "Approved",
+  "email_verified": false,
+  "close_appoitment": false,
+  "oauthProvider": "Credentials",
+  "upi": "",
+  "createdDate": {
+    "$date": "2025-04-30T15:08:47.772Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68123d95b4d3d40b826b9767"
+  },
+  "name": "Payal",
+  "email": "lolgirlyt098@gmail.com",
+  "password": "$2b$12$THM1fa4LFZlRc3WryeEEBufsCraduDp/ItRt2ux3BLOme0svOy346",
+  "ratings": [
+    5
+  ],
+  "categories": {
+    "Land_Issues": {
+      "name": "Land Issues",
+      "fee": 1200
+    },
+    "Divorce": {
+      "name": "Divorce",
+      "fee": 2000
+    },
+    "Accident": {
+      "name": "Accident",
+      "fee": 1800
+    }
+  },
+  "fileName": "AbhishekTelgave.pdf",
+  "lawyer_verified": "Approved",
+  "email_verified": false,
+  "close_appoitment": false,
+  "oauthProvider": "Credentials",
+  "upi": "",
+  "createdDate": {
+    "$date": "2025-04-30T15:11:17.955Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68123ddcb4d3d40b826b9774"
+  },
+  "name": "Abhishek S",
+  "email": "abhisenu@gmail.com",
+  "password": "$2b$12$yB/D0HpvUo0rNZiU20D1FuVGcwUW0CW887DiRCWRB/qb0uGHm8n2K",
+  "ratings": [],
+  "categories": {
+    "Accident": {
+      "name": "Accident",
+      "fee": 1800
+    },
+    "Land_Issues": {
+      "name": "Land Issues",
+      "fee": 1200
+    }
+  },
+  "fileName": "AbhishekTelgave.pdf",
+  "lawyer_verified": "Rejected",
+  "email_verified": false,
+  "close_appoitment": false,
+  "oauthProvider": "Credentials",
+  "upi": "",
+  "createdDate": {
+    "$date": "2025-04-30T15:12:28.677Z"
+  },
+  "__v": 0
+}]

@@ -5,7 +5,7 @@ import { useSession, signOut, update, getSession } from "next-auth/react";
 import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 import defaultimg from "@/public/images/defaultprofile.png";
-import Loading from "@/app/components/LoadingPage";
+
 import { FaStar } from "react-icons/fa";
 import LoadingPage from "@/app/components/LoadingPage";
 
@@ -21,7 +21,7 @@ const LawyerDashboard = ({ children }) => {
   const [closeApp, setCloseApp] = useState(false);
   const [appointments, setAppointments] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [loading , setLoading] = useState(true);
+  const [loading , setLoading] = useState(false);
 
 
   // Check for authentication
@@ -79,10 +79,8 @@ const LawyerDashboard = ({ children }) => {
     }
   };
 
-  if (status === "loading") return <LoadingPage />;
   if (!session) return null;
 
-  if(loading) return <LoadingPage />
 
   if (session) {
     const avg = session.user.ratings.length
@@ -104,7 +102,7 @@ const LawyerDashboard = ({ children }) => {
               <Link href={"/LawyerDashboard"} className="text-2xl md:text-3xl font-bold">
                 <SpannedText text={session?.user?.name} />
               </Link>
-              <p className="text-sm">{session.user.email}</p>
+              <span className="text-sm">{session.user.email}</span>
 
               {/* 👇 Approval Status UI */}
               <div className="flex gap-2">

@@ -1,0 +1,30 @@
+[{
+  "_id": {
+    "$oid": "68123cd7b4d3d40b826b9734"
+  },
+  "name": "Laxmikant Biradar",
+  "email": "laxmikantbiradar007@gmail.com",
+  "password": "$2b$12$k.TdTJ0GLgV/6zUHzJNHr.BcoK8ktMiTeUGLh6hP53oh3vX4UbzKO",
+  "profileImage": "https://lh3.googleusercontent.com/a/ACg8ocI58C44uaPI0puSJSNK82YO8-P6MxsESUtfL-llFlatxNy3lg=s96-c",
+  "email_verified": true,
+  "oauthProvider": "google",
+  "createdDate": {
+    "$date": "2025-04-30T15:08:07.429Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68124027b4d3d40b826b97e4"
+  },
+  "name": "Lol Girl Yt",
+  "email": "lolgirlyt098@gmail.com",
+  "password": "$2b$12$3nPCFraHVNHyxDtEbPIYZ.4k8SHJ646/5rnuQt0r6r5wYOrEd7dVK",
+  "profileImage": "https://lh3.googleusercontent.com/a/ACg8ocIx-4BXCxmLvmuWAXSS-HP8iKOv_rhkMdWxO3Ve1GOGXMwZBQ=s96-c",
+  "email_verified": true,
+  "oauthProvider": "google",
+  "createdDate": {
+    "$date": "2025-04-30T15:22:15.970Z"
+  },
+  "__v": 0
+}]

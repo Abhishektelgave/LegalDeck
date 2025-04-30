@@ -3,14 +3,12 @@ import { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import LoadingPage from "@/app/components/LoadingPage";
 
 const AppointmentDetails = ({ params }) => {
     const router = useRouter();
     const { id } = use(params);
     const { data: session } = useSession();
     const [appointment, setAppointment] = useState(null);
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         if (id) {
@@ -21,7 +19,7 @@ const AppointmentDetails = ({ params }) => {
                         setAppointment(data.appointment);
                     }
                 })
-                .finally(() => setLoading(false));
+                
         }
     }, [id]);
 
@@ -34,6 +32,17 @@ const AppointmentDetails = ({ params }) => {
             });
             const data = await res.json();
             if (res.ok) {
+                await fetch('/api/calendar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        summary: 'LegalDeck Appointment',
+                        description: 'Meeting with your lawyer via LegalDeck',
+                        startTime: new Date(`${appt.date}T${appt.time}:00`).toISOString(),
+                        endTime: new Date(new Date(`${appt.date}T${appt.time}:00`).getTime() + 30 * 60 * 1000).toISOString(),
+                    }),
+                });
+
                 router.push("/LawyerDashboard");
             } else {
                 alert(data.message || "Something went wrong");
@@ -55,6 +64,16 @@ const AppointmentDetails = ({ params }) => {
             });
             const data2 = await res2.json();
             if (res2.ok) {
+                await fetch('/api/calendar/addEvent', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        summary: 'LegalDeck Appointment',
+                        description: 'Meeting with your lawyer via LegalDeck',
+                        startTime: new Date(`${appt.date}T${appt.time}:00`).toISOString(),
+                        endTime: new Date(new Date(`${appt.date}T${appt.time}:00`).getTime() + 30 * 60 * 1000).toISOString(),
+                    }),
+                });
                 router.push("/LawyerDashboard");
             } else {
                 alert(data2.message || "Something went wrong");
@@ -76,7 +95,6 @@ const AppointmentDetails = ({ params }) => {
         }
     };
 
-    if (loading) return <p className="text-white/70"><LoadingPage /></p>;
     if (!appointment || !session) return null;
 
     return (

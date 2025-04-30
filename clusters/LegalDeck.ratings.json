@@ -1,0 +1,84 @@
+[{
+  "_id": {
+    "$oid": "68124083b4d3d40b826b980c"
+  },
+  "userId": {
+    "$oid": "68124027b4d3d40b826b97e4"
+  },
+  "lawyerId": {
+    "$oid": "68123c93b4d3d40b826b9716"
+  },
+  "category": "Accident",
+  "rating": 3,
+  "comment": "you are greate",
+  "createdAt": {
+    "$date": "2025-04-30T15:23:47.810Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-30T15:23:47.810Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681240a9b4d3d40b826b981c"
+  },
+  "userId": {
+    "$oid": "68124027b4d3d40b826b97e4"
+  },
+  "lawyerId": {
+    "$oid": "68123cffb4d3d40b826b9741"
+  },
+  "category": "Land Issues",
+  "rating": 4,
+  "comment": "you are very clean minded.",
+  "createdAt": {
+    "$date": "2025-04-30T15:24:25.878Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-30T15:24:25.878Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681240d2b4d3d40b826b9835"
+  },
+  "userId": {
+    "$oid": "68124027b4d3d40b826b97e4"
+  },
+  "lawyerId": {
+    "$oid": "68123d95b4d3d40b826b9767"
+  },
+  "category": "Land Issues",
+  "rating": 5,
+  "comment": "You are so preaty",
+  "createdAt": {
+    "$date": "2025-04-30T15:25:06.037Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-30T15:25:06.037Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681240f0b4d3d40b826b9848"
+  },
+  "userId": {
+    "$oid": "68124027b4d3d40b826b97e4"
+  },
+  "lawyerId": {
+    "$oid": "68123c93b4d3d40b826b9716"
+  },
+  "category": "Divorce",
+  "rating": 5,
+  "comment": "You handeled very well case",
+  "createdAt": {
+    "$date": "2025-04-30T15:25:36.836Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-30T15:25:36.836Z"
+  },
+  "__v": 0
+}]

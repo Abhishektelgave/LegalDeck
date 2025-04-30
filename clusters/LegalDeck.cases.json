@@ -1,0 +1,153 @@
+[{
+  "_id": {
+    "$oid": "681241b5b4d3d40b826b988b"
+  },
+  "lawyerId": {
+    "$oid": "68123c93b4d3d40b826b9716"
+  },
+  "userId": {
+    "$oid": "68124027b4d3d40b826b97e4"
+  },
+  "category": "Murder",
+  "status": "Resolved",
+  "caseProgress": "Resolved",
+  "fee": 1500,
+  "payment": "completed",
+  "dateStarted": {
+    "$date": "2025-04-30T15:28:53.608Z"
+  },
+  "documents": [],
+  "requestedDocuments": [],
+  "messages": [],
+  "createdAt": {
+    "$date": "2025-04-30T15:28:53.615Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-30T15:35:52.298Z"
+  },
+  "__v": 0,
+  "razorpay_order_id": "order_QPJvUxbiu2b53X"
+},
+{
+  "_id": {
+    "$oid": "68124587020d21c36f4766f9"
+  },
+  "lawyerId": {
+    "$oid": "68123c93b4d3d40b826b9716"
+  },
+  "userId": {
+    "$oid": "68123cd7b4d3d40b826b9734"
+  },
+  "category": "Accident",
+  "status": "Resolved",
+  "caseProgress": "Resolved",
+  "fee": 1800,
+  "payment": "completed",
+  "dateStarted": {
+    "$date": "2025-04-30T15:45:11.223Z"
+  },
+  "documents": [
+    {
+      "fileName": "seminar.pdf",
+      "path": "/assets/files/68124587020d21c36f4766f9/seminar.pdf",
+      "from": "Lawyer",
+      "status": "Unsigned",
+      "needsESign": false,
+      "_id": {
+        "$oid": "6812488a020d21c36f476865"
+      }
+    },
+    {
+      "fileName": "semi.pdf",
+      "path": "/assets/files/68124587020d21c36f4766f9/semi.pdf",
+      "from": "Lawyer",
+      "status": "Pending",
+      "needsESign": true,
+      "_id": {
+        "$oid": "68124899020d21c36f47686b"
+      }
+    },
+    {
+      "fileName": "Adhaar Card",
+      "path": "/assets/files/68124587020d21c36f4766f9/new.pdf",
+      "from": "User",
+      "status": "Signed",
+      "needsESign": false,
+      "_id": {
+        "$oid": "68124928020d21c36f4768ed"
+      }
+    }
+  ],
+  "requestedDocuments": [
+    {
+      "fileName": "Adhaar Card",
+      "from": "Lawyer",
+      "path": "/assets/files/68124587020d21c36f4766f9/new.pdf",
+      "needsESign": false,
+      "fulfilled": true,
+      "_id": {
+        "$oid": "681248aa020d21c36f476873"
+      }
+    },
+    {
+      "fileName": "Pan Card",
+      "from": "Lawyer",
+      "path": "",
+      "needsESign": true,
+      "fulfilled": false,
+      "_id": {
+        "$oid": "681248b1020d21c36f47687d"
+      }
+    }
+  ],
+  "messages": [
+    {
+      "sender": {
+        "$oid": "68123c93b4d3d40b826b9716"
+      },
+      "senderRole": "Lawyer",
+      "message": "hii",
+      "timestamp": {
+        "$date": "2025-04-30T16:01:02.359Z"
+      }
+    },
+    {
+      "sender": {
+        "$oid": "68123cd7b4d3d40b826b9734"
+      },
+      "senderRole": "User",
+      "message": "hello",
+      "timestamp": {
+        "$date": "2025-04-30T16:01:08.618Z"
+      }
+    },
+    {
+      "sender": {
+        "$oid": "68123c93b4d3d40b826b9716"
+      },
+      "senderRole": "Lawyer",
+      "message": "we will be proceding our next cort date on 5/5/2025",
+      "timestamp": {
+        "$date": "2025-04-30T16:01:47.897Z"
+      }
+    },
+    {
+      "sender": {
+        "$oid": "68123cd7b4d3d40b826b9734"
+      },
+      "senderRole": "User",
+      "message": "ok i will be there",
+      "timestamp": {
+        "$date": "2025-04-30T16:02:00.967Z"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2025-04-30T15:45:11.231Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-30T16:05:00.419Z"
+  },
+  "__v": 4,
+  "razorpay_order_id": "order_QPKPtO3dFIwKCI"
+}]

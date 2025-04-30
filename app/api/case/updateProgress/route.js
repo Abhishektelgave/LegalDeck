@@ -29,11 +29,7 @@ export async function POST(req) {
 
             return new Response(JSON.stringify({ case: updatedCase }), { status: 200 });
         }
-
-        // console.log(updatedCase);
-
-
-
+        
     } catch (err) {
         return new Response(JSON.stringify({ message: 'Server error: ' + err.message }), { status: 500 });
     }

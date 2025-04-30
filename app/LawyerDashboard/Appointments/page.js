@@ -125,11 +125,11 @@ const LawyerDashboard = () => {
             </button>
 
             {loading ? (
-                <p><LoadingPage /></p>
+                <span><LoadingPage /></span>
             ) : message ? (
                 <p className="text-red-400">{message}</p>
             ) : currentAppointments.length === 0 ? (
-                <p className="text-yellow-400">No appointments found.</p>
+                <span className="text-yellow-400">No appointments found.</span>
             ) : (
                 <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2">
                     {currentAppointments.map((appt) => (
