@@ -7,12 +7,12 @@ import { SessionProvider } from 'next-auth/react';
 
 export default function ClientLayout({ children }) {
     const [isClient, setIsClient] = useState(false);
-    const [isLoading, setIsLoading] = useState(false); // --------- true reminder
+    const [isLoading, setIsLoading] = useState(true);
 
     // Landing page timeout
     useEffect(() => {
         setIsClient(true);
-        const timer = setTimeout(() => setIsLoading(false), 2000);
+        const timer = setTimeout(() => setIsLoading(false), 4000);
         return () => clearTimeout(timer);
     }, []);
 
