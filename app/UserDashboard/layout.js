@@ -5,7 +5,7 @@ import { useSession, signOut } from "next-auth/react";
 import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 import defaultimg from "@/public/images/defaultprofile.png";
-import Loading from "@/app/components/LoadingPage";
+import LoadingPage from "@/app/components/LoadingPage";
 
 const UserDashboard = ({ children }) => {
 
@@ -20,7 +20,7 @@ const UserDashboard = ({ children }) => {
     }, [status, router]);
 
     if (status === "loading") {
-        return <Loading />;
+        return <LoadingPage />;
     }
 
     const SpannedText = ({ text = "" }) => {
@@ -108,13 +108,6 @@ const UserDashboard = ({ children }) => {
                             Appointments
                         </Link>
                     </div>
-
-                    {/* Back Button
-                    {pathname !== "/UserDashboard" && (
-                        <Link href={"/UserDashboard"} className="back z-[9999] absolute top-5 left-10">
-                            <Image src={backImg} width={30} alt="back_image" className="invert" />
-                        </Link>
-                    )} */}
 
                     {/* Page Content */}
                     <div className="content flex flex-col items-center justify-center w-full py-5 px-4">

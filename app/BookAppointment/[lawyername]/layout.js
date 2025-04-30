@@ -7,6 +7,7 @@ import Image from "next/image";
 import { LawyerContext } from "@/app/context/page";
 import defaultimg from "@/public/images/defaultprofile.png";
 import backImg from "@/public/images/back.png";
+import LoadingPage from "@/app/components/LoadingPage";
 
 // Lawyer Page for booking
 const lawyername = ({ children, params }) => {
@@ -16,6 +17,8 @@ const lawyername = ({ children, params }) => {
     const router = useRouter();
     const pathname = usePathname();
     const { lawyername } = use(params);
+    const [loading, setLoading] = useState(true);
+
 
     // Basic data
     const [errorMessage, setErrorMessage] = useState("");
@@ -23,6 +26,7 @@ const lawyername = ({ children, params }) => {
 
     // get Lawyer detail profilw
     useEffect(() => {
+        setLoading(true);
         const fetchSearchResult = async () => {
             if (lawyername && session) {
                 try {
@@ -40,6 +44,8 @@ const lawyername = ({ children, params }) => {
 
                 } catch (error) {
                     setErrorMessage("Error fetching search results");
+                }finally{
+                    setLoading(false);
                 }
             }
         };
@@ -80,6 +86,7 @@ const lawyername = ({ children, params }) => {
         }
     }, [searchResult]);
 
+    if(loading) return <LoadingPage />
 
     if (session && searchResult) {
         return (
@@ -146,13 +153,6 @@ const lawyername = ({ children, params }) => {
                     </div>
 
                     <div className="bg-[#FF6F61] opacity-25 mx-auto h-[1px] w-[95vw]"></div>
-
-                    {/* Back Button */}
-                    {/* {pathname !== `/BookAppointment/${lawyername}` && (
-                        <Link href={`/BookAppointment/${lawyername}`} className="back absolute left-10 z-[999]">
-                            <Image src={backImg} width={30} alt="Back" className="backImg invert" />
-                        </Link>
-                    )} */}
 
                     {/* Main Content */}
                     <div className="tea flex flex-col items-center justify-center gap-5 w-full pt-5 pb-5 px-10">

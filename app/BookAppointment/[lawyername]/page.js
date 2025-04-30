@@ -2,6 +2,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { LawyerContext } from "@/app/context/page";
 import { FaStar } from "react-icons/fa";
+import LoadingPage from "@/app/components/LoadingPage";
 
 const ReviewPage = () => {
     const lawyer = useContext(LawyerContext);
@@ -30,7 +31,7 @@ const ReviewPage = () => {
         <div className="min-w-[90vw] bg-[#121212] text-[#F1F1F1]">
             <h2 className="text-2xl font-bold text-center mb-6 text-[#FFFFFF]">User Reviews</h2>
             {loading ? (
-                <p className="text-center text-[#B0B0B0]">Loading...</p>
+                <p className="text-center text-[#B0B0B0]"><LoadingPage /></p>
             ) : reviews.length === 0 ? (
                 <p className="text-center text-[#B0B0B0]">No reviews yet.</p>
             ) : (

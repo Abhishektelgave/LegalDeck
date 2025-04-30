@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useAppointmentStore } from "@/app/store/appointment";
+import LoadingPage from "@/app/components/LoadingPage";
 
 const UserDashboard = () => {
     const { data: session } = useSession();
@@ -102,7 +103,7 @@ const UserDashboard = () => {
             </button>
 
             {loading ? (
-                <p className="text-white/70">Loading...</p>
+                <p className="text-white/70"><LoadingPage /></p>
             ) : message ? (
                 <p className="text-red-400">{message}</p>
             ) : currentAppointments.length === 0 ? (

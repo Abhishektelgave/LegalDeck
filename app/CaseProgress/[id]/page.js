@@ -9,6 +9,7 @@ import Documents from '@/app/CaseProgress/[id]/components/Documents';
 import defaultimg from '@/public/images/defaultprofile.png';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import LoadingPage from '@/app/components/LoadingPage';
 
 
 const CaseProcessing = ({ params }) => {
@@ -101,7 +102,7 @@ const CaseProcessing = ({ params }) => {
     }
 
     if (!session || loading) {
-        return <div className="text-center py-20 text-white">Loading case details...</div>;
+        return <div className="text-center py-20 text-white"><LoadingPage /></div>;
     }
 
     if (!caseDetails) {

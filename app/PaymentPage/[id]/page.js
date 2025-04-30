@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import LoadingPage from "@/app/components/LoadingPage";
 
 const PaymentPage = ({ params }) => {
   const id = React.use(params).id;
@@ -116,7 +117,7 @@ const PaymentPage = ({ params }) => {
   };
 
   if (!session || loading) {
-    return <div className="text-center py-20 text-white">Loading case details...</div>;
+    return <div className="text-center py-20 text-white"><LoadingPage /></div>;
   }
 
   if (!caseDetails) {

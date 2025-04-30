@@ -7,6 +7,7 @@ import Image from "next/image";
 import defaultimg from "@/public/images/defaultprofile.png";
 import Loading from "@/app/components/LoadingPage";
 import { FaStar } from "react-icons/fa";
+import LoadingPage from "@/app/components/LoadingPage";
 
 // Lawyer Dashboard Layout
 const LawyerDashboard = ({ children }) => {
@@ -20,6 +21,8 @@ const LawyerDashboard = ({ children }) => {
   const [closeApp, setCloseApp] = useState(false);
   const [appointments, setAppointments] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [loading , setLoading] = useState(true);
+
 
   // Check for authentication
   useEffect(() => {
@@ -30,6 +33,7 @@ const LawyerDashboard = ({ children }) => {
 
   // Fetch all pending Appointments
   useEffect(() => {
+    setLoading(true);
     const fetchAppointments = async () => {
       try {
         const res = await fetch(`/api/book/pendingApp/lawyerApp?lawyerId=${session.user.id}`);
@@ -39,6 +43,8 @@ const LawyerDashboard = ({ children }) => {
         }
       } catch (err) {
         console.error("Error fetching appointments:", err);
+      }finally{
+        setLoading(false);
       }
     };
 
@@ -73,8 +79,10 @@ const LawyerDashboard = ({ children }) => {
     }
   };
 
-  if (status === "loading") return <Loading />;
+  if (status === "loading") return <LoadingPage />;
   if (!session) return null;
+
+  if(loading) return <LoadingPage />
 
   if (session) {
     const avg = session.user.ratings.length

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useAppointmentStore } from "@/app/store/appointment";
+import LoadingPage from "../components/LoadingPage";
 
 const LawyerDashboard = () => {
   const { data: session } = useSession();
@@ -90,7 +91,7 @@ const LawyerDashboard = () => {
         Next Appointment
       </h1>
       {loading ? (
-        <p className="text-white/70">Loading...</p>
+        <p className="text-white/70"><LoadingPage /></p>
       ) : message ? (
         <p className="text-red-400">{message}</p>
       ) : !nextAppointment ? (

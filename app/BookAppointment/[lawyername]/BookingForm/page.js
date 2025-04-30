@@ -4,6 +4,7 @@ import { LawyerContext } from '@/app/context/page';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import CaseSelector from '@/app/BookAppointment/components/CaseSelector';
+import LoadingPage from '@/app/components/LoadingPage';
 
 const BookingForm = ({ params }) => {
   const { data: session, status } = useSession();
@@ -23,6 +24,8 @@ const BookingForm = ({ params }) => {
   const [loadingSlots, setLoadingSlots] = useState(false);
   const [message, setMessage] = useState('');
   const [selectedCaseId, setSelectedCaseId] = useState('');
+  const [loading, setLoading] = useState(true);
+
 
   const today = new Date().toISOString().split('T')[0];
   const minDateObj = new Date();
@@ -38,6 +41,7 @@ const BookingForm = ({ params }) => {
   }, [session, status, router]);
 
   useEffect(() => {
+    setLoading(true);
     const fetchCaseDetails = async () => {
       if (!selectedCaseId) return;
 
@@ -61,6 +65,8 @@ const BookingForm = ({ params }) => {
       } catch (err) {
         console.error(err);
         setMessage('Error fetching case details');
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -162,6 +168,8 @@ const BookingForm = ({ params }) => {
     }
   };
 
+  if (loading) return <LoadingPage />;
+
   if (session && lawyer) {
     return (
       <>
@@ -210,7 +218,7 @@ const BookingForm = ({ params }) => {
                 <div>
                   <label className="block mb-1">Select Time</label>
                   {loadingSlots ? (
-                    <p className="text-sm text-gray-400">Loading slots...</p>
+                    <p className="text-sm text-gray-400"><LoadingPage /></p>
                   ) : availableSlots.length > 0 ? (
                     <div className="grid grid-cols-3 gap-2">
                       {availableSlots.map((slot) => (

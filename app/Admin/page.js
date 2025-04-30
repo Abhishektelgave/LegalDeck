@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Header from '@/app/components/Header';
 import LawyerCard from '@/app/Admin/components/lawyerCard';
 import LawyerCardPending from '@/app/Admin/components/lawyerCardPending';
+import LoadingPage from '../components/LoadingPage';
 
 // Admin Page
 const Admin = () => {
@@ -121,8 +122,8 @@ const Admin = () => {
         <button
           onClick={() => setActiveTab('all')}
           className={`px-6 py-2 cursor-pointer rounded-full text-sm sm:text-lg font-semibold ${activeTab === 'all'
-              ? 'bg-white text-black'
-              : 'bg-white/10 text-white hover:bg-white/20'
+            ? 'bg-white text-black'
+            : 'bg-white/10 text-white hover:bg-white/20'
             }`}
         >
           All Lawyers
@@ -130,8 +131,8 @@ const Admin = () => {
         <button
           onClick={() => setActiveTab('new')}
           className={`px-6 py-2 cursor-pointer rounded-full text-sm sm:text-lg font-semibold ${activeTab === 'new'
-              ? 'bg-white text-black'
-              : 'bg-white/10 text-white hover:bg-white/20'
+            ? 'bg-white text-black'
+            : 'bg-white/10 text-white hover:bg-white/20'
             }`}
         >
           New Applicants
@@ -139,8 +140,8 @@ const Admin = () => {
         <button
           onClick={() => setActiveTab('rejected')}
           className={`px-6 py-2 cursor-pointer rounded-full text-sm sm:text-lg font-semibold ${activeTab === 'rejected'
-              ? 'bg-white text-black'
-              : 'bg-white/10 text-white hover:bg-white/20'
+            ? 'bg-white text-black'
+            : 'bg-white/10 text-white hover:bg-white/20'
             }`}
         >
           Rejected Applicants
@@ -150,7 +151,7 @@ const Admin = () => {
       {/* Content */}
       <main className="p-4 sm:p-6 md:p-8">
         {loading ? (
-          <p className="text-center text-white/60">Loading...</p>
+          <LoadingPage />
         ) : message ? (
           <p className="text-center text-red-400">{message}</p>
         ) : activeTab === 'all' ? (

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Header from '@/app/components/Header'
 import Link from "next/link";
 import ProfileContainer from "@/app/BookAppointment/components/ProfileContainer";
+import LoadingPage from "../components/LoadingPage";
 
 // Book Appointment page
 const BookAppointment = () => {
@@ -20,6 +21,7 @@ const BookAppointment = () => {
     const [errorMessage, setErrorMessage] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("");
     const [minRating, setMinRating] = useState("");
+    const [loading, setLoading] = useState(true);
 
     const categoriesList = {
         Murder: { name: 'Murder', fee: 1500 },
@@ -27,7 +29,7 @@ const BookAppointment = () => {
         Divorce: { name: 'Divorce', fee: 2000 },
         Land_Issues: { name: 'Land Issues', fee: 1200 },
         Legal_Issues: { name: 'Legal Issues', fee: 1000 },
-      };
+    };
 
 
     // Check for Authentication
@@ -65,6 +67,7 @@ const BookAppointment = () => {
 
     // get all Lawyers for recomendation
     useEffect(() => {
+        setLoading(true);
         const fetchAllLawyers = async () => {
             try {
                 const res = await fetch(`/api/search/lawyers`);
@@ -73,11 +76,15 @@ const BookAppointment = () => {
                 setAllLawyers(data);
             } catch (error) {
                 setErrorMessage("Error fetching all users:", error);
+            } finally {
+                setLoading(false);
             }
         };
 
         fetchAllLawyers();
     }, []);
+
+    if (loading) return <LoadingPage />;
 
     if (session) {
         return (

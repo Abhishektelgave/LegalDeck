@@ -3,11 +3,13 @@ import React, { useState, useEffect } from 'react'
 import { useSession, signIn, getCsrfToken } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Header from '@/app/components/Header';
+import LoadingPage from '@/app/components/LoadingPage';
 
 const AdminLogin = () => {
     const [isClient, setIsClient] = useState(true);
     const [csrfToken, setCsrfToken] = useState('');
     const [errorMessage, setErrorMessage] = useState("");
+    const [loading, setLoading] = useState(true);
 
     const [EmailInput, setEmailInput] = useState("");
     const [PassInput, setPassInput] = useState("");
@@ -23,11 +25,14 @@ const AdminLogin = () => {
 
     useEffect(() => {
         const setAdminData = async () => {
+            setLoading(true);
             try {
                 const res = await fetch(`/api/admin/set_admin`);
                 if (!res.ok) throw new Error(`Failed with status ${res.status}`);
             } catch (error) {
                 console.error('Error loading admin data:', error);
+            }finally{
+                setLoading(false);
             }
         };
         setAdminData();
@@ -57,6 +62,10 @@ const AdminLogin = () => {
             router.push('/Admin');
         }
     };
+
+    if(loading){
+        return <LoadingPage />
+    }
 
     return (
         <>

@@ -29,7 +29,7 @@ const LoadingPage = () => {
       </div>
 
       {/* Animated Title */}
-      <div className="flex text-4xl sm:text-6xl font-bold tracking-widest">
+      <div className="flex text-xl sm:text-2xl font-bold tracking-widest">
         {'LEGALDECK'.split('').map((char, index) => (
           <span
             key={index}

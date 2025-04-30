@@ -3,6 +3,7 @@ import { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import LoadingPage from "@/app/components/LoadingPage";
 
 const AppointmentDetails = ({ params }) => {
     const router = useRouter();
@@ -75,7 +76,7 @@ const AppointmentDetails = ({ params }) => {
         }
     };
 
-    if (loading) return <p className="text-white/70">Loading...</p>;
+    if (loading) return <p className="text-white/70"><LoadingPage /></p>;
     if (!appointment || !session) return null;
 
     return (

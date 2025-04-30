@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import LoadingPage from '@/app/components/LoadingPage';
 
 const Cases = () => {
   const { data: session } = useSession();
@@ -48,7 +49,7 @@ const Cases = () => {
       </h1>
 
       {loading ? (
-        <p className="text-white/70">Loading...</p>
+        <p className="text-white/70"><LoadingPage /></p>
       ) : message ? (
         <p className="text-red-400">{message}</p>
       ) : cases.length === 0 ? (
