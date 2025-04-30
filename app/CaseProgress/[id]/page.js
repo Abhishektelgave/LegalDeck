@@ -179,10 +179,9 @@ const CaseProcessing = ({ params }) => {
                             : <Documents caseDetails={caseDetails} />}
                     </div>
                 </div>
-
                 {
                     chatBox ? (
-                        <div className={`absolute ${(caseDetails.status === "Not Started" && session.user.role !== 'user') ? 'left-0 md:right-5 sm:right-5 top-34' : 'left-3 md:right-5 sm:right-5 top-18'} w-[90vw] z-50`}>
+                        <div className={`fixed right-10 bottom-5 z-50`}>
                             <div className='absolute top-4 bg-white w-full h-12 font-bold -mt-4 rounded-t-4xl text-xl'>
                                 <div className='text-black flex items-center gap-2 ml-5 mt-2'>
                                     <Image
@@ -210,7 +209,7 @@ const CaseProcessing = ({ params }) => {
                             />
                         </div>
                     ) : (
-                        <div onClick={() => setChatBox(true)} className={`absolute flex items-center justify-center flex-col invert ${(caseDetails.status === "Not Started" && session.user.role !== 'user') ? ' right-6 sm:right-10 bottom-6 sm:bottom-6' : 'right-6 sm:right-10 bottom-10 sm:bottom-16'} cursor-pointer  z-50`}>
+                        <div onClick={() => setChatBox(true)} className={`fixed  flex items-center justify-center right-10 bottom-5 flex-col invert cursor-pointer  z-50`}>
                             <lord-icon
                                 src="https://cdn.lordicon.com/ayhtotha.json"
                                 trigger="hover"
